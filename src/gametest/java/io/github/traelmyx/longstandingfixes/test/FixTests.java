@@ -182,6 +182,7 @@ public final class FixTests {
 		/*// a mock player's client never reports it has loaded, which makes it immune to all damage
 		player.connection.handleAcceptPlayerLoad(new net.minecraft.network.protocol.game.ServerboundPlayerLoadedPacket());
 		*///?}
+		helper.assertTrue(player.isSpectator(), "the mock player did not switch to spectator mode");
 		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
 		float before = player.getHealth();
 		//? if >=1.21.11 {
