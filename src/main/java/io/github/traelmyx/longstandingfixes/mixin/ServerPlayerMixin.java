@@ -18,9 +18,10 @@ public abstract class ServerPlayerMixin {
 	//? if >=1.21.11 {
 	/*@Inject(method = "isInvulnerableTo(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;)Z", at = @At("HEAD"), cancellable = true)
 	private void longstandingfixes$spectatorsIgnoreTheVoid(net.minecraft.server.level.ServerLevel level, DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-	*///?} else
+	*///?} else {
 	@Inject(method = "isInvulnerableTo(Lnet/minecraft/world/damagesource/DamageSource;)Z", at = @At("HEAD"), cancellable = true)
 	private void longstandingfixes$spectatorsIgnoreTheVoid(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+	//?}
 		ServerPlayer self = (ServerPlayer) (Object) this;
 		if (LongStandingFixes.spectatorVoid && self.isSpectator() && source.is(DamageTypes.FELL_OUT_OF_WORLD)
 			&& !LongStandingFixes.VANILLA_ENTITIES.contains(self.getUUID()))
