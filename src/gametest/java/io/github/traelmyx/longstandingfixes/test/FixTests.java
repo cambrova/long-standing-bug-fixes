@@ -451,10 +451,11 @@ public final class FixTests {
 		helper.runAfterDelay(60, () -> {
 			helper.assertTrue(!sensorActive(helper, sensor), "the sculk sensor was still active before the hit");
 			player.attack(fireball);
+			// gone before it can fly into anything and explode, which sensors would hear anyway
+			fireball.discard();
 			helper.runAfterDelay(10, () -> {
 				boolean active = sensorActive(helper, sensor);
 				LongStandingFixes.VANILLA_ENTITIES.remove(fireball.getUUID());
-				fireball.discard();
 				helper.getLevel().getServer().getPlayerList().remove(player);
 				if (fixed) helper.assertTrue(active, "the sculk sensor did not hear the fireball being hit");
 				else helper.assertTrue(!active, "vanilla's sculk sensor heard the fireball being hit; is MC-210491 fixed?");
