@@ -176,7 +176,13 @@ public final class FixTests {
 	}
 
 	private static void spectator(GameTestHelper helper, boolean fixed) {
-		var player = helper.makeMockServerPlayerInLevel();
+		// the helper's mock player always says it isn't a spectator, so build a plain one the same way
+		var server = helper.getLevel().getServer();
+		var cookie = net.minecraft.server.network.CommonListenerCookie.createInitial(new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "test-spectator"), false);
+		var player = new net.minecraft.server.level.ServerPlayer(server, helper.getLevel(), cookie.gameProfile(), cookie.clientInformation());
+		var connection = new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);
+		new io.netty.channel.embedded.EmbeddedChannel(connection);
+		server.getPlayerList().placeNewPlayer(connection, player, cookie);
 		player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
 		//? if >=1.21.11 {
 		/*// a mock player's client never reports it has loaded, which makes it immune to all damage
@@ -191,6 +197,7 @@ public final class FixTests {
 		player.hurt(player.damageSources().fellOutOfWorld(), 4.0F);
 		float after = player.getHealth();
 		LongStandingFixes.VANILLA_OBJECTS.remove(player);
+		server.getPlayerList().remove(player);
 		if (fixed) {
 			helper.assertTrue(after == before, "a spectator took void damage: " + before + " -> " + after);
 			// /kill still works on spectators
