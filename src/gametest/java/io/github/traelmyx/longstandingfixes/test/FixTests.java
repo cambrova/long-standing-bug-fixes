@@ -473,4 +473,69 @@ public final class FixTests {
 	public static void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		fireball(helper, false);
 	}
+
+	private static void catChest(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 8; x++) for (int z = 0; z < 8; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		BlockPos lower = new BlockPos(3, 1, 3), upper = new BlockPos(3, 2, 3);
+		helper.setBlock(lower, Blocks.CHEST);
+		helper.setBlock(upper, Blocks.CHEST);
+		if (!fixed) LongStandingFixes.VANILLA_BLOCKS.add(helper.absolutePos(lower));
+		//? if >=26 {
+		/*var cat = helper.spawn(net.minecraft.world.entity.EntityTypes.CAT, new net.minecraft.world.phys.Vec3(3.5, 2.875, 3.5));
+		*///?} else
+		var cat = helper.spawn(EntityType.CAT, new net.minecraft.world.phys.Vec3(3.5, 2.875, 3.5));
+		cat.setNoAi(true);
+		cat.setNoGravity(true);
+		cat.setInSittingPose(true);
+		helper.runAfterDelay(5, () -> {
+			boolean upperBlocked = net.minecraft.world.level.block.ChestBlock.isChestBlockedAt(helper.getLevel(), helper.absolutePos(upper));
+			boolean lowerBlocked = net.minecraft.world.level.block.ChestBlock.isChestBlockedAt(helper.getLevel(), helper.absolutePos(lower));
+			LongStandingFixes.VANILLA_BLOCKS.remove(helper.absolutePos(lower));
+			cat.discard();
+			helper.assertTrue(upperBlocked, "the cat does not keep the chest it sits on shut");
+			if (fixed) helper.assertTrue(!lowerBlocked, "the chest below the cat's chest is still blocked");
+			else helper.assertTrue(lowerBlocked, "vanilla lets the chest below open; is MC-265635 fixed?");
+			helper.succeed();
+		});
+	}
+
+	/** MC-265635: a cat on the upper of two stacked chests only keeps the upper one shut. */
+	public static void catBlocksOnlyItsChest(GameTestHelper helper) {
+		catChest(helper, true);
+	}
+
+	/** Without the fix the lower chest is blocked too. */
+	public static void catBlocksOnlyItsChestVanilla(GameTestHelper helper) {
+		catChest(helper, false);
+	}
+
+	private static void dispenserPortal(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 8; x++) for (int z = 0; z < 8; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		// a 5x5 obsidian frame standing in the x-y plane at z = 3, with a 3x3 opening
+		for (int x = 1; x <= 5; x++) for (int y = 1; y <= 5; y++)
+			if (x == 1 || x == 5 || y == 1 || y == 5) helper.setBlock(new BlockPos(x, y, 3), Blocks.OBSIDIAN);
+		BlockPos middle = new BlockPos(3, 3, 3), dispenser = new BlockPos(3, 3, 2);
+		if (!fixed) LongStandingFixes.VANILLA_BLOCKS.add(helper.absolutePos(middle));
+		helper.setBlock(dispenser, Blocks.DISPENSER.defaultBlockState().setValue(net.minecraft.world.level.block.DispenserBlock.FACING, Direction.SOUTH));
+		((net.minecraft.world.Container) be(helper, dispenser)).setItem(0, new ItemStack(Items.FLINT_AND_STEEL));
+		helper.runAfterDelay(2, () -> helper.setBlock(dispenser.above(), Blocks.REDSTONE_BLOCK));
+		helper.runAfterDelay(10, () -> {
+			boolean lit = helper.getLevel().getBlockState(helper.absolutePos(middle)).is(Blocks.NETHER_PORTAL);
+			LongStandingFixes.VANILLA_BLOCKS.remove(helper.absolutePos(middle));
+			for (int x = 2; x <= 4; x++) for (int y = 2; y <= 4; y++) helper.setBlock(new BlockPos(x, y, 3), Blocks.AIR);
+			if (fixed) helper.assertTrue(lit, "the dispenser did not light the portal through its middle");
+			else helper.assertTrue(!lit, "vanilla's dispenser lit the portal through its middle; is MC-135198 fixed?");
+			helper.succeed();
+		});
+	}
+
+	/** MC-135198: a dispenser lights a 5x5 portal through the middle of the opening. */
+	public static void dispenserLightsPortal(GameTestHelper helper) {
+		dispenserPortal(helper, true);
+	}
+
+	/** Without the fix it can't. */
+	public static void dispenserLightsPortalVanilla(GameTestHelper helper) {
+		dispenserPortal(helper, false);
+	}
 }

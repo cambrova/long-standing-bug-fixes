@@ -113,6 +113,26 @@ public class FabricGameTests {
 	public void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void catBlocksOnlyItsChest(GameTestHelper helper) {
+		FixTests.catBlocksOnlyItsChest(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void catBlocksOnlyItsChestVanilla(GameTestHelper helper) {
+		FixTests.catBlocksOnlyItsChestVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void dispenserLightsPortal(GameTestHelper helper) {
+		FixTests.dispenserLightsPortal(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void dispenserLightsPortalVanilla(GameTestHelper helper) {
+		FixTests.dispenserLightsPortalVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -216,6 +236,26 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 120)
 	public void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void catBlocksOnlyItsChest(GameTestHelper helper) {
+		FixTests.catBlocksOnlyItsChest(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void catBlocksOnlyItsChestVanilla(GameTestHelper helper) {
+		FixTests.catBlocksOnlyItsChestVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void dispenserLightsPortal(GameTestHelper helper) {
+		FixTests.dispenserLightsPortal(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void dispenserLightsPortalVanilla(GameTestHelper helper) {
+		FixTests.dispenserLightsPortalVanilla(helper);
 	}
 }
 ^///?}

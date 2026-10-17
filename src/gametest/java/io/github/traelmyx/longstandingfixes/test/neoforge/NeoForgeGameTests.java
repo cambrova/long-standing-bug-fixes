@@ -70,6 +70,10 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("lighten_up_not_for_wax_vanilla", () -> FixTests::lightenUpNotForWaxVanilla);
 		FUNCTIONS.register("sculk_hears_batted_fireball", () -> FixTests::sculkHearsBattedFireball);
 		FUNCTIONS.register("sculk_hears_batted_fireball_vanilla", () -> FixTests::sculkHearsBattedFireballVanilla);
+		FUNCTIONS.register("cat_blocks_only_its_chest", () -> FixTests::catBlocksOnlyItsChest);
+		FUNCTIONS.register("cat_blocks_only_its_chest_vanilla", () -> FixTests::catBlocksOnlyItsChestVanilla);
+		FUNCTIONS.register("dispenser_lights_portal", () -> FixTests::dispenserLightsPortal);
+		FUNCTIONS.register("dispenser_lights_portal_vanilla", () -> FixTests::dispenserLightsPortalVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -97,6 +101,10 @@ public class NeoForgeGameTests {
 		register(event, env, "lighten_up_not_for_wax_vanilla", 40, 1, 1);
 		register(event, env, "sculk_hears_batted_fireball", 120, 1, 1);
 		register(event, env, "sculk_hears_batted_fireball_vanilla", 120, 1, 1);
+		register(event, env, "cat_blocks_only_its_chest", 40, 1, 1);
+		register(event, env, "cat_blocks_only_its_chest_vanilla", 40, 1, 1);
+		register(event, env, "dispenser_lights_portal", 40, 1, 1);
+		register(event, env, "dispenser_lights_portal_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -215,6 +223,26 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 120)
 	public static void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void catBlocksOnlyItsChest(GameTestHelper helper) {
+		FixTests.catBlocksOnlyItsChest(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void catBlocksOnlyItsChestVanilla(GameTestHelper helper) {
+		FixTests.catBlocksOnlyItsChestVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void dispenserLightsPortal(GameTestHelper helper) {
+		FixTests.dispenserLightsPortal(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void dispenserLightsPortalVanilla(GameTestHelper helper) {
+		FixTests.dispenserLightsPortalVanilla(helper);
 	}
 	//?}
 }

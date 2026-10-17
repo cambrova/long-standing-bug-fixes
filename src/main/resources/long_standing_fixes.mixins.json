@@ -5,7 +5,9 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"AbstractSkeletonMixin",
+		"BaseFireBlockMixin",
 		"CampfireBlockMixin",
+		"ChestBlockMixin",
 		"CreeperMixin",
 		"EntityMixin",
 		"FallingBlockEntityMixin",
