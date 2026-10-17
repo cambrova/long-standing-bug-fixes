@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+
+- MC-265635: a cat sitting on the upper of two stacked chests no longer keeps the lower one shut.
+- MC-135198: dispensers with flint and steel light a nether portal through any empty spot inside the frame, not only next to it.
+
 ## 1.3.0
 
 - MC-210491: sculk sensors now hear a player batting a fireball away, like hitting any other entity.
