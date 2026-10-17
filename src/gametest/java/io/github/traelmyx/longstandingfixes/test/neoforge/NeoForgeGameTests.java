@@ -58,6 +58,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("burning_skeleton_arrows_vanilla", () -> FixTests::burningSkeletonArrowsVanilla);
 		FUNCTIONS.register("wind_charge_pushes_items", () -> FixTests::windChargePushesItems);
 		FUNCTIONS.register("wind_charge_pushes_items_vanilla", () -> FixTests::windChargePushesItemsVanilla);
+		FUNCTIONS.register("spectator_ignores_void", () -> FixTests::spectatorIgnoresVoid);
+		FUNCTIONS.register("spectator_ignores_void_vanilla", () -> FixTests::spectatorIgnoresVoidVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -73,6 +75,8 @@ public class NeoForgeGameTests {
 		register(event, env, "burning_skeleton_arrows_vanilla", 100, 1, 1);
 		register(event, env, "wind_charge_pushes_items", 100, 1, 1);
 		register(event, env, "wind_charge_pushes_items_vanilla", 100, 1, 1);
+		register(event, env, "spectator_ignores_void", 40, 1, 1);
+		register(event, env, "spectator_ignores_void_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -131,6 +135,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 100)
 	public static void windChargePushesItemsVanilla(GameTestHelper helper) {
 		FixTests.windChargePushesItemsVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void spectatorIgnoresVoid(GameTestHelper helper) {
+		FixTests.spectatorIgnoresVoid(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void spectatorIgnoresVoidVanilla(GameTestHelper helper) {
+		FixTests.spectatorIgnoresVoidVanilla(helper);
 	}
 	//?}
 }

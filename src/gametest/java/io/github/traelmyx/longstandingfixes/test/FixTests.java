@@ -174,4 +174,39 @@ public final class FixTests {
 	public static void windChargePushesItemsVanilla(GameTestHelper helper) {
 		windCharge(helper, false);
 	}
+
+	private static void spectator(GameTestHelper helper, boolean fixed) {
+		var player = helper.makeMockServerPlayerInLevel();
+		player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(player.getUUID());
+		float before = player.getHealth();
+		//? if >=1.21.11 {
+		/*player.hurtServer(helper.getLevel(), player.damageSources().fellOutOfWorld(), 4.0F);
+		*///?} else
+		player.hurt(player.damageSources().fellOutOfWorld(), 4.0F);
+		float after = player.getHealth();
+		LongStandingFixes.VANILLA_ENTITIES.remove(player.getUUID());
+		if (fixed) {
+			helper.assertTrue(after == before, "a spectator took void damage: " + before + " -> " + after);
+			// /kill still works on spectators
+			//? if >=1.21.11 {
+			/*player.hurtServer(helper.getLevel(), player.damageSources().genericKill(), Float.MAX_VALUE);
+			*///?} else
+			player.hurt(player.damageSources().genericKill(), Float.MAX_VALUE);
+			helper.assertTrue(player.getHealth() <= 0, "/kill no longer kills a spectator");
+		} else {
+			helper.assertTrue(after < before, "a spectator took no void damage without the fix; is MC-219854 fixed?");
+		}
+		helper.succeed();
+	}
+
+	/** MC-219854: a spectator below the world takes no void damage. */
+	public static void spectatorIgnoresVoid(GameTestHelper helper) {
+		spectator(helper, true);
+	}
+
+	/** Without the fix the void hurts spectators. */
+	public static void spectatorIgnoresVoidVanilla(GameTestHelper helper) {
+		spectator(helper, false);
+	}
 }
