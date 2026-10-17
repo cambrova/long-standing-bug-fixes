@@ -60,6 +60,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("wind_charge_pushes_items_vanilla", () -> FixTests::windChargePushesItemsVanilla);
 		FUNCTIONS.register("spectator_ignores_void", () -> FixTests::spectatorIgnoresVoid);
 		FUNCTIONS.register("spectator_ignores_void_vanilla", () -> FixTests::spectatorIgnoresVoidVanilla);
+		FUNCTIONS.register("broken_name_logged_once", () -> FixTests::brokenNameLoggedOnce);
+		FUNCTIONS.register("broken_name_logged_once_vanilla", () -> FixTests::brokenNameLoggedOnceVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -77,6 +79,8 @@ public class NeoForgeGameTests {
 		register(event, env, "wind_charge_pushes_items_vanilla", 100, 1, 1);
 		register(event, env, "spectator_ignores_void", 40, 1, 1);
 		register(event, env, "spectator_ignores_void_vanilla", 40, 1, 1);
+		register(event, env, "broken_name_logged_once", 40, 1, 1);
+		register(event, env, "broken_name_logged_once_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -145,6 +149,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void spectatorIgnoresVoidVanilla(GameTestHelper helper) {
 		FixTests.spectatorIgnoresVoidVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void brokenNameLoggedOnce(GameTestHelper helper) {
+		FixTests.brokenNameLoggedOnce(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void brokenNameLoggedOnceVanilla(GameTestHelper helper) {
+		FixTests.brokenNameLoggedOnceVanilla(helper);
 	}
 	//?}
 }

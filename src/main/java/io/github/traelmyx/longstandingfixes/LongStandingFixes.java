@@ -25,6 +25,26 @@ public final class LongStandingFixes {
 	public static boolean windChargeItems = true;
 	/** MC-219854: spectators don't take void damage. */
 	public static boolean spectatorVoid = true;
+	/** MC-168976 (1.21.1): a broken entity custom name is logged once, not on every spawner attempt. */
+	public static boolean spawnerLogSpam = true;
+
+	private static final java.util.Set<String> WARNED_NAMES = java.util.concurrent.ConcurrentHashMap.newKeySet();
+	/** Names the game tests keep on vanilla behaviour (logged every time). */
+	public static final java.util.Set<String> VANILLA_NAMES = java.util.concurrent.ConcurrentHashMap.newKeySet();
+	/** Warnings that went through, for the tests. */
+	public static final java.util.concurrent.atomic.AtomicInteger customNameWarnings = new java.util.concurrent.atomic.AtomicInteger();
+
+	/** True the first time a broken name is seen (always for names kept on vanilla); bounded so it can't grow forever. */
+	public static boolean firstWarning(String name) {
+		if (VANILLA_NAMES.contains(name)) {
+			customNameWarnings.incrementAndGet();
+			return true;
+		}
+		if (WARNED_NAMES.size() > 1000) WARNED_NAMES.clear();
+		boolean first = WARNED_NAMES.add(name);
+		if (first) customNameWarnings.incrementAndGet();
+		return first;
+	}
 
 	/** Blocks and entities the game tests keep on vanilla behaviour, to show each bug still happens without its fix. */
 	public static final java.util.Set<net.minecraft.core.BlockPos> VANILLA_BLOCKS = java.util.concurrent.ConcurrentHashMap.newKeySet();
@@ -48,11 +68,13 @@ public final class LongStandingFixes {
 		burningSkeletons = Boolean.parseBoolean(props.getProperty("MC-217397.burningSkeletonsShootBurningArrows", "true"));
 		windChargeItems = Boolean.parseBoolean(props.getProperty("MC-280273.windChargesPushItems", "true"));
 		spectatorVoid = Boolean.parseBoolean(props.getProperty("MC-219854.spectatorsIgnoreTheVoid", "true"));
+		spawnerLogSpam = Boolean.parseBoolean(props.getProperty("MC-168976.logBrokenNamesOnce", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
 		props.setProperty("MC-280273.windChargesPushItems", Boolean.toString(windChargeItems));
 		props.setProperty("MC-219854.spectatorsIgnoreTheVoid", Boolean.toString(spectatorVoid));
+		props.setProperty("MC-168976.logBrokenNamesOnce", Boolean.toString(spawnerLogSpam));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

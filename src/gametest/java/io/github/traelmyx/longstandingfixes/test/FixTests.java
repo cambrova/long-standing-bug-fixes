@@ -209,4 +209,34 @@ public final class FixTests {
 	public static void spectatorIgnoresVoidVanilla(GameTestHelper helper) {
 		spectator(helper, false);
 	}
+
+	private static void brokenName(GameTestHelper helper, boolean fixed) {
+		//? if <1.21.11 {
+		String name = fixed ? "[{broken name, fixed run" : "[{broken name, vanilla run";
+		if (!fixed) LongStandingFixes.VANILLA_NAMES.add(name);
+		int before = LongStandingFixes.customNameWarnings.get();
+		// what a spawner does on every attempt: build its entity from the stored data
+		for (int i = 0; i < 10; i++) {
+			var tag = new net.minecraft.nbt.CompoundTag();
+			tag.putString("id", "minecraft:armor_stand");
+			tag.putString("CustomName", name);
+			net.minecraft.world.entity.EntityType.create(tag, helper.getLevel());
+		}
+		int logged = LongStandingFixes.customNameWarnings.get() - before;
+		LongStandingFixes.VANILLA_NAMES.remove(name);
+		if (fixed) helper.assertTrue(logged == 1, "the broken name was logged " + logged + " times");
+		else helper.assertTrue(logged == 10, "vanilla logged the broken name " + logged + " times, expected 10; is MC-168976 fixed?");
+		//?}
+		helper.succeed();
+	}
+
+	/** MC-168976 (1.21.1): building an entity with a broken custom name ten times logs one warning. */
+	public static void brokenNameLoggedOnce(GameTestHelper helper) {
+		brokenName(helper, true);
+	}
+
+	/** Without the fix every attempt logs a warning with a stack trace. */
+	public static void brokenNameLoggedOnceVanilla(GameTestHelper helper) {
+		brokenName(helper, false);
+	}
 }

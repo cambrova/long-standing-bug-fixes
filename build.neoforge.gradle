@@ -75,8 +75,9 @@ tasks.withType(JavaCompile).configureEach {
 
 def nfMajor = (project.property('deps.neoforge') as String).tokenize('.')[0]
 processResources {
-	// MC-280273 only exists from 1.21.5
-	if (stonecutter.eval(stonecutter.current.version, '<1.21.5')) filesMatching('long_standing_fixes.mixins.json') { filter { line -> line.contains('ItemEntityMixin') ? null : line } }
+	// MC-280273 only exists from 1.21.5; MC-168976's log line is gone from 1.21.6
+	filesMatching('long_standing_fixes.mixins.json') { filter { line ->
+		(stonecutter.eval(mc, '<1.21.5') && line.contains('ItemEntityMixin')) || (stonecutter.eval(mc, '>=1.21.6') && line.contains('"EntityMixin"')) ? null : line } }
 	exclude 'fabric.mod.json'
 	def props = [
 		id            : modId,
