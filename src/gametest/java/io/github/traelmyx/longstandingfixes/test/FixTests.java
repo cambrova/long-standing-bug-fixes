@@ -309,25 +309,28 @@ public final class FixTests {
 
 	/**
 	 * 36 sand blocks land fast from random heights; count how many become blocks and how many break. The error needs a drop
-	 * across a power of two, like the bug report's y=1.2 down to -7: where the test floor is deep below zero the sand lands on
-	 * a stone platform at y=-8 (top -7, as in the report) built above the test area, otherwise on the test floor.
+	 * across a power of two, like the bug report's y=1.2 down to -7: the sand lands on a stone platform at y=-8 (top -7, as
+	 * in the report), with the columns above it cleared.
 	 */
 	private static void fallRound(GameTestHelper helper, boolean fixed, java.util.Random random, int round, int[] placed, int[] broken) {
 		var level = helper.getLevel();
-		int floorTop = helper.absolutePos(new BlockPos(0, 1, 0)).getY();
-		boolean platform = floorTop <= -9;
-		int top = platform ? -7 : floorTop;
-		double low = top + 2, high = platform ? 15 : top + 6;
+		// stay below the test area's ceiling when it is above the platform (26.3 puts tests at y=6)
+		int ceiling = helper.absolutePos(new BlockPos(0, 8, 0)).getY();
+		int top = -7;
+		double low = top + 2, high = ceiling > top ? Math.min(15, ceiling - 2) : 15;
 		java.util.List<BlockPos> columns = new java.util.ArrayList<>();
 		for (int x = 1; x < 7; x++) for (int z = 1; z < 7; z++) {
 			BlockPos c = helper.absolutePos(new BlockPos(x, 1, z));
 			columns.add(new BlockPos(c.getX(), top, c.getZ()));
 		}
-		if (platform) for (BlockPos c : columns) level.setBlockAndUpdate(c.below(), Blocks.STONE.defaultBlockState());
+		for (BlockPos c : columns) {
+			level.setBlockAndUpdate(c.below(), Blocks.STONE.defaultBlockState());
+			for (int y = top; y <= high + 1; y++) level.setBlockAndUpdate(c.atY(y), Blocks.AIR.defaultBlockState());
+		}
 		java.util.List<net.minecraft.world.entity.item.FallingBlockEntity> blocks = new java.util.ArrayList<>();
 		for (BlockPos c : columns) {
 			// the first column replays the bug report exactly
-			double y = platform && c == columns.get(0) ? 1.2074466562545139 : low + (high - low) * random.nextDouble();
+			double y = c == columns.get(0) ? 1.2074466562545139 : low + (high - low) * random.nextDouble();
 			BlockPos start = new BlockPos(c.getX(), (int) Math.floor(y), c.getZ());
 			var sand = net.minecraft.world.entity.item.FallingBlockEntity.fall(level, start, Blocks.SAND.defaultBlockState());
 			sand.setPos(c.getX() + 0.5, y, c.getZ() + 0.5);
@@ -341,7 +344,7 @@ public final class FixTests {
 			for (BlockPos c : columns) {
 				if (level.getBlockState(c).is(Blocks.SAND)) placed[0]++;
 				level.setBlockAndUpdate(c, Blocks.AIR.defaultBlockState());
-				if (platform) level.setBlockAndUpdate(c.below(), Blocks.AIR.defaultBlockState());
+				level.setBlockAndUpdate(c.below(), Blocks.AIR.defaultBlockState());
 			}
 			for (var item : level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area)) {
 				if (item.getItem().is(Items.SAND)) broken[0] += item.getItem().getCount();
