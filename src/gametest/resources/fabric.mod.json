@@ -1,0 +1,14 @@
+{
+	"schemaVersion": 1,
+	"id": "${id}_gametest",
+	"version": "${version}",
+	"name": "Mojira Fix Pack GameTests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-gametest": ["io.github.traelmyx.mojirafixpack.test.fabric.FabricGameTests"],
+		"client": ["io.github.traelmyx.mojirafixpack.test.fabric.FabricClientSmoke"]
+	},
+	"depends": {
+		"${id}": "*"
+	}
+}
