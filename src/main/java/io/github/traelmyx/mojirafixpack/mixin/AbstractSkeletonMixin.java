@@ -26,7 +26,8 @@ public abstract class AbstractSkeletonMixin {
 		AbstractSkeleton skeleton = (AbstractSkeleton) (Object) this;
 		if (!MojiraFixPack.burningSkeletons || !skeleton.isOnFire() || MojiraFixPack.VANILLA_ENTITIES.contains(skeleton.getUUID()))
 			return;
-		if (skeleton.level().getCurrentDifficultyAt(skeleton.blockPosition()).isHarderThan(skeleton.getRandom().nextInt(2)))
+		if (skeleton.level() instanceof net.minecraft.server.level.ServerLevel level
+			&& level.getCurrentDifficultyAt(skeleton.blockPosition()).isHarderThan(skeleton.getRandom().nextInt(2)))
 			cir.getReturnValue().igniteForSeconds(5.0F);
 	}
 }

@@ -72,7 +72,8 @@ public final class ClientSmoke {
                     }
                     if (ticks >= 100) {
                         var server = mc.getSingleplayerServer();
-                        int signal = ((ComparatorBlockEntity) server.overworld().getBlockEntity(comparatorPos)).getOutputSignal();
+                        // block entities can only be read on the server thread
+                        int signal = server.submit(() -> ((ComparatorBlockEntity) server.overworld().getBlockEntity(comparatorPos)).getOutputSignal()).join();
                         if (signal != 8) {
                             fail("comparator next to a campfire with two items gives " + signal + ", expected 8");
                         }
