@@ -25,6 +25,10 @@ public final class FixTests {
 	private FixTests() {
 	}
 
+	private static net.minecraft.world.level.block.entity.BlockEntity be(GameTestHelper helper, BlockPos pos) {
+		return helper.getLevel().getBlockEntity(helper.absolutePos(pos));
+	}
+
 	private static final BlockPos CAMPFIRE = new BlockPos(1, 1, 1), COMPARATOR = new BlockPos(1, 1, 2);
 
 	private static void campfire(GameTestHelper helper, boolean fixed) {
@@ -33,15 +37,15 @@ public final class FixTests {
 		if (!fixed) MojiraFixPack.VANILLA_BLOCKS.add(helper.absolutePos(CAMPFIRE));
 		// facing north, the comparator reads the campfire behind it
 		helper.setBlock(COMPARATOR, Blocks.COMPARATOR.defaultBlockState().setValue(ComparatorBlock.FACING, Direction.NORTH));
-		CampfireBlockEntity campfire = (CampfireBlockEntity) helper.getBlockEntity(CAMPFIRE);
+		CampfireBlockEntity campfire = (CampfireBlockEntity) be(helper, CAMPFIRE);
 		campfire.getItems().set(0, new ItemStack(Items.BEEF));
 		campfire.setChanged();
 		helper.runAfterDelay(6, () -> {
-			int one = ((ComparatorBlockEntity) helper.getBlockEntity(COMPARATOR)).getOutputSignal();
+			int one = ((ComparatorBlockEntity) be(helper, COMPARATOR)).getOutputSignal();
 			for (int i = 1; i < 4; i++) campfire.getItems().set(i, new ItemStack(Items.BEEF));
 			campfire.setChanged();
 			helper.runAfterDelay(6, () -> {
-				int four = ((ComparatorBlockEntity) helper.getBlockEntity(COMPARATOR)).getOutputSignal();
+				int four = ((ComparatorBlockEntity) be(helper, COMPARATOR)).getOutputSignal();
 				MojiraFixPack.VANILLA_BLOCKS.remove(helper.absolutePos(CAMPFIRE));
 				if (fixed) helper.assertTrue(one == 4 && four == 15, "comparator gave " + one + " for one item and " + four + " for four");
 				else helper.assertTrue(one == 0 && four == 0, "vanilla comparator gave " + one + " and " + four + "; is MC-166272 fixed?");
@@ -97,5 +101,44 @@ public final class FixTests {
 	/** Without the fix the golem holds the poppy until its 20 seconds run out. */
 	public static void babyTakesPoppyVanilla(GameTestHelper helper) {
 		poppy(helper, false);
+	}
+
+	private static void skeleton(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 9; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		//? if >=26 {
+		/*var skeleton = helper.spawn(net.minecraft.world.entity.EntityTypes.SKELETON, new BlockPos(2, 1, 1));
+		var target = helper.spawn(net.minecraft.world.entity.EntityTypes.ZOMBIE, new BlockPos(2, 1, 7));
+		*///?} else {
+		var skeleton = helper.spawn(EntityType.SKELETON, new BlockPos(2, 1, 1));
+		var target = helper.spawn(EntityType.ZOMBIE, new BlockPos(2, 1, 7));
+		//?}
+		skeleton.setNoAi(true);
+		target.setNoAi(true);
+		skeleton.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+		if (!fixed) MojiraFixPack.VANILLA_ENTITIES.add(skeleton.getUUID());
+		int burning = 0, shots = 30;
+		var area = new net.minecraft.world.phys.AABB(helper.absolutePos(BlockPos.ZERO)).inflate(16);
+		for (int i = 0; i < shots; i++) {
+			skeleton.setRemainingFireTicks(100);
+			skeleton.performRangedAttack(target, 1.0F);
+		}
+		for (var arrow : helper.getLevel().getEntitiesOfClass(net.minecraft.world.entity.projectile.Projectile.class, area)) {
+			if (arrow.getOwner() == skeleton && arrow.isOnFire()) burning++;
+			arrow.discard();
+		}
+		MojiraFixPack.VANILLA_ENTITIES.remove(skeleton.getUUID());
+		if (fixed) helper.assertTrue(burning > 0, "a burning skeleton shot " + shots + " arrows and none was on fire");
+		else helper.assertTrue(burning == 0, burning + " burning arrows without the fix; is MC-217397 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-217397: a skeleton on fire shoots burning arrows (on regional difficulty above 0 or 1, so not every time). */
+	public static void burningSkeletonArrows(GameTestHelper helper) {
+		skeleton(helper, true);
+	}
+
+	/** Without the fix none of its arrows burn. */
+	public static void burningSkeletonArrowsVanilla(GameTestHelper helper) {
+		skeleton(helper, false);
 	}
 }

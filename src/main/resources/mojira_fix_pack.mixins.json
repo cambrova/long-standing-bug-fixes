@@ -4,6 +4,7 @@
 	"package": "io.github.traelmyx.mojirafixpack.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"AbstractSkeletonMixin",
 		"CampfireBlockMixin",
 		"IronGolemMixin"
 	],

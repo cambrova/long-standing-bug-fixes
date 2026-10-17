@@ -19,6 +19,8 @@ public final class MojiraFixPack {
 	public static boolean campfireComparator = true;
 	/** MC-159069: baby villagers walk up to an iron golem offering a poppy and take it. */
 	public static boolean golemPoppy = true;
+	/** MC-217397: skeletons that are on fire shoot burning arrows again. */
+	public static boolean burningSkeletons = true;
 
 	/** Blocks and entities the game tests keep on vanilla behaviour, to show each bug still happens without its fix. */
 	public static final java.util.Set<net.minecraft.core.BlockPos> VANILLA_BLOCKS = java.util.concurrent.ConcurrentHashMap.newKeySet();
@@ -39,8 +41,10 @@ public final class MojiraFixPack {
 		}
 		campfireComparator = Boolean.parseBoolean(props.getProperty("MC-166272.campfireComparator", "true"));
 		golemPoppy = Boolean.parseBoolean(props.getProperty("MC-159069.babyVillagersTakePoppies", "true"));
+		burningSkeletons = Boolean.parseBoolean(props.getProperty("MC-217397.burningSkeletonsShootBurningArrows", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
+		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

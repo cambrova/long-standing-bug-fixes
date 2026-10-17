@@ -54,6 +54,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("campfire_comparator_vanilla", () -> FixTests::campfireComparatorVanilla);
 		FUNCTIONS.register("baby_takes_poppy", () -> FixTests::babyTakesPoppy);
 		FUNCTIONS.register("baby_takes_poppy_vanilla", () -> FixTests::babyTakesPoppyVanilla);
+		FUNCTIONS.register("burning_skeleton_arrows", () -> FixTests::burningSkeletonArrows);
+		FUNCTIONS.register("burning_skeleton_arrows_vanilla", () -> FixTests::burningSkeletonArrowsVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -65,6 +67,8 @@ public class NeoForgeGameTests {
 		register(event, env, "campfire_comparator_vanilla", 200, 1, 1);
 		register(event, env, "baby_takes_poppy", 400, 1, 1);
 		register(event, env, "baby_takes_poppy_vanilla", 400, 1, 1);
+		register(event, env, "burning_skeleton_arrows", 100, 1, 1);
+		register(event, env, "burning_skeleton_arrows_vanilla", 100, 1, 1);
 	}
 
 	//? if >=26 {
@@ -103,6 +107,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 400)
 	public static void babyTakesPoppyVanilla(GameTestHelper helper) {
 		FixTests.babyTakesPoppyVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 100)
+	public static void burningSkeletonArrows(GameTestHelper helper) {
+		FixTests.burningSkeletonArrows(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 100)
+	public static void burningSkeletonArrowsVanilla(GameTestHelper helper) {
+		FixTests.burningSkeletonArrowsVanilla(helper);
 	}
 	//?}
 }
