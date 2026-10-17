@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0
+
+- MC-210491: sculk sensors now hear a player batting a fireball away, like hitting any other entity.
+
 ## 1.2.0
 
 - MC-186909: clicking a creeper that is already lit no longer uses up more flint and steel or fire charges.

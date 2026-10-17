@@ -13,6 +13,7 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-186909](https://bugs.mojang.com/browse/MC-186909) | Clicking a lit creeper doesn't use up more flint and steel or fire charges | all |
 | [MC-261789](https://bugs.mojang.com/browse/MC-261789) | Falling blocks that land fast below Y=0 turn into blocks instead of breaking | all |
 | [MC-269636](https://bugs.mojang.com/browse/MC-269636) | Taking the wax off a lit copper bulb doesn't award "Lighten Up" | all |
+| [MC-210491](https://bugs.mojang.com/browse/MC-210491) | Sculk sensors hear a player batting a fireball away | all |
 
 Server side (or singleplayer); clients don't need it.
 

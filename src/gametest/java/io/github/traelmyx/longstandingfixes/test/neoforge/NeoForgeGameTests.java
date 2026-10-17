@@ -69,7 +69,6 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("lighten_up_not_for_wax", () -> FixTests::lightenUpNotForWax);
 		FUNCTIONS.register("lighten_up_not_for_wax_vanilla", () -> FixTests::lightenUpNotForWaxVanilla);
 		FUNCTIONS.register("sculk_hears_batted_fireball", () -> FixTests::sculkHearsBattedFireball);
-		FUNCTIONS.register("spyglass_probe", () -> FixTests::spyglassProbe);
 		FUNCTIONS.register("sculk_hears_batted_fireball_vanilla", () -> FixTests::sculkHearsBattedFireballVanilla);
 	}
 
@@ -97,7 +96,6 @@ public class NeoForgeGameTests {
 		register(event, env, "lighten_up_not_for_wax", 40, 1, 1);
 		register(event, env, "lighten_up_not_for_wax_vanilla", 40, 1, 1);
 		register(event, env, "sculk_hears_batted_fireball", 120, 1, 1);
-		register(event, env, "spyglass_probe", 120, 1, 1);
 		register(event, env, "sculk_hears_batted_fireball_vanilla", 120, 1, 1);
 	}
 
@@ -217,11 +215,6 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 120)
 	public static void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
-	}
-
-	@GameTest(template = "empty", timeoutTicks = 120)
-	public static void spyglassProbe(GameTestHelper helper) {
-		FixTests.spyglassProbe(helper);
 	}
 	//?}
 }

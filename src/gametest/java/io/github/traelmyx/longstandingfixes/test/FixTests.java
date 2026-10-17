@@ -464,28 +464,6 @@ public final class FixTests {
 		});
 	}
 
-	/** Probe for MC-209924: does a sensor hear a player starting to use a spyglass? Prints, never fails. */
-	public static void spyglassProbe(GameTestHelper helper) {
-		for (int x = 0; x < 8; x++) for (int z = 0; z < 8; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
-		BlockPos sensor = new BlockPos(1, 1, 1);
-		helper.setBlock(sensor, Blocks.SCULK_SENSOR);
-		var player = realPlayer(helper, "test-spyglass");
-		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(5.5, 1, 5.5));
-		player.setPos(at.x, at.y, at.z);
-		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.SPYGLASS));
-		helper.runAfterDelay(60, () -> {
-			boolean before = sensorActive(helper, sensor);
-			player.getMainHandItem().use(helper.getLevel(), player, net.minecraft.world.InteractionHand.MAIN_HAND);
-			boolean using = player.isUsingItem();
-			helper.runAfterDelay(10, () -> {
-				System.out.printf("[long_standing_fixes] MC-209924 probe: active before %s, using %s, active after %s%n", before, using, sensorActive(helper, sensor));
-				helper.getLevel().getServer().getPlayerList().remove(player);
-				helper.succeed();
-			});
-		});
-	}
-
 	/** MC-210491: a sculk sensor hears a player batting a fireball away. */
 	public static void sculkHearsBattedFireball(GameTestHelper helper) {
 		fireball(helper, true);
