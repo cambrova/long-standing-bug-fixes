@@ -441,15 +441,15 @@ public final class FixTests {
 		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
 		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(5.5, 1, 5.5));
 		player.setPos(at.x, at.y, at.z);
+		//? if >=26 {
+		/*var fireball = helper.spawn(net.minecraft.world.entity.EntityTypes.FIREBALL, new BlockPos(4, 2, 4));
+		*///?} else
+		var fireball = helper.spawn(EntityType.FIREBALL, new BlockPos(4, 2, 4));
+		fireball.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(fireball.getUUID());
 		// let the sensor settle after everything above moved and appeared
-		helper.runAfterDelay(50, () -> {
+		helper.runAfterDelay(60, () -> {
 			helper.assertTrue(!sensorActive(helper, sensor), "the sculk sensor was still active before the hit");
-			//? if >=26 {
-			/*var fireball = helper.spawn(net.minecraft.world.entity.EntityTypes.FIREBALL, new BlockPos(4, 2, 4));
-			*///?} else
-			var fireball = helper.spawn(EntityType.FIREBALL, new BlockPos(4, 2, 4));
-			fireball.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
-			if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(fireball.getUUID());
 			player.attack(fireball);
 			helper.runAfterDelay(10, () -> {
 				boolean active = sensorActive(helper, sensor);

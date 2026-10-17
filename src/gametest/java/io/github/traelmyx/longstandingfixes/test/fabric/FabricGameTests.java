@@ -104,12 +104,12 @@ public class FabricGameTests {
 		FixTests.lightenUpNotForWaxVanilla(helper);
 	}
 
-	@GameTest(structure = EMPTY, maxTicks = 100)
+	@GameTest(structure = EMPTY, maxTicks = 120)
 	public void sculkHearsBattedFireball(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireball(helper);
 	}
 
-	@GameTest(structure = EMPTY, maxTicks = 100)
+	@GameTest(structure = EMPTY, maxTicks = 120)
 	public void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
 	}
@@ -208,12 +208,12 @@ public class FabricGameTests {
 		FixTests.lightenUpNotForWaxVanilla(helper);
 	}
 
-	@GameTest(template = EMPTY, timeoutTicks = 100)
+	@GameTest(template = EMPTY, timeoutTicks = 120)
 	public void sculkHearsBattedFireball(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireball(helper);
 	}
 
-	@GameTest(template = EMPTY, timeoutTicks = 100)
+	@GameTest(template = EMPTY, timeoutTicks = 120)
 	public void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
 	}

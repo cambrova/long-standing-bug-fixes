@@ -95,8 +95,8 @@ public class NeoForgeGameTests {
 		register(event, env, "falling_blocks_land_vanilla", 120, 1, 1);
 		register(event, env, "lighten_up_not_for_wax", 40, 1, 1);
 		register(event, env, "lighten_up_not_for_wax_vanilla", 40, 1, 1);
-		register(event, env, "sculk_hears_batted_fireball", 100, 1, 1);
-		register(event, env, "sculk_hears_batted_fireball_vanilla", 100, 1, 1);
+		register(event, env, "sculk_hears_batted_fireball", 120, 1, 1);
+		register(event, env, "sculk_hears_batted_fireball_vanilla", 120, 1, 1);
 	}
 
 	//? if >=26 {
@@ -207,12 +207,12 @@ public class NeoForgeGameTests {
 		FixTests.lightenUpNotForWaxVanilla(helper);
 	}
 
-	@GameTest(template = "empty", timeoutTicks = 100)
+	@GameTest(template = "empty", timeoutTicks = 120)
 	public static void sculkHearsBattedFireball(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireball(helper);
 	}
 
-	@GameTest(template = "empty", timeoutTicks = 100)
+	@GameTest(template = "empty", timeoutTicks = 120)
 	public static void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
 	}
