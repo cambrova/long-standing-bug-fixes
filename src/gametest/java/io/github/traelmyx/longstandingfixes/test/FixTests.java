@@ -312,15 +312,20 @@ public final class FixTests {
 		var level = helper.getLevel();
 		var area = new net.minecraft.world.phys.AABB(helper.absolutePos(BlockPos.ZERO)).expandTowards(8, 8, 8);
 		java.util.List<net.minecraft.world.entity.item.FallingBlockEntity> blocks = new java.util.ArrayList<>();
+		// the error needs a big drop that crosses a power of two, like the bug report's y=1.2 down to -7: start each block
+		// somewhere between y=-31 and y=15 and land it in one tick
+		int floorTop = helper.absolutePos(new BlockPos(0, 1, 0)).getY();
 		for (int x = 1; x < 7; x++) for (int z = 1; z < 7; z++) {
-			BlockPos start = helper.absolutePos(new BlockPos(x, 6, z));
+			double y = Math.max(floorTop + 3, -31.5 + 46.5 * random.nextDouble());
+			BlockPos column = helper.absolutePos(new BlockPos(x, 1, z));
+			BlockPos start = new BlockPos(column.getX(), (int) Math.floor(y), column.getZ());
 			var sand = net.minecraft.world.entity.item.FallingBlockEntity.fall(level, start, Blocks.SAND.defaultBlockState());
-			sand.setPos(start.getX() + 0.5, start.getY() + random.nextDouble(), start.getZ() + 0.5);
-			sand.setDeltaMovement(0, -5 - 5 * random.nextDouble(), 0);
+			sand.setPos(start.getX() + 0.5, y, start.getZ() + 0.5);
+			sand.setDeltaMovement(0, -100, 0);
 			if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(sand.getUUID());
 			blocks.add(sand);
 		}
-		helper.runAfterDelay(10, () -> {
+		helper.runAfterDelay(6, () -> {
 			for (int x = 1; x < 7; x++) for (int z = 1; z < 7; z++) {
 				BlockPos pos = new BlockPos(x, 1, z);
 				if (level.getBlockState(helper.absolutePos(pos)).is(Blocks.SAND)) placed[0]++;
@@ -368,18 +373,25 @@ public final class FixTests {
 			new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos), Direction.UP, pos, false)));
 	}
 
+	/** A vanilla block by id; the copper bulbs moved into a collection in 26.x. */
+	private static net.minecraft.world.level.block.Block block(String path) {
+		for (var block : net.minecraft.core.registries.BuiltInRegistries.BLOCK)
+			if (net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block).getPath().equals(path)) return block;
+		throw new IllegalStateException("no block " + path);
+	}
+
 	private static void lightenUp(GameTestHelper helper, boolean fixed) {
 		for (int x = 0; x < 6; x++) for (int z = 0; z < 4; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
 		var lit = net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 		BlockPos waxed = new BlockPos(1, 1, 1), oxidized = new BlockPos(4, 1, 1);
-		helper.setBlock(waxed, Blocks.WAXED_OXIDIZED_COPPER_BULB.defaultBlockState().setValue(lit, true));
-		helper.setBlock(oxidized, Blocks.OXIDIZED_COPPER_BULB.defaultBlockState().setValue(lit, true));
+		helper.setBlock(waxed, block("waxed_oxidized_copper_bulb").defaultBlockState().setValue(lit, true));
+		helper.setBlock(oxidized, block("oxidized_copper_bulb").defaultBlockState().setValue(lit, true));
 		var player = realPlayer(helper, "test-scraper");
 		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
 		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
 		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_AXE));
 		axe(player, helper.absolutePos(waxed));
-		boolean unwaxed = helper.getLevel().getBlockState(helper.absolutePos(waxed)).is(Blocks.OXIDIZED_COPPER_BULB);
+		boolean unwaxed = helper.getLevel().getBlockState(helper.absolutePos(waxed)).is(block("oxidized_copper_bulb"));
 		boolean afterWax = done(player, "minecraft:adventure/lighten_up"), waxOff = done(player, "minecraft:husbandry/wax_off");
 		axe(player, helper.absolutePos(oxidized));
 		boolean afterScrape = done(player, "minecraft:adventure/lighten_up");
