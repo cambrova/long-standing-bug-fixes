@@ -30,4 +30,4 @@ stonecutter {
 	}
 }
 
-rootProject.name = 'mojira-fix-pack'
+rootProject.name = 'long-standing-bug-fixes'

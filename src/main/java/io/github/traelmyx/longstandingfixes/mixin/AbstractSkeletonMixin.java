@@ -1,6 +1,6 @@
-package io.github.traelmyx.mojirafixpack.mixin;
+package io.github.traelmyx.longstandingfixes.mixin;
 
-import io.github.traelmyx.mojirafixpack.MojiraFixPack;
+import io.github.traelmyx.longstandingfixes.LongStandingFixes;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,9 +22,9 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 @Mixin(AbstractSkeleton.class)
 public abstract class AbstractSkeletonMixin {
 	@Inject(method = "getArrow", at = @At("RETURN"))
-	private void mojirafixpack$burningArrows(ItemStack arrow, float velocity, ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
+	private void longstandingfixes$burningArrows(ItemStack arrow, float velocity, ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
 		AbstractSkeleton skeleton = (AbstractSkeleton) (Object) this;
-		if (!MojiraFixPack.burningSkeletons || !skeleton.isOnFire() || MojiraFixPack.VANILLA_ENTITIES.contains(skeleton.getUUID()))
+		if (!LongStandingFixes.burningSkeletons || !skeleton.isOnFire() || LongStandingFixes.VANILLA_ENTITIES.contains(skeleton.getUUID()))
 			return;
 		if (skeleton.level() instanceof net.minecraft.server.level.ServerLevel level
 			&& level.getCurrentDifficultyAt(skeleton.blockPosition()).isHarderThan(skeleton.getRandom().nextInt(2)))

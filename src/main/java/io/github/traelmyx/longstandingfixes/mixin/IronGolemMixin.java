@@ -1,6 +1,6 @@
-package io.github.traelmyx.mojirafixpack.mixin;
+package io.github.traelmyx.longstandingfixes.mixin;
 
-import io.github.traelmyx.mojirafixpack.MojiraFixPack;
+import io.github.traelmyx.longstandingfixes.LongStandingFixes;
 import net.minecraft.world.entity.ai.behavior.EntityTracker;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
@@ -26,10 +26,10 @@ import java.util.Comparator;
 @Mixin(IronGolem.class)
 public abstract class IronGolemMixin {
 	@Inject(method = "aiStep", at = @At("TAIL"))
-	private void mojirafixpack$babyTakesPoppy(CallbackInfo ci) {
+	private void longstandingfixes$babyTakesPoppy(CallbackInfo ci) {
 		IronGolem golem = (IronGolem) (Object) this;
-		if (!MojiraFixPack.golemPoppy || golem.level().isClientSide() || golem.getOfferFlowerTick() <= 0 || golem.tickCount % 5 != 0
-			|| MojiraFixPack.VANILLA_ENTITIES.contains(golem.getUUID()))
+		if (!LongStandingFixes.golemPoppy || golem.level().isClientSide() || golem.getOfferFlowerTick() <= 0 || golem.tickCount % 5 != 0
+			|| LongStandingFixes.VANILLA_ENTITIES.contains(golem.getUUID()))
 			return;
 		Villager baby = golem.level().getEntitiesOfClass(Villager.class, golem.getBoundingBox().inflate(8.0), Villager::isBaby).stream()
 			.min(Comparator.comparingDouble(golem::distanceToSqr)).orElse(null);

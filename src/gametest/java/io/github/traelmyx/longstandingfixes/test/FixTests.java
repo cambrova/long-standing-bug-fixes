@@ -1,6 +1,6 @@
-package io.github.traelmyx.mojirafixpack.test;
+package io.github.traelmyx.longstandingfixes.test;
 
-import io.github.traelmyx.mojirafixpack.MojiraFixPack;
+import io.github.traelmyx.longstandingfixes.LongStandingFixes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -34,7 +34,7 @@ public final class FixTests {
 	private static void campfire(GameTestHelper helper, boolean fixed) {
 		for (int x = 0; x < 3; x++) for (int z = 0; z < 4; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
 		helper.setBlock(CAMPFIRE, Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, false));
-		if (!fixed) MojiraFixPack.VANILLA_BLOCKS.add(helper.absolutePos(CAMPFIRE));
+		if (!fixed) LongStandingFixes.VANILLA_BLOCKS.add(helper.absolutePos(CAMPFIRE));
 		// facing north, the comparator reads the campfire behind it
 		helper.setBlock(COMPARATOR, Blocks.COMPARATOR.defaultBlockState().setValue(ComparatorBlock.FACING, Direction.NORTH));
 		CampfireBlockEntity campfire = (CampfireBlockEntity) be(helper, CAMPFIRE);
@@ -46,7 +46,7 @@ public final class FixTests {
 			campfire.setChanged();
 			helper.runAfterDelay(6, () -> {
 				int four = ((ComparatorBlockEntity) be(helper, COMPARATOR)).getOutputSignal();
-				MojiraFixPack.VANILLA_BLOCKS.remove(helper.absolutePos(CAMPFIRE));
+				LongStandingFixes.VANILLA_BLOCKS.remove(helper.absolutePos(CAMPFIRE));
 				if (fixed) helper.assertTrue(one == 4 && four == 15, "comparator gave " + one + " for one item and " + four + " for four");
 				else helper.assertTrue(one == 0 && four == 0, "vanilla comparator gave " + one + " and " + four + "; is MC-166272 fixed?");
 				helper.succeed();
@@ -82,11 +82,11 @@ public final class FixTests {
 		//?}
 		baby.setBaby(true);
 		golem.setNoAi(true);
-		if (!fixed) MojiraFixPack.VANILLA_ENTITIES.add(golem.getUUID());
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(golem.getUUID());
 		golem.offerFlower(true);
 		helper.runAfterDelay(300, () -> {
 			int left = golem.getOfferFlowerTick();
-			MojiraFixPack.VANILLA_ENTITIES.remove(golem.getUUID());
+			LongStandingFixes.VANILLA_ENTITIES.remove(golem.getUUID());
 			if (fixed) helper.assertTrue(left == 0, "the golem is still holding out its poppy (" + left + " ticks left)");
 			else helper.assertTrue(left > 0, "a baby villager took the poppy without the fix; is MC-159069 fixed?");
 			helper.succeed();
@@ -115,7 +115,7 @@ public final class FixTests {
 		skeleton.setNoAi(true);
 		target.setNoAi(true);
 		skeleton.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
-		if (!fixed) MojiraFixPack.VANILLA_ENTITIES.add(skeleton.getUUID());
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(skeleton.getUUID());
 		int burning = 0, shots = 30;
 		var area = new net.minecraft.world.phys.AABB(helper.absolutePos(BlockPos.ZERO)).inflate(16);
 		for (int i = 0; i < shots; i++) {
@@ -126,7 +126,7 @@ public final class FixTests {
 			if (arrow.getOwner() == skeleton && arrow.isOnFire()) burning++;
 			arrow.discard();
 		}
-		MojiraFixPack.VANILLA_ENTITIES.remove(skeleton.getUUID());
+		LongStandingFixes.VANILLA_ENTITIES.remove(skeleton.getUUID());
 		if (fixed) helper.assertTrue(burning > 0, "a burning skeleton shot " + shots + " arrows and none was on fire");
 		else helper.assertTrue(burning == 0, burning + " burning arrows without the fix; is MC-217397 fixed?");
 		helper.succeed();
@@ -147,14 +147,14 @@ public final class FixTests {
 		/*for (int x = 0; x < 7; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
 		var item = helper.spawnItem(Items.DIAMOND, new net.minecraft.world.phys.Vec3(2.5, 1.0, 2.5));
 		item.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
-		if (!fixed) MojiraFixPack.VANILLA_ENTITIES.add(item.getUUID());
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(item.getUUID());
 		var start = item.position();
 		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(3.5, 1.6, 2.5));
 		var charge = new net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.WindCharge(helper.getLevel(), at.x, at.y, at.z, new net.minecraft.world.phys.Vec3(0, -0.6, 0));
 		helper.getLevel().addFreshEntity(charge);
 		helper.runAfterDelay(10, () -> {
 			double moved = Math.sqrt(Math.pow(item.getX() - start.x, 2) + Math.pow(item.getZ() - start.z, 2));
-			MojiraFixPack.VANILLA_ENTITIES.remove(item.getUUID());
+			LongStandingFixes.VANILLA_ENTITIES.remove(item.getUUID());
 			if (fixed) helper.assertTrue(moved > 0.2, "the wind charge moved the item only " + moved + " blocks");
 			else helper.assertTrue(moved < 0.05, "the item moved " + moved + " blocks without the fix; is MC-280273 fixed?");
 			helper.succeed();

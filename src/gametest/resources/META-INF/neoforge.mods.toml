@@ -5,7 +5,7 @@ license = "MIT"
 [[mods]]
 modId = "${id}_gametest"
 version = "${version}"
-displayName = "Mojira Fix Pack GameTests"
+displayName = "Long-Standing Bug Fixes GameTests"
 
 [[dependencies.${id}_gametest]]
 modId = "${id}"

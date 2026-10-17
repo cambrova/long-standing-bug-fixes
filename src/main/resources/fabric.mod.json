@@ -3,19 +3,19 @@
 	"id": "${id}",
 	"version": "${version}",
 	"name": "${name}",
-	"description": "Fixes for confirmed, still-open bugs from Mojang's bug tracker: comparators read campfires (MC-166272), baby villagers take the iron golem's poppy (MC-159069). Each can be turned off.",
+	"description": "Fixes for confirmed bugs that have stayed open for years: comparators read campfires, baby villagers take the iron golem's poppy, burning skeletons shoot burning arrows, wind charges push dropped items. Each can be turned off.",
 	"authors": ["traelmyx"],
 	"contact": {
-		"sources": "https://github.com/traelmyx/mojira-fix-pack",
-		"issues": "https://github.com/traelmyx/mojira-fix-pack/issues"
+		"sources": "https://github.com/traelmyx/long-standing-bug-fixes",
+		"issues": "https://github.com/traelmyx/long-standing-bug-fixes/issues"
 	},
 	"license": "MIT",
-	"icon": "assets/mojira_fix_pack/icon.png",
+	"icon": "assets/long_standing_fixes/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": ["io.github.traelmyx.mojirafixpack.fabric.MojiraFixPackFabric"]
+		"main": ["io.github.traelmyx.longstandingfixes.fabric.LongStandingFixesFabric"]
 	},
-	"mixins": ["mojira_fix_pack.mixins.json"],
+	"mixins": ["long_standing_fixes.mixins.json"],
 	"depends": {
 		"fabricloader": ">=0.16.0",
 		"minecraft": "${mc_dep}",

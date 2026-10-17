@@ -1,7 +1,7 @@
-package io.github.traelmyx.mojirafixpack.test.fabric;
+package io.github.traelmyx.longstandingfixes.test.fabric;
 
 //? if fabric {
-/*import io.github.traelmyx.mojirafixpack.test.ClientSmoke;
+/*import io.github.traelmyx.longstandingfixes.test.ClientSmoke;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 

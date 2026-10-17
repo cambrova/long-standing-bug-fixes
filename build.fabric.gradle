@@ -77,7 +77,7 @@ tasks.withType(JavaCompile).configureEach {
 
 processResources {
 	// MC-280273 only exists from 1.21.5
-	if (stonecutter.eval(stonecutter.current.version, '<1.21.5')) filesMatching('mojira_fix_pack.mixins.json') { filter { line -> line.contains('ItemEntityMixin') ? null : line } }
+	if (stonecutter.eval(stonecutter.current.version, '<1.21.5')) filesMatching('long_standing_fixes.mixins.json') { filter { line -> line.contains('ItemEntityMixin') ? null : line } }
 	exclude 'META-INF/neoforge.mods.toml'
 	def props = [
 		id     : project.property('mod.id'),

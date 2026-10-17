@@ -1,7 +1,7 @@
-package io.github.traelmyx.mojirafixpack.test.fabric;
+package io.github.traelmyx.longstandingfixes.test.fabric;
 
 //? if fabric {
-/*import io.github.traelmyx.mojirafixpack.test.FixTests;
+/*import io.github.traelmyx.longstandingfixes.test.FixTests;
 import net.minecraft.gametest.framework.GameTestHelper;
 //? if >=1.21.5 {
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
@@ -12,7 +12,7 @@ import net.minecraft.gametest.framework.GameTest;
 
 //? if >=1.21.5 {
 public class FabricGameTests {
-	private static final String EMPTY = "mojira_fix_pack_gametest:empty";
+	private static final String EMPTY = "long_standing_fixes_gametest:empty";
 
 	@GameTest(structure = EMPTY, maxTicks = 200)
 	public void campfireComparator(GameTestHelper helper) {
@@ -56,7 +56,7 @@ public class FabricGameTests {
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
-	private static final String EMPTY = "mojira_fix_pack_gametest:empty";
+	private static final String EMPTY = "long_standing_fixes_gametest:empty";
 
 	@GameTest(template = EMPTY, timeoutTicks = 200)
 	public void campfireComparator(GameTestHelper helper) {

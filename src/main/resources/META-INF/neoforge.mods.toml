@@ -1,19 +1,19 @@
 modLoader = "javafml"
 loaderVersion = "[1,)"
 license = "MIT"
-issueTrackerURL = "https://github.com/traelmyx/mojira-fix-pack/issues"
+issueTrackerURL = "https://github.com/traelmyx/long-standing-bug-fixes/issues"
 
 [[mods]]
 modId = "${id}"
 version = "${version}"
 displayName = "${name}"
 authors = "traelmyx"
-${logo_key} = "assets/mojira_fix_pack/icon.png"
+${logo_key} = "assets/long_standing_fixes/icon.png"
 displayTest = "IGNORE_ALL_VERSION"
-description = '''Fixes for confirmed, still-open bugs from Mojang's bug tracker: comparators read campfires (MC-166272), baby villagers take the iron golem's poppy (MC-159069). Each can be turned off.'''
+description = '''Fixes for confirmed bugs that have stayed open for years: comparators read campfires, baby villagers take the iron golem's poppy, burning skeletons shoot burning arrows, wind charges push dropped items. Each can be turned off.'''
 
 [[mixins]]
-config = "mojira_fix_pack.mixins.json"
+config = "long_standing_fixes.mixins.json"
 
 [[dependencies.${id}]]
 modId = "neoforge"

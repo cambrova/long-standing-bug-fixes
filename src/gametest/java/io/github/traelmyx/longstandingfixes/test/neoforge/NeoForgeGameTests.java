@@ -1,8 +1,8 @@
-package io.github.traelmyx.mojirafixpack.test.neoforge;
+package io.github.traelmyx.longstandingfixes.test.neoforge;
 
 //? if neoforge {
-import io.github.traelmyx.mojirafixpack.test.ClientSmoke;
-import io.github.traelmyx.mojirafixpack.test.FixTests;
+import io.github.traelmyx.longstandingfixes.test.ClientSmoke;
+import io.github.traelmyx.longstandingfixes.test.FixTests;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -33,7 +33,7 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 //?}
 @Mod(NeoForgeGameTests.MOD_ID)
 public class NeoForgeGameTests {
-	public static final String MOD_ID = "mojira_fix_pack_gametest";
+	public static final String MOD_ID = "long_standing_fixes_gametest";
 
 	public NeoForgeGameTests(IEventBus modBus, Dist dist) {
 		//? if >=1.21.5 {

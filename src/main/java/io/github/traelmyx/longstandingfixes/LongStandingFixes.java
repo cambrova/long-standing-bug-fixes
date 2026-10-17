@@ -1,4 +1,4 @@
-package io.github.traelmyx.mojirafixpack;
+package io.github.traelmyx.longstandingfixes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +11,9 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 /** Small fixes for confirmed, still-open bugs from Mojang's bug tracker. Each can be turned off on its own. */
-public final class MojiraFixPack {
-	public static final String MOD_ID = "mojira_fix_pack";
-	public static final Logger LOGGER = LoggerFactory.getLogger("Mojira Fix Pack");
+public final class LongStandingFixes {
+	public static final String MOD_ID = "long_standing_fixes";
+	public static final Logger LOGGER = LoggerFactory.getLogger("Long-Standing Bug Fixes");
 
 	/** MC-166272: comparators read how many items are cooking on a campfire. */
 	public static boolean campfireComparator = true;
@@ -28,7 +28,7 @@ public final class MojiraFixPack {
 	public static final java.util.Set<net.minecraft.core.BlockPos> VANILLA_BLOCKS = java.util.concurrent.ConcurrentHashMap.newKeySet();
 	public static final java.util.Set<java.util.UUID> VANILLA_ENTITIES = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
-	private MojiraFixPack() {
+	private LongStandingFixes() {
 	}
 
 	public static void loadConfig(Path configDir) {
@@ -52,7 +52,7 @@ public final class MojiraFixPack {
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
-				props.store(writer, "Mojira Fix Pack: set a fix to false to get the vanilla behaviour back. Changes apply after a restart.");
+				props.store(writer, "Long-Standing Bug Fixes: set a fix to false to get the vanilla behaviour back. Changes apply after a restart.");
 			}
 		} catch (IOException e) {
 			LOGGER.warn("Could not write {}", file, e);

@@ -1,7 +1,7 @@
-package io.github.traelmyx.mojirafixpack.mixin;
+package io.github.traelmyx.longstandingfixes.mixin;
 
 //? if >=1.21.11 {
-/*import io.github.traelmyx.mojirafixpack.MojiraFixPack;
+/*import io.github.traelmyx.longstandingfixes.LongStandingFixes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.AbstractWindCharge;
 import net.minecraft.world.level.Explosion;
@@ -18,10 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin {
 	@Inject(method = "ignoreExplosion", at = @At("HEAD"), cancellable = true)
-	private void mojirafixpack$windChargesPushItems(Explosion explosion, CallbackInfoReturnable<Boolean> cir) {
+	private void longstandingfixes$windChargesPushItems(Explosion explosion, CallbackInfoReturnable<Boolean> cir) {
 		ItemEntity self = (ItemEntity) (Object) this;
-		if (MojiraFixPack.windChargeItems && explosion.getDirectSourceEntity() instanceof AbstractWindCharge
-			&& !MojiraFixPack.VANILLA_ENTITIES.contains(self.getUUID()))
+		if (LongStandingFixes.windChargeItems && explosion.getDirectSourceEntity() instanceof AbstractWindCharge
+			&& !LongStandingFixes.VANILLA_ENTITIES.contains(self.getUUID()))
 			cir.setReturnValue(false);
 	}
 }

@@ -1,6 +1,6 @@
-package io.github.traelmyx.mojirafixpack.mixin;
+package io.github.traelmyx.longstandingfixes.mixin;
 
-import io.github.traelmyx.mojirafixpack.MojiraFixPack;
+import io.github.traelmyx.longstandingfixes.LongStandingFixes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -20,7 +20,7 @@ public abstract class CampfireBlockMixin extends BaseEntityBlock {
 
 	@Override
 	protected boolean hasAnalogOutputSignal(BlockState state) {
-		return MojiraFixPack.campfireComparator;
+		return LongStandingFixes.campfireComparator;
 	}
 
 	@Override
@@ -28,12 +28,12 @@ public abstract class CampfireBlockMixin extends BaseEntityBlock {
 	/*protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, net.minecraft.core.Direction direction) {
 	*///?} else
 	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-		if (!MojiraFixPack.campfireComparator || MojiraFixPack.VANILLA_BLOCKS.contains(pos) || !(level.getBlockEntity(pos) instanceof CampfireBlockEntity campfire))
+		if (!LongStandingFixes.campfireComparator || LongStandingFixes.VANILLA_BLOCKS.contains(pos) || !(level.getBlockEntity(pos) instanceof CampfireBlockEntity campfire))
 			return 0;
 		int filled = 0;
 		for (ItemStack stack : campfire.getItems()) {
 			if (!stack.isEmpty()) filled++;
 		}
-		return MojiraFixPack.campfireSignal(filled);
+		return LongStandingFixes.campfireSignal(filled);
 	}
 }

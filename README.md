@@ -1,6 +1,6 @@
-# Mojira Fix Pack
+# Long-Standing Bug Fixes
 
-Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is small, does what the bug report asks for, and has its own switch in `config/mojira_fix_pack.properties`.
+Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is small, does what the bug report asks for, and has its own switch in `config/long_standing_fixes.properties`.
 
 | Bug | Fix | Versions |
 |---|---|---|

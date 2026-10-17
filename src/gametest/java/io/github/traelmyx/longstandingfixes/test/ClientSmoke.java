@@ -1,4 +1,4 @@
-package io.github.traelmyx.mojirafixpack.test;
+package io.github.traelmyx.longstandingfixes.test;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
