@@ -335,6 +335,10 @@ public final class FixTests {
 				if (item.getItem().is(Items.SAND)) broken[0] += item.getItem().getCount();
 				item.discard();
 			}
+			if (round == 0) for (int i = 0; i < 3; i++) {
+				var sand = blocks.get(i);
+				System.out.printf("[long_standing_fixes] MC-261789 debug: removed=%s pos=%s ground=%s motion=%s%n", sand.isRemoved(), sand.position(), sand.onGround(), sand.getDeltaMovement());
+			}
 			for (var sand : blocks) {
 				LongStandingFixes.VANILLA_ENTITIES.remove(sand.getUUID());
 				sand.discard();
