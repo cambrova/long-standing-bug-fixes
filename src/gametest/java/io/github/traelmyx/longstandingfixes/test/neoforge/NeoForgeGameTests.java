@@ -68,6 +68,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("falling_blocks_land_vanilla", () -> FixTests::fallingBlocksLandVanilla);
 		FUNCTIONS.register("lighten_up_not_for_wax", () -> FixTests::lightenUpNotForWax);
 		FUNCTIONS.register("lighten_up_not_for_wax_vanilla", () -> FixTests::lightenUpNotForWaxVanilla);
+		FUNCTIONS.register("sculk_hears_batted_fireball", () -> FixTests::sculkHearsBattedFireball);
+		FUNCTIONS.register("sculk_hears_batted_fireball_vanilla", () -> FixTests::sculkHearsBattedFireballVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -93,6 +95,8 @@ public class NeoForgeGameTests {
 		register(event, env, "falling_blocks_land_vanilla", 120, 1, 1);
 		register(event, env, "lighten_up_not_for_wax", 40, 1, 1);
 		register(event, env, "lighten_up_not_for_wax_vanilla", 40, 1, 1);
+		register(event, env, "sculk_hears_batted_fireball", 100, 1, 1);
+		register(event, env, "sculk_hears_batted_fireball_vanilla", 100, 1, 1);
 	}
 
 	//? if >=26 {
@@ -201,6 +205,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void lightenUpNotForWaxVanilla(GameTestHelper helper) {
 		FixTests.lightenUpNotForWaxVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 100)
+	public static void sculkHearsBattedFireball(GameTestHelper helper) {
+		FixTests.sculkHearsBattedFireball(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 100)
+	public static void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
+		FixTests.sculkHearsBattedFireballVanilla(helper);
 	}
 	//?}
 }

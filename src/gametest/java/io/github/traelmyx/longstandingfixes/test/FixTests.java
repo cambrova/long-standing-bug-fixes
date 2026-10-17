@@ -427,4 +427,49 @@ public final class FixTests {
 	public static void lightenUpNotForWaxVanilla(GameTestHelper helper) {
 		lightenUp(helper, false);
 	}
+
+	private static boolean sensorActive(GameTestHelper helper, BlockPos pos) {
+		var state = helper.getBlockState(pos);
+		return state.getValue(net.minecraft.world.level.block.SculkSensorBlock.PHASE) != net.minecraft.world.level.block.state.properties.SculkSensorPhase.INACTIVE;
+	}
+
+	private static void fireball(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 8; x++) for (int z = 0; z < 8; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		BlockPos sensor = new BlockPos(1, 1, 1);
+		helper.setBlock(sensor, Blocks.SCULK_SENSOR);
+		var player = realPlayer(helper, "test-batter");
+		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(5.5, 1, 5.5));
+		player.setPos(at.x, at.y, at.z);
+		// let the sensor settle after everything above moved and appeared
+		helper.runAfterDelay(50, () -> {
+			helper.assertTrue(!sensorActive(helper, sensor), "the sculk sensor was still active before the hit");
+			//? if >=26 {
+			/*var fireball = helper.spawn(net.minecraft.world.entity.EntityTypes.FIREBALL, new BlockPos(4, 2, 4));
+			*///?} else
+			var fireball = helper.spawn(EntityType.FIREBALL, new BlockPos(4, 2, 4));
+			fireball.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+			if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(fireball.getUUID());
+			player.attack(fireball);
+			helper.runAfterDelay(10, () -> {
+				boolean active = sensorActive(helper, sensor);
+				LongStandingFixes.VANILLA_ENTITIES.remove(fireball.getUUID());
+				fireball.discard();
+				helper.getLevel().getServer().getPlayerList().remove(player);
+				if (fixed) helper.assertTrue(active, "the sculk sensor did not hear the fireball being hit");
+				else helper.assertTrue(!active, "vanilla's sculk sensor heard the fireball being hit; is MC-210491 fixed?");
+				helper.succeed();
+			});
+		});
+	}
+
+	/** MC-210491: a sculk sensor hears a player batting a fireball away. */
+	public static void sculkHearsBattedFireball(GameTestHelper helper) {
+		fireball(helper, true);
+	}
+
+	/** Without the fix it doesn't. */
+	public static void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
+		fireball(helper, false);
+	}
 }

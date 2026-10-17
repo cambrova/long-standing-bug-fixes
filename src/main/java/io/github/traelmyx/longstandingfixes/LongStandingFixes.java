@@ -33,6 +33,8 @@ public final class LongStandingFixes {
 	public static boolean fallingBlockPrecision = true;
 	/** MC-269636: taking the wax off a lit copper bulb doesn't award "Lighten Up". */
 	public static boolean lightenUp = true;
+	/** MC-210491: batting a fireball away is a vibration sculk sensors pick up, like hitting any other entity. */
+	public static boolean sculkBattedProjectiles = true;
 
 	/** Set while the item-used-on-block trigger runs for a waxed copper bulb (MC-269636). */
 	public static final ThreadLocal<Boolean> UNWAXING_BULB = new ThreadLocal<>();
@@ -83,6 +85,7 @@ public final class LongStandingFixes {
 		creeperIgniters = Boolean.parseBoolean(props.getProperty("MC-186909.lightCreepersOnce", "true"));
 		fallingBlockPrecision = Boolean.parseBoolean(props.getProperty("MC-261789.fallingBlocksLandBelowZero", "true"));
 		lightenUp = Boolean.parseBoolean(props.getProperty("MC-269636.noLightenUpForWax", "true"));
+		sculkBattedProjectiles = Boolean.parseBoolean(props.getProperty("MC-210491.sculkHearsBattedFireballs", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -92,6 +95,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-186909.lightCreepersOnce", Boolean.toString(creeperIgniters));
 		props.setProperty("MC-261789.fallingBlocksLandBelowZero", Boolean.toString(fallingBlockPrecision));
 		props.setProperty("MC-269636.noLightenUpForWax", Boolean.toString(lightenUp));
+		props.setProperty("MC-210491.sculkHearsBattedFireballs", Boolean.toString(sculkBattedProjectiles));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

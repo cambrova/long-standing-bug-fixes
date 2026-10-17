@@ -13,6 +13,7 @@
 		"IronGolemMixin",
 		"ItemUsedOnLocationTriggerMixin",
 		"PlayerAdvancementsMixin",
+		"PlayerMixin",
 		"ServerPlayerMixin"
 	],
 	"injectors": {
