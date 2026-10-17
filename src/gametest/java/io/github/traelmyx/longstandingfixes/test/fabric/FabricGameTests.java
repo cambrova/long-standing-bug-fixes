@@ -113,6 +113,11 @@ public class FabricGameTests {
 	public void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 120)
+	public void spyglassProbe(GameTestHelper helper) {
+		FixTests.spyglassProbe(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -216,6 +221,11 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 120)
 	public void sculkHearsBattedFireballVanilla(GameTestHelper helper) {
 		FixTests.sculkHearsBattedFireballVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 120)
+	public void spyglassProbe(GameTestHelper helper) {
+		FixTests.spyglassProbe(helper);
 	}
 }
 ^///?}
