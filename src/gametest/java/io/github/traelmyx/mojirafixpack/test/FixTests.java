@@ -141,4 +141,37 @@ public final class FixTests {
 	public static void burningSkeletonArrowsVanilla(GameTestHelper helper) {
 		skeleton(helper, false);
 	}
+
+	private static void windCharge(GameTestHelper helper, boolean fixed) {
+		//? if >=1.21.11 {
+		/*for (int x = 0; x < 7; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		var item = helper.spawnItem(Items.DIAMOND, new net.minecraft.world.phys.Vec3(2.5, 1.0, 2.5));
+		item.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+		if (!fixed) MojiraFixPack.VANILLA_ENTITIES.add(item.getUUID());
+		var start = item.position();
+		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(3.5, 1.6, 2.5));
+		var charge = new net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.WindCharge(helper.getLevel(), at.x, at.y, at.z, new net.minecraft.world.phys.Vec3(0, -0.6, 0));
+		helper.getLevel().addFreshEntity(charge);
+		helper.runAfterDelay(10, () -> {
+			double moved = Math.sqrt(Math.pow(item.getX() - start.x, 2) + Math.pow(item.getZ() - start.z, 2));
+			MojiraFixPack.VANILLA_ENTITIES.remove(item.getUUID());
+			if (fixed) helper.assertTrue(moved > 0.2, "the wind charge moved the item only " + moved + " blocks");
+			else helper.assertTrue(moved < 0.05, "the item moved " + moved + " blocks without the fix; is MC-280273 fixed?");
+			helper.succeed();
+		});
+		*///?} else {
+		// before 1.21.5 wind charges always pushed items; nothing to fix
+		helper.succeed();
+		//?}
+	}
+
+	/** MC-280273: a wind charge bursting next to a dropped item blows it away. */
+	public static void windChargePushesItems(GameTestHelper helper) {
+		windCharge(helper, true);
+	}
+
+	/** Without the fix the item doesn't move. */
+	public static void windChargePushesItemsVanilla(GameTestHelper helper) {
+		windCharge(helper, false);
+	}
 }

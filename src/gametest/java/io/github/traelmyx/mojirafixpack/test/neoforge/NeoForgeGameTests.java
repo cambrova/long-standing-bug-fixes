@@ -56,6 +56,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("baby_takes_poppy_vanilla", () -> FixTests::babyTakesPoppyVanilla);
 		FUNCTIONS.register("burning_skeleton_arrows", () -> FixTests::burningSkeletonArrows);
 		FUNCTIONS.register("burning_skeleton_arrows_vanilla", () -> FixTests::burningSkeletonArrowsVanilla);
+		FUNCTIONS.register("wind_charge_pushes_items", () -> FixTests::windChargePushesItems);
+		FUNCTIONS.register("wind_charge_pushes_items_vanilla", () -> FixTests::windChargePushesItemsVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -69,6 +71,8 @@ public class NeoForgeGameTests {
 		register(event, env, "baby_takes_poppy_vanilla", 400, 1, 1);
 		register(event, env, "burning_skeleton_arrows", 100, 1, 1);
 		register(event, env, "burning_skeleton_arrows_vanilla", 100, 1, 1);
+		register(event, env, "wind_charge_pushes_items", 100, 1, 1);
+		register(event, env, "wind_charge_pushes_items_vanilla", 100, 1, 1);
 	}
 
 	//? if >=26 {
@@ -117,6 +121,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 100)
 	public static void burningSkeletonArrowsVanilla(GameTestHelper helper) {
 		FixTests.burningSkeletonArrowsVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 100)
+	public static void windChargePushesItems(GameTestHelper helper) {
+		FixTests.windChargePushesItems(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 100)
+	public static void windChargePushesItemsVanilla(GameTestHelper helper) {
+		FixTests.windChargePushesItemsVanilla(helper);
 	}
 	//?}
 }

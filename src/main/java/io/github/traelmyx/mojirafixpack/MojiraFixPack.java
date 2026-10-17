@@ -21,6 +21,8 @@ public final class MojiraFixPack {
 	public static boolean golemPoppy = true;
 	/** MC-217397: skeletons that are on fire shoot burning arrows again. */
 	public static boolean burningSkeletons = true;
+	/** MC-280273 (1.21.5 and newer): wind charges push dropped items again. */
+	public static boolean windChargeItems = true;
 
 	/** Blocks and entities the game tests keep on vanilla behaviour, to show each bug still happens without its fix. */
 	public static final java.util.Set<net.minecraft.core.BlockPos> VANILLA_BLOCKS = java.util.concurrent.ConcurrentHashMap.newKeySet();
@@ -42,9 +44,11 @@ public final class MojiraFixPack {
 		campfireComparator = Boolean.parseBoolean(props.getProperty("MC-166272.campfireComparator", "true"));
 		golemPoppy = Boolean.parseBoolean(props.getProperty("MC-159069.babyVillagersTakePoppies", "true"));
 		burningSkeletons = Boolean.parseBoolean(props.getProperty("MC-217397.burningSkeletonsShootBurningArrows", "true"));
+		windChargeItems = Boolean.parseBoolean(props.getProperty("MC-280273.windChargesPushItems", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
+		props.setProperty("MC-280273.windChargesPushItems", Boolean.toString(windChargeItems));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
