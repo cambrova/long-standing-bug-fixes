@@ -73,6 +73,36 @@ public class FabricGameTests {
 	public void brokenNameLoggedOnceVanilla(GameTestHelper helper) {
 		FixTests.brokenNameLoggedOnceVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void creeperLitOnce(GameTestHelper helper) {
+		FixTests.creeperLitOnce(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void creeperLitOnceVanilla(GameTestHelper helper) {
+		FixTests.creeperLitOnceVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 120)
+	public void fallingBlocksLand(GameTestHelper helper) {
+		FixTests.fallingBlocksLand(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 120)
+	public void fallingBlocksLandVanilla(GameTestHelper helper) {
+		FixTests.fallingBlocksLandVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void lightenUpNotForWax(GameTestHelper helper) {
+		FixTests.lightenUpNotForWax(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void lightenUpNotForWaxVanilla(GameTestHelper helper) {
+		FixTests.lightenUpNotForWaxVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -136,6 +166,36 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void brokenNameLoggedOnceVanilla(GameTestHelper helper) {
 		FixTests.brokenNameLoggedOnceVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void creeperLitOnce(GameTestHelper helper) {
+		FixTests.creeperLitOnce(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void creeperLitOnceVanilla(GameTestHelper helper) {
+		FixTests.creeperLitOnceVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 120)
+	public void fallingBlocksLand(GameTestHelper helper) {
+		FixTests.fallingBlocksLand(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 120)
+	public void fallingBlocksLandVanilla(GameTestHelper helper) {
+		FixTests.fallingBlocksLandVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void lightenUpNotForWax(GameTestHelper helper) {
+		FixTests.lightenUpNotForWax(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void lightenUpNotForWaxVanilla(GameTestHelper helper) {
+		FixTests.lightenUpNotForWaxVanilla(helper);
 	}
 }
 ^///?}

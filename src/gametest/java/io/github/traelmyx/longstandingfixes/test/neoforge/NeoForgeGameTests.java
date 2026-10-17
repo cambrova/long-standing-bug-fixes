@@ -62,6 +62,12 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("spectator_ignores_void_vanilla", () -> FixTests::spectatorIgnoresVoidVanilla);
 		FUNCTIONS.register("broken_name_logged_once", () -> FixTests::brokenNameLoggedOnce);
 		FUNCTIONS.register("broken_name_logged_once_vanilla", () -> FixTests::brokenNameLoggedOnceVanilla);
+		FUNCTIONS.register("creeper_lit_once", () -> FixTests::creeperLitOnce);
+		FUNCTIONS.register("creeper_lit_once_vanilla", () -> FixTests::creeperLitOnceVanilla);
+		FUNCTIONS.register("falling_blocks_land", () -> FixTests::fallingBlocksLand);
+		FUNCTIONS.register("falling_blocks_land_vanilla", () -> FixTests::fallingBlocksLandVanilla);
+		FUNCTIONS.register("lighten_up_not_for_wax", () -> FixTests::lightenUpNotForWax);
+		FUNCTIONS.register("lighten_up_not_for_wax_vanilla", () -> FixTests::lightenUpNotForWaxVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -81,6 +87,12 @@ public class NeoForgeGameTests {
 		register(event, env, "spectator_ignores_void_vanilla", 40, 1, 1);
 		register(event, env, "broken_name_logged_once", 40, 1, 1);
 		register(event, env, "broken_name_logged_once_vanilla", 40, 1, 1);
+		register(event, env, "creeper_lit_once", 40, 1, 1);
+		register(event, env, "creeper_lit_once_vanilla", 40, 1, 1);
+		register(event, env, "falling_blocks_land", 120, 1, 1);
+		register(event, env, "falling_blocks_land_vanilla", 120, 1, 1);
+		register(event, env, "lighten_up_not_for_wax", 40, 1, 1);
+		register(event, env, "lighten_up_not_for_wax_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -159,6 +171,36 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void brokenNameLoggedOnceVanilla(GameTestHelper helper) {
 		FixTests.brokenNameLoggedOnceVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void creeperLitOnce(GameTestHelper helper) {
+		FixTests.creeperLitOnce(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void creeperLitOnceVanilla(GameTestHelper helper) {
+		FixTests.creeperLitOnceVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 120)
+	public static void fallingBlocksLand(GameTestHelper helper) {
+		FixTests.fallingBlocksLand(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 120)
+	public static void fallingBlocksLandVanilla(GameTestHelper helper) {
+		FixTests.fallingBlocksLandVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void lightenUpNotForWax(GameTestHelper helper) {
+		FixTests.lightenUpNotForWax(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void lightenUpNotForWaxVanilla(GameTestHelper helper) {
+		FixTests.lightenUpNotForWaxVanilla(helper);
 	}
 	//?}
 }

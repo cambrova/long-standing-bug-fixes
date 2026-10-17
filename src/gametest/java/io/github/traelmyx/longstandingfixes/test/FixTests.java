@@ -175,19 +175,25 @@ public final class FixTests {
 		windCharge(helper, false);
 	}
 
-	private static void spectator(GameTestHelper helper, boolean fixed) {
-		// the helper's mock player always says it isn't a spectator, so build a plain one the same way
+	/** A plain server player in the player list; the helper's mock player always says it isn't a spectator. */
+	private static net.minecraft.server.level.ServerPlayer realPlayer(GameTestHelper helper, String name) {
 		var server = helper.getLevel().getServer();
-		var cookie = net.minecraft.server.network.CommonListenerCookie.createInitial(new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "test-spectator"), false);
+		var cookie = net.minecraft.server.network.CommonListenerCookie.createInitial(new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), name), false);
 		var player = new net.minecraft.server.level.ServerPlayer(server, helper.getLevel(), cookie.gameProfile(), cookie.clientInformation());
 		var connection = new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);
 		new io.netty.channel.embedded.EmbeddedChannel(connection);
 		server.getPlayerList().placeNewPlayer(connection, player, cookie);
-		player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
 		//? if >=1.21.11 {
 		/*// a mock player's client never reports it has loaded, which makes it immune to all damage
 		player.connection.handleAcceptPlayerLoad(new net.minecraft.network.protocol.game.ServerboundPlayerLoadedPacket());
 		*///?}
+		return player;
+	}
+
+	private static void spectator(GameTestHelper helper, boolean fixed) {
+		var server = helper.getLevel().getServer();
+		var player = realPlayer(helper, "test-spectator");
+		player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
 		helper.assertTrue(player.isSpectator(), "the mock player did not switch to spectator mode");
 		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
 		float before = player.getHealth();
@@ -244,5 +250,154 @@ public final class FixTests {
 	/** Without the fix every attempt logs a warning with a stack trace. */
 	public static void brokenNameLoggedOnceVanilla(GameTestHelper helper) {
 		brokenName(helper, false);
+	}
+
+	private static void creeper(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		var player = realPlayer(helper, "test-igniter");
+		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		//? if >=26 {
+		/*net.minecraft.world.entity.monster.Creeper creeper = helper.spawn(net.minecraft.world.entity.EntityTypes.CREEPER, new BlockPos(2, 1, 2));
+		*///?} else
+		net.minecraft.world.entity.monster.Creeper creeper = helper.spawn(EntityType.CREEPER, new BlockPos(2, 1, 2));
+		creeper.setNoAi(true);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(creeper.getUUID());
+		ItemStack flint = new ItemStack(Items.FLINT_AND_STEEL);
+		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, flint);
+		click(player, creeper);
+		click(player, creeper);
+		int damage = flint.getDamageValue();
+		ItemStack charges = new ItemStack(Items.FIRE_CHARGE, 5);
+		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, charges);
+		click(player, creeper);
+		int left = charges.getCount();
+		boolean lit = creeper.isIgnited();
+		LongStandingFixes.VANILLA_ENTITIES.remove(creeper.getUUID());
+		creeper.discard();
+		helper.getLevel().getServer().getPlayerList().remove(player);
+		helper.assertTrue(lit, "the creeper was not lit by flint and steel");
+		if (fixed) helper.assertTrue(damage == 1 && left == 5, "lighting once cost " + damage + " durability, and a click on the lit creeper left " + left + " of 5 fire charges");
+		else helper.assertTrue(damage == 2 && left == 4, "vanilla cost " + damage + " durability and left " + left + " fire charges, expected 2 and 4; is MC-186909 fixed?");
+		helper.succeed();
+	}
+
+	private static void click(net.minecraft.server.level.ServerPlayer player, net.minecraft.world.entity.Entity target) {
+		//? if >=26 {
+		/*player.interactOn(target, net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.phys.Vec3.ZERO);
+		*///?} else
+		player.interactOn(target, net.minecraft.world.InteractionHand.MAIN_HAND);
+	}
+
+	/** MC-186909: lighting a creeper costs one use of flint and steel; clicking it again while lit costs nothing. */
+	public static void creeperLitOnce(GameTestHelper helper) {
+		creeper(helper, true);
+	}
+
+	/** Without the fix every click on the lit creeper costs durability or a fire charge. */
+	public static void creeperLitOnceVanilla(GameTestHelper helper) {
+		creeper(helper, false);
+	}
+
+	private static final int FALL_ROUNDS = 5;
+
+	private static void falling(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 8; x++) for (int z = 0; z < 8; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		java.util.Random random = new java.util.Random(261789);
+		int[] placed = {0}, broken = {0};
+		fallRound(helper, fixed, random, 0, placed, broken);
+	}
+
+	/** 36 sand blocks land fast on a stone floor from random heights; count how many become blocks and how many break. */
+	private static void fallRound(GameTestHelper helper, boolean fixed, java.util.Random random, int round, int[] placed, int[] broken) {
+		var level = helper.getLevel();
+		var area = new net.minecraft.world.phys.AABB(helper.absolutePos(BlockPos.ZERO)).expandTowards(8, 8, 8);
+		java.util.List<net.minecraft.world.entity.item.FallingBlockEntity> blocks = new java.util.ArrayList<>();
+		for (int x = 1; x < 7; x++) for (int z = 1; z < 7; z++) {
+			BlockPos start = helper.absolutePos(new BlockPos(x, 6, z));
+			var sand = net.minecraft.world.entity.item.FallingBlockEntity.fall(level, start, Blocks.SAND.defaultBlockState());
+			sand.setPos(start.getX() + 0.5, start.getY() + random.nextDouble(), start.getZ() + 0.5);
+			sand.setDeltaMovement(0, -5 - 5 * random.nextDouble(), 0);
+			if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(sand.getUUID());
+			blocks.add(sand);
+		}
+		helper.runAfterDelay(10, () -> {
+			for (int x = 1; x < 7; x++) for (int z = 1; z < 7; z++) {
+				BlockPos pos = new BlockPos(x, 1, z);
+				if (level.getBlockState(helper.absolutePos(pos)).is(Blocks.SAND)) placed[0]++;
+				helper.setBlock(pos, Blocks.AIR);
+			}
+			for (var item : level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area)) {
+				if (item.getItem().is(Items.SAND)) broken[0] += item.getItem().getCount();
+				item.discard();
+			}
+			for (var sand : blocks) {
+				LongStandingFixes.VANILLA_ENTITIES.remove(sand.getUUID());
+				sand.discard();
+			}
+			if (round + 1 < FALL_ROUNDS) {
+				fallRound(helper, fixed, random, round + 1, placed, broken);
+				return;
+			}
+			System.out.printf("[long_standing_fixes] MC-261789 %s, floor top at y=%d: %d landed as blocks, %d broke%n",
+				fixed ? "fixed" : "vanilla", helper.absolutePos(new BlockPos(0, 1, 0)).getY(), placed[0], broken[0]);
+			int total = 36 * FALL_ROUNDS;
+			if (fixed) helper.assertTrue(placed[0] == total && broken[0] == 0, placed[0] + " of " + total + " sand blocks landed, " + broken[0] + " broke");
+			else helper.assertTrue(broken[0] > 0, "no sand broke without the fix (" + placed[0] + " of " + total + " landed); is MC-261789 fixed?");
+			helper.succeed();
+		});
+	}
+
+	/** MC-261789: sand that lands fast below Y=0 always turns into a block. */
+	public static void fallingBlocksLand(GameTestHelper helper) {
+		falling(helper, true);
+	}
+
+	/** Without the fix some of it lands a hair too low and breaks into items. */
+	public static void fallingBlocksLandVanilla(GameTestHelper helper) {
+		falling(helper, false);
+	}
+
+	private static boolean done(net.minecraft.server.level.ServerPlayer player, String id) {
+		for (var advancement : ((net.minecraft.server.level.ServerLevel) player.level()).getServer().getAdvancements().getAllAdvancements())
+			if (advancement.id().toString().equals(id)) return player.getAdvancements().getOrStartProgress(advancement).isDone();
+		throw new IllegalStateException("no advancement " + id);
+	}
+
+	private static void axe(net.minecraft.server.level.ServerPlayer player, BlockPos pos) {
+		player.getMainHandItem().useOn(new net.minecraft.world.item.context.UseOnContext(player, net.minecraft.world.InteractionHand.MAIN_HAND,
+			new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos), Direction.UP, pos, false)));
+	}
+
+	private static void lightenUp(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 6; x++) for (int z = 0; z < 4; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		var lit = net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
+		BlockPos waxed = new BlockPos(1, 1, 1), oxidized = new BlockPos(4, 1, 1);
+		helper.setBlock(waxed, Blocks.WAXED_OXIDIZED_COPPER_BULB.defaultBlockState().setValue(lit, true));
+		helper.setBlock(oxidized, Blocks.OXIDIZED_COPPER_BULB.defaultBlockState().setValue(lit, true));
+		var player = realPlayer(helper, "test-scraper");
+		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
+		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_AXE));
+		axe(player, helper.absolutePos(waxed));
+		boolean unwaxed = helper.getLevel().getBlockState(helper.absolutePos(waxed)).is(Blocks.OXIDIZED_COPPER_BULB);
+		boolean afterWax = done(player, "minecraft:adventure/lighten_up"), waxOff = done(player, "minecraft:husbandry/wax_off");
+		axe(player, helper.absolutePos(oxidized));
+		boolean afterScrape = done(player, "minecraft:adventure/lighten_up");
+		LongStandingFixes.VANILLA_OBJECTS.remove(player);
+		helper.getLevel().getServer().getPlayerList().remove(player);
+		helper.assertTrue(unwaxed, "the axe did not take the wax off the bulb");
+		if (fixed) helper.assertTrue(!afterWax && waxOff && afterScrape, "Lighten Up after wax off: " + afterWax + ", Wax Off: " + waxOff + ", Lighten Up after scraping: " + afterScrape);
+		else helper.assertTrue(afterWax, "vanilla did not award Lighten Up for taking wax off a bulb; is MC-269636 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-269636: taking the wax off a lit bulb gives "Wax Off" but not "Lighten Up"; scraping a lit bulb still gives it. */
+	public static void lightenUpNotForWax(GameTestHelper helper) {
+		lightenUp(helper, true);
+	}
+
+	/** Without the fix the wax alone awards Lighten Up. */
+	public static void lightenUpNotForWaxVanilla(GameTestHelper helper) {
+		lightenUp(helper, false);
 	}
 }

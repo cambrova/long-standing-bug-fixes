@@ -6,9 +6,13 @@
 	"mixins": [
 		"AbstractSkeletonMixin",
 		"CampfireBlockMixin",
+		"CreeperMixin",
 		"EntityMixin",
+		"FallingBlockEntityMixin",
 		"ItemEntityMixin",
 		"IronGolemMixin",
+		"ItemUsedOnLocationTriggerMixin",
+		"PlayerAdvancementsMixin",
 		"ServerPlayerMixin"
 	],
 	"injectors": {

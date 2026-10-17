@@ -27,6 +27,15 @@ public final class LongStandingFixes {
 	public static boolean spectatorVoid = true;
 	/** MC-168976 (1.21.1): a broken entity custom name is logged once, not on every spawner attempt. */
 	public static boolean spawnerLogSpam = true;
+	/** MC-186909: clicking a creeper that is already lit doesn't use up more flint and steel or fire charges. */
+	public static boolean creeperIgniters = true;
+	/** MC-261789: falling blocks that land fast below Y=0 turn into blocks instead of breaking into items. */
+	public static boolean fallingBlockPrecision = true;
+	/** MC-269636: taking the wax off a lit copper bulb doesn't award "Lighten Up". */
+	public static boolean lightenUp = true;
+
+	/** Set while the item-used-on-block trigger runs for a waxed copper bulb (MC-269636). */
+	public static final ThreadLocal<Boolean> UNWAXING_BULB = new ThreadLocal<>();
 
 	private static final java.util.Set<String> WARNED_NAMES = java.util.concurrent.ConcurrentHashMap.newKeySet();
 	/** Names the game tests keep on vanilla behaviour (logged every time). */
@@ -71,12 +80,18 @@ public final class LongStandingFixes {
 		windChargeItems = Boolean.parseBoolean(props.getProperty("MC-280273.windChargesPushItems", "true"));
 		spectatorVoid = Boolean.parseBoolean(props.getProperty("MC-219854.spectatorsIgnoreTheVoid", "true"));
 		spawnerLogSpam = Boolean.parseBoolean(props.getProperty("MC-168976.logBrokenNamesOnce", "true"));
+		creeperIgniters = Boolean.parseBoolean(props.getProperty("MC-186909.lightCreepersOnce", "true"));
+		fallingBlockPrecision = Boolean.parseBoolean(props.getProperty("MC-261789.fallingBlocksLandBelowZero", "true"));
+		lightenUp = Boolean.parseBoolean(props.getProperty("MC-269636.noLightenUpForWax", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
 		props.setProperty("MC-280273.windChargesPushItems", Boolean.toString(windChargeItems));
 		props.setProperty("MC-219854.spectatorsIgnoreTheVoid", Boolean.toString(spectatorVoid));
 		props.setProperty("MC-168976.logBrokenNamesOnce", Boolean.toString(spawnerLogSpam));
+		props.setProperty("MC-186909.lightCreepersOnce", Boolean.toString(creeperIgniters));
+		props.setProperty("MC-261789.fallingBlocksLandBelowZero", Boolean.toString(fallingBlockPrecision));
+		props.setProperty("MC-269636.noLightenUpForWax", Boolean.toString(lightenUp));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
