@@ -49,6 +49,8 @@ public final class LongStandingFixes {
 	/** Blocks and entities the game tests keep on vanilla behaviour, to show each bug still happens without its fix. */
 	public static final java.util.Set<net.minecraft.core.BlockPos> VANILLA_BLOCKS = java.util.concurrent.ConcurrentHashMap.newKeySet();
 	public static final java.util.Set<java.util.UUID> VANILLA_ENTITIES = java.util.concurrent.ConcurrentHashMap.newKeySet();
+	/** Same, by object: game-test mock players all share one UUID. */
+	public static final java.util.Set<Object> VANILLA_OBJECTS = java.util.Collections.synchronizedSet(java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>()));
 
 	private LongStandingFixes() {
 	}

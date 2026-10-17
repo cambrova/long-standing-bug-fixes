@@ -24,7 +24,7 @@ public abstract class ServerPlayerMixin {
 	//?}
 		ServerPlayer self = (ServerPlayer) (Object) this;
 		if (LongStandingFixes.spectatorVoid && self.isSpectator() && source.is(DamageTypes.FELL_OUT_OF_WORLD)
-			&& !LongStandingFixes.VANILLA_ENTITIES.contains(self.getUUID()))
+			&& !LongStandingFixes.VANILLA_OBJECTS.contains(self))
 			cir.setReturnValue(true);
 	}
 }
