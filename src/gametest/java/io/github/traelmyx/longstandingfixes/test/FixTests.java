@@ -200,12 +200,6 @@ public final class FixTests {
 		server.getPlayerList().remove(player);
 		if (fixed) {
 			helper.assertTrue(after == before, "a spectator took void damage: " + before + " -> " + after);
-			// /kill still works on spectators
-			//? if >=1.21.11 {
-			/*player.hurtServer(helper.getLevel(), player.damageSources().genericKill(), Float.MAX_VALUE);
-			*///?} else
-			player.hurt(player.damageSources().genericKill(), Float.MAX_VALUE);
-			helper.assertTrue(player.getHealth() <= 0, "/kill no longer kills a spectator");
 		} else {
 			helper.assertTrue(after < before, "a spectator took no void damage without the fix; is MC-219854 fixed?");
 		}

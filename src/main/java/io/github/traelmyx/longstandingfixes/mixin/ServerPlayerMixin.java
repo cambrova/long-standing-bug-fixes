@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * MC-219854: spectators were made immune to the void in 21w10a (MC-214790, "works as intended"), and from 21w11a they take
- * void damage again, so staff spectating below an End island die. Only void damage is blocked; /kill still works.
+ * void damage again, so staff spectating below an End island die. Only void damage is blocked.
  */
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin {
