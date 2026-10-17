@@ -307,37 +307,45 @@ public final class FixTests {
 		fallRound(helper, fixed, random, 0, placed, broken);
 	}
 
-	/** 36 sand blocks land fast on a stone floor from random heights; count how many become blocks and how many break. */
+	/**
+	 * 36 sand blocks land fast from random heights; count how many become blocks and how many break. The error needs a drop
+	 * across a power of two, like the bug report's y=1.2 down to -7: where the test floor is deep below zero the sand lands on
+	 * a stone platform at y=-8 (top -7, as in the report) built above the test area, otherwise on the test floor.
+	 */
 	private static void fallRound(GameTestHelper helper, boolean fixed, java.util.Random random, int round, int[] placed, int[] broken) {
 		var level = helper.getLevel();
-		var area = new net.minecraft.world.phys.AABB(helper.absolutePos(BlockPos.ZERO)).expandTowards(8, 8, 8);
-		java.util.List<net.minecraft.world.entity.item.FallingBlockEntity> blocks = new java.util.ArrayList<>();
-		// the error needs a big drop that crosses a power of two, like the bug report's y=1.2 down to -7: start each block
-		// somewhere between y=-31 and y=15 and land it in one tick
 		int floorTop = helper.absolutePos(new BlockPos(0, 1, 0)).getY();
+		boolean platform = floorTop <= -9;
+		int top = platform ? -7 : floorTop;
+		double low = top + 2, high = platform ? 15 : top + 6;
+		java.util.List<BlockPos> columns = new java.util.ArrayList<>();
 		for (int x = 1; x < 7; x++) for (int z = 1; z < 7; z++) {
-			double y = Math.max(floorTop + 3, -31.5 + 46.5 * random.nextDouble());
-			BlockPos column = helper.absolutePos(new BlockPos(x, 1, z));
-			BlockPos start = new BlockPos(column.getX(), (int) Math.floor(y), column.getZ());
+			BlockPos c = helper.absolutePos(new BlockPos(x, 1, z));
+			columns.add(new BlockPos(c.getX(), top, c.getZ()));
+		}
+		if (platform) for (BlockPos c : columns) level.setBlockAndUpdate(c.below(), Blocks.STONE.defaultBlockState());
+		java.util.List<net.minecraft.world.entity.item.FallingBlockEntity> blocks = new java.util.ArrayList<>();
+		for (BlockPos c : columns) {
+			// the first column replays the bug report exactly
+			double y = platform && c == columns.get(0) ? 1.2074466562545139 : low + (high - low) * random.nextDouble();
+			BlockPos start = new BlockPos(c.getX(), (int) Math.floor(y), c.getZ());
 			var sand = net.minecraft.world.entity.item.FallingBlockEntity.fall(level, start, Blocks.SAND.defaultBlockState());
-			sand.setPos(start.getX() + 0.5, y, start.getZ() + 0.5);
-			sand.setDeltaMovement(0, -100, 0);
+			sand.setPos(c.getX() + 0.5, y, c.getZ() + 0.5);
+			sand.setDeltaMovement(0, -10, 0);
 			if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(sand.getUUID());
 			blocks.add(sand);
 		}
-		helper.runAfterDelay(6, () -> {
-			for (int x = 1; x < 7; x++) for (int z = 1; z < 7; z++) {
-				BlockPos pos = new BlockPos(x, 1, z);
-				if (level.getBlockState(helper.absolutePos(pos)).is(Blocks.SAND)) placed[0]++;
-				helper.setBlock(pos, Blocks.AIR);
+		helper.runAfterDelay(8, () -> {
+			var first = columns.get(0);
+			var area = new net.minecraft.world.phys.AABB(first.getX() - 1, top - 2, first.getZ() - 1, first.getX() + 7, top + 3, first.getZ() + 7);
+			for (BlockPos c : columns) {
+				if (level.getBlockState(c).is(Blocks.SAND)) placed[0]++;
+				level.setBlockAndUpdate(c, Blocks.AIR.defaultBlockState());
+				if (platform) level.setBlockAndUpdate(c.below(), Blocks.AIR.defaultBlockState());
 			}
 			for (var item : level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area)) {
 				if (item.getItem().is(Items.SAND)) broken[0] += item.getItem().getCount();
 				item.discard();
-			}
-			if (round == 0) for (int i = 0; i < 3; i++) {
-				var sand = blocks.get(i);
-				System.out.printf("[long_standing_fixes] MC-261789 debug: removed=%s pos=%s ground=%s motion=%s%n", sand.isRemoved(), sand.position(), sand.onGround(), sand.getDeltaMovement());
 			}
 			for (var sand : blocks) {
 				LongStandingFixes.VANILLA_ENTITIES.remove(sand.getUUID());
@@ -347,8 +355,8 @@ public final class FixTests {
 				fallRound(helper, fixed, random, round + 1, placed, broken);
 				return;
 			}
-			System.out.printf("[long_standing_fixes] MC-261789 %s, floor top at y=%d: %d landed as blocks, %d broke%n",
-				fixed ? "fixed" : "vanilla", helper.absolutePos(new BlockPos(0, 1, 0)).getY(), placed[0], broken[0]);
+			System.out.printf("[long_standing_fixes] MC-261789 %s, landing at y=%d: %d landed as blocks, %d broke%n",
+				fixed ? "fixed" : "vanilla", top, placed[0], broken[0]);
 			int total = 36 * FALL_ROUNDS;
 			if (fixed) helper.assertTrue(placed[0] == total && broken[0] == 0, placed[0] + " of " + total + " sand blocks landed, " + broken[0] + " broke");
 			else helper.assertTrue(broken[0] > 0, "no sand broke without the fix (" + placed[0] + " of " + total + " landed); is MC-261789 fixed?");
