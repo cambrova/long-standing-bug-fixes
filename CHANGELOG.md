@@ -2,4 +2,4 @@
 
 ## 1.0.0
 
-- First release: per-axis collision checks for fast-moving entities (MC-260743).
+- First release: MC-166272, MC-159069, MC-217397, MC-280273.
