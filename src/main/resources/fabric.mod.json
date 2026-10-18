@@ -13,7 +13,7 @@
 	"icon": "assets/long_standing_fixes/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": ["io.github.cambrova.longstandingfixes.fabric.LongStandingFixesFabric"]
+		"main": ["io.github.traelmyx.longstandingfixes.fabric.LongStandingFixesFabric"]
 	},
 	"mixins": ["long_standing_fixes.mixins.json"],
 	"depends": {
