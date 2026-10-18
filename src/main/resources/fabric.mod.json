@@ -4,16 +4,16 @@
 	"version": "${version}",
 	"name": "${name}",
 	"description": "Fixes for confirmed bugs that have stayed open for years: comparators read campfires, baby villagers take the iron golem's poppy, burning skeletons shoot burning arrows, wind charges push dropped items. Each can be turned off.",
-	"authors": ["traelmyx"],
+	"authors": ["cambrova"],
 	"contact": {
-		"sources": "https://github.com/traelmyx/long-standing-bug-fixes",
-		"issues": "https://github.com/traelmyx/long-standing-bug-fixes/issues"
+		"sources": "https://github.com/cambrova/long-standing-bug-fixes",
+		"issues": "https://github.com/cambrova/long-standing-bug-fixes/issues"
 	},
 	"license": "MIT",
 	"icon": "assets/long_standing_fixes/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": ["io.github.traelmyx.longstandingfixes.fabric.LongStandingFixesFabric"]
+		"main": ["io.github.cambrova.longstandingfixes.fabric.LongStandingFixesFabric"]
 	},
 	"mixins": ["long_standing_fixes.mixins.json"],
 	"depends": {
