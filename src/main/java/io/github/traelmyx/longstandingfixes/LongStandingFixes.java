@@ -63,6 +63,11 @@ public final class LongStandingFixes {
 	/** MC-164171 / MC-109083: the wither skull or ghast fireball that kills a player doesn't blow up the items they drop. */
 	public static boolean keepDeathDrops = true;
 
+	/** An item that knows whether a death dropped it this very tick (MC-164171). */
+	public interface DeathDrop {
+		boolean longstandingfixes$freshDeathDrop();
+	}
+
 	/** How many entities are dying on this thread right now (MC-164171). */
 	public static final ThreadLocal<Integer> DYING = ThreadLocal.withInitial(() -> 0);
 
