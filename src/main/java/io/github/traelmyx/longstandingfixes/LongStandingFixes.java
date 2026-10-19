@@ -66,6 +66,18 @@ public final class LongStandingFixes {
 	public static boolean keepBonusHealth = true;
 	/** MC-111801 / MC-253476: item cooldowns survive logging out and changing dimension. */
 	public static boolean keepCooldowns = true;
+	/** MC-276819: spam counters cool down in real time, so a lagging server doesn't kick players for normal chat. */
+	public static boolean spamRealTime = true;
+
+	/** The clock the spam counters cool down by; the game tests swap it for one they can wind forward. */
+	public static java.util.function.LongSupplier CLOCK = System::nanoTime;
+
+	/** A connection's chat spam counter, for the game tests (MC-276819). */
+	public interface SpamCounters {
+		int longstandingfixes$chatSpam();
+
+		void longstandingfixes$setChatSpam(int count);
+	}
 
 	/** A player's item cooldowns, written as text and read back (MC-111801). */
 	public interface Cooldowns {
@@ -149,6 +161,7 @@ public final class LongStandingFixes {
 		keepDeathDrops = Boolean.parseBoolean(props.getProperty("MC-164171.killingBlastSparesDrops", "true"));
 		keepBonusHealth = Boolean.parseBoolean(props.getProperty("MC-17876.keepBonusHealthOnLoad", "true"));
 		keepCooldowns = Boolean.parseBoolean(props.getProperty("MC-111801.keepItemCooldowns", "true"));
+		spamRealTime = Boolean.parseBoolean(props.getProperty("MC-276819.spamLimitInRealTime", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -174,6 +187,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-164171.killingBlastSparesDrops", Boolean.toString(keepDeathDrops));
 		props.setProperty("MC-17876.keepBonusHealthOnLoad", Boolean.toString(keepBonusHealth));
 		props.setProperty("MC-111801.keepItemCooldowns", Boolean.toString(keepCooldowns));
+		props.setProperty("MC-276819.spamLimitInRealTime", Boolean.toString(spamRealTime));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

@@ -273,6 +273,16 @@ public class FabricGameTests {
 	public void cooldownSurvivesDimensionChangeVanilla(GameTestHelper helper) {
 		FixTests.cooldownSurvivesDimensionChangeVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void spamLimitInRealTime(GameTestHelper helper) {
+		FixTests.spamLimitInRealTime(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void spamLimitInRealTimeVanilla(GameTestHelper helper) {
+		FixTests.spamLimitInRealTimeVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -536,6 +546,16 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void cooldownSurvivesDimensionChangeVanilla(GameTestHelper helper) {
 		FixTests.cooldownSurvivesDimensionChangeVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void spamLimitInRealTime(GameTestHelper helper) {
+		FixTests.spamLimitInRealTime(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void spamLimitInRealTimeVanilla(GameTestHelper helper) {
+		FixTests.spamLimitInRealTimeVanilla(helper);
 	}
 }
 ^///?}

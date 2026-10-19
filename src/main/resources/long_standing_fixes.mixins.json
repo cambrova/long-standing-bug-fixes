@@ -30,10 +30,12 @@
 		"PlayerMixin",
 		"PlayerStabMixin",
 		"ServerExplosionMixin",
+		"ServerGamePacketListenerImplMixin",
 		"ServerLevelMixin",
 		"ServerPlayerCooldownsMixin",
 		"ServerPlayerMixin",
-		"SwellGoalMixin"
+		"SwellGoalMixin",
+		"TickThrottlerAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

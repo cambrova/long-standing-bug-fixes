@@ -102,6 +102,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("cooldown_survives_relog_vanilla", () -> FixTests::cooldownSurvivesRelogVanilla);
 		FUNCTIONS.register("cooldown_survives_dimension_change", () -> FixTests::cooldownSurvivesDimensionChange);
 		FUNCTIONS.register("cooldown_survives_dimension_change_vanilla", () -> FixTests::cooldownSurvivesDimensionChangeVanilla);
+		FUNCTIONS.register("spam_limit_in_real_time", () -> FixTests::spamLimitInRealTime);
+		FUNCTIONS.register("spam_limit_in_real_time_vanilla", () -> FixTests::spamLimitInRealTimeVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -161,6 +163,8 @@ public class NeoForgeGameTests {
 		register(event, env, "cooldown_survives_relog_vanilla", 40, 1, 1);
 		register(event, env, "cooldown_survives_dimension_change", 40, 1, 1);
 		register(event, env, "cooldown_survives_dimension_change_vanilla", 40, 1, 1);
+		register(event, env, "spam_limit_in_real_time", 40, 1, 1);
+		register(event, env, "spam_limit_in_real_time_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -439,6 +443,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void cooldownSurvivesDimensionChangeVanilla(GameTestHelper helper) {
 		FixTests.cooldownSurvivesDimensionChangeVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void spamLimitInRealTime(GameTestHelper helper) {
+		FixTests.spamLimitInRealTime(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void spamLimitInRealTimeVanilla(GameTestHelper helper) {
+		FixTests.spamLimitInRealTimeVanilla(helper);
 	}
 	//?}
 }

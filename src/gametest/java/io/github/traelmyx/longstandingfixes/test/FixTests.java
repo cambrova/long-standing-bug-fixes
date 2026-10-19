@@ -1255,4 +1255,44 @@ public final class FixTests {
 	public static void cooldownSurvivesDimensionChangeVanilla(GameTestHelper helper) {
 		cooldownDimension(helper, false);
 	}
+
+	/**
+	 * The server lags: two real seconds pass between two of its ticks. A player who had chatted the counter up to 190 (just
+	 * under the kick at 200) should cool down by the 40 steps of those two seconds, not by 1.
+	 */
+	private static void spam(GameTestHelper helper, boolean fixed) {
+		var player = realPlayer(helper, fixed ? "test-chatter" : "test-chatter-vanilla");
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
+		var counters = (LongStandingFixes.SpamCounters) player.connection;
+		long[] now = {1_000_000_000L};
+		var clock = LongStandingFixes.CLOCK;
+		LongStandingFixes.CLOCK = () -> now[0];
+		int left;
+		try {
+			player.connection.tick();
+			counters.longstandingfixes$setChatSpam(190);
+			now[0] += 2_000_000_000L;
+			player.connection.tick();
+			left = counters.longstandingfixes$chatSpam();
+		} finally {
+			LongStandingFixes.CLOCK = clock;
+		}
+		LongStandingFixes.VANILLA_OBJECTS.remove(player);
+		helper.getLevel().getServer().getPlayerList().remove(player);
+		CHANNELS.remove(player);
+		System.out.printf("[long_standing_fixes] MC-276819 %s: spam counter 190 -> %d over one 2-second tick%n", fixed ? "fixed" : "vanilla", left);
+		if (fixed) helper.assertTrue(left == 150, "the spam counter only cooled down to " + left + ", expected 150");
+		else helper.assertTrue(left == 189, "vanilla cooled down to " + left + ", expected 189; is MC-276819 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-276819: spam counters cool down by real time on a lagging server. */
+	public static void spamLimitInRealTime(GameTestHelper helper) {
+		spam(helper, true);
+	}
+
+	/** Without the fix they cool down by one step per tick, however long the tick took. */
+	public static void spamLimitInRealTimeVanilla(GameTestHelper helper) {
+		spam(helper, false);
+	}
 }
