@@ -68,8 +68,8 @@ public final class LongStandingFixes {
 	public static boolean keepCooldowns = true;
 	/** MC-276819: spam counters cool down in real time, so a lagging server doesn't kick players for normal chat. */
 	public static boolean spamRealTime = true;
-	/** MC-101851: Snowballs, eggs and ender pearls no longer blow up end crystals. */
-	public static boolean crystalsIgnoreHarmlessHits = true;
+	/** MC-101851: snowballs, eggs and ender pearls no longer blow up end crystals. OFF by default: players use it as a tactic. */
+	public static boolean crystalsIgnoreHarmlessHits = false;
 	/** MC-262810: Wandering traders run from ravagers too. */
 	public static boolean tradersFleeRavagers = true;
 	/** MC-205843: Shulkers can no longer get Levitation. */
@@ -168,7 +168,7 @@ public final class LongStandingFixes {
 		keepBonusHealth = Boolean.parseBoolean(props.getProperty("MC-17876.keepBonusHealthOnLoad", "true"));
 		keepCooldowns = Boolean.parseBoolean(props.getProperty("MC-111801.keepItemCooldowns", "true"));
 		spamRealTime = Boolean.parseBoolean(props.getProperty("MC-276819.spamLimitInRealTime", "true"));
-		crystalsIgnoreHarmlessHits = Boolean.parseBoolean(props.getProperty("MC-101851.crystalsIgnoreHarmlessHits", "true"));
+		crystalsIgnoreHarmlessHits = Boolean.parseBoolean(props.getProperty("MC-101851.crystalsIgnoreHarmlessHits", "false"));
 		tradersFleeRavagers = Boolean.parseBoolean(props.getProperty("MC-262810.tradersFleeRavagers", "true"));
 		shulkersNoLevitation = Boolean.parseBoolean(props.getProperty("MC-205843.shulkersCantLevitate", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));

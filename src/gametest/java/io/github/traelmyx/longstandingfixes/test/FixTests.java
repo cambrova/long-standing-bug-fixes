@@ -1315,10 +1315,14 @@ public final class FixTests {
 		level.addFreshEntity(crystal);
 		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(crystal.getUUID());
 		var source = level.damageSources().thrown(snowball, null);
+		// the fix is off by default; switch it on for this hit only
+		boolean enabled = LongStandingFixes.crystalsIgnoreHarmlessHits;
+		LongStandingFixes.crystalsIgnoreHarmlessHits = true;
 		//? if >=1.21.11 {
 		/*crystal.hurtServer(level, source, 0.0F);
 		*///?} else
 		crystal.hurt(source, 0.0F);
+		LongStandingFixes.crystalsIgnoreHarmlessHits = enabled;
 		boolean intact = crystal.isAlive();
 		LongStandingFixes.VANILLA_ENTITIES.remove(crystal.getUUID());
 		crystal.discard();

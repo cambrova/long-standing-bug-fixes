@@ -12,7 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * MC-101851: snowballs, eggs and ender pearls deal no damage, yet one hit blows up an end crystal, so anyone can set off
  * crystals from a distance with a stack of snowballs. Projectile hits that deal no damage leave crystals alone now;
- * arrows, tridents and everything else still break them.
+ * arrows, tridents and everything else still break them. Off by default (many players knock out crystals with snowballs
+ * on purpose); servers that want it switch it on.
  */
 @Mixin(EndCrystal.class)
 public abstract class EndCrystalMixin {
