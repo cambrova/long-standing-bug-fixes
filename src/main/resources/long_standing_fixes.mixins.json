@@ -28,6 +28,7 @@
 		"LivingEntityHealthMixin",
 		"LivingEntityMixin",
 		"MerchantOfferMixin",
+		"MobGoalsAccessor",
 		"PlayerAdvancementsMixin",
 		"PlayerMixin",
 		"PlayerStabMixin",

@@ -1354,7 +1354,7 @@ public final class FixTests {
 		ravager.setNoAi(true);
 		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(trader.getUUID());
 		helper.runAfterDelay(10, () -> {
-			boolean fleeing = trader.goalSelector.getAvailableGoals().stream()
+			boolean fleeing = ((io.github.traelmyx.longstandingfixes.mixin.MobGoalsAccessor) trader).longstandingfixes$goals().getAvailableGoals().stream()
 				.anyMatch(g -> g.isRunning() && g.getGoal() instanceof net.minecraft.world.entity.ai.goal.AvoidEntityGoal);
 			LongStandingFixes.VANILLA_ENTITIES.remove(trader.getUUID());
 			trader.discard();
