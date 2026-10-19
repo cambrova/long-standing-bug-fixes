@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0
+
+- MC-248588: with mobGriefing off, a burning mob no longer uses up water or powder snow in a cauldron (it still stops burning).
+- MC-310859 (26.2 and newer): spears with Knockback knock players back too, not just mobs.
+
 ## 1.6.0
 
 - MC-163962: a villager trade's demand stops at 0 instead of falling forever, so prices still go up when a trade is used a lot.
