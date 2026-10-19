@@ -173,8 +173,8 @@ public class NeoForgeGameTests {
 		register(event, env, "spam_limit_in_real_time_vanilla", 40, 1, 1);
 		register(event, env, "crystal_ignores_snowball", 40, 1, 1);
 		register(event, env, "crystal_ignores_snowball_vanilla", 40, 1, 1);
-		register(event, env, "trader_flees_ravager", 40, 1, 1);
-		register(event, env, "trader_flees_ravager_vanilla", 40, 1, 1);
+		register(event, env, "trader_flees_ravager", 100, 1, 1);
+		register(event, env, "trader_flees_ravager_vanilla", 100, 1, 1);
 		register(event, env, "shulker_refuses_levitation", 40, 1, 1);
 		register(event, env, "shulker_refuses_levitation_vanilla", 40, 1, 1);
 	}
@@ -477,12 +477,12 @@ public class NeoForgeGameTests {
 		FixTests.crystalIgnoresSnowballVanilla(helper);
 	}
 
-	@GameTest(template = "empty", timeoutTicks = 40)
+	@GameTest(template = "empty", timeoutTicks = 100)
 	public static void traderFleesRavager(GameTestHelper helper) {
 		FixTests.traderFleesRavager(helper);
 	}
 
-	@GameTest(template = "empty", timeoutTicks = 40)
+	@GameTest(template = "empty", timeoutTicks = 100)
 	public static void traderFleesRavagerVanilla(GameTestHelper helper) {
 		FixTests.traderFleesRavagerVanilla(helper);
 	}

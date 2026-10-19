@@ -1338,7 +1338,10 @@ public final class FixTests {
 		crystal(helper, false);
 	}
 
-	/** A wandering trader stands 5 blocks from a (frozen) ravager; after 10 ticks it should be running away. */
+	/**
+	 * A wandering trader stands 5 blocks from a (frozen) ravager. Within 60 ticks it should start running away; it needs a
+	 * moment, since fleeing only starts once it finds a spot to run to.
+	 */
 	private static void traderRavager(GameTestHelper helper, boolean fixed) {
 		for (int x = 0; x < 12; x++) for (int z = 0; z < 5; z++) {
 			helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
@@ -1353,15 +1356,18 @@ public final class FixTests {
 		//?}
 		ravager.setNoAi(true);
 		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(trader.getUUID());
-		helper.runAfterDelay(10, () -> {
-			boolean fleeing = ((io.github.traelmyx.longstandingfixes.mixin.MobGoalsAccessor) trader).longstandingfixes$goals().getAvailableGoals().stream()
+		boolean[] fled = {false};
+		for (int t = 1; t <= 60; t++) helper.runAfterDelay(t, () -> {
+			fled[0] |= ((io.github.traelmyx.longstandingfixes.mixin.MobGoalsAccessor) trader).longstandingfixes$goals().getAvailableGoals().stream()
 				.anyMatch(g -> g.isRunning() && g.getGoal() instanceof net.minecraft.world.entity.ai.goal.AvoidEntityGoal);
+		});
+		helper.runAfterDelay(61, () -> {
 			LongStandingFixes.VANILLA_ENTITIES.remove(trader.getUUID());
 			trader.discard();
 			ravager.discard();
-			System.out.printf("[long_standing_fixes] MC-262810 %s: wandering trader running from the ravager: %s%n", fixed ? "fixed" : "vanilla", fleeing);
-			if (fixed) helper.assertTrue(fleeing, "the wandering trader did not run from the ravager");
-			else helper.assertTrue(!fleeing, "vanilla trader ran from the ravager; is MC-262810 fixed?");
+			System.out.printf("[long_standing_fixes] MC-262810 %s: wandering trader ran from the ravager within 60 ticks: %s%n", fixed ? "fixed" : "vanilla", fled[0]);
+			if (fixed) helper.assertTrue(fled[0], "the wandering trader did not run from the ravager");
+			else helper.assertTrue(!fled[0], "vanilla trader ran from the ravager; is MC-262810 fixed?");
 			helper.succeed();
 		});
 	}

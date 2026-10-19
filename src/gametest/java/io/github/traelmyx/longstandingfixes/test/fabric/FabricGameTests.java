@@ -294,12 +294,12 @@ public class FabricGameTests {
 		FixTests.crystalIgnoresSnowballVanilla(helper);
 	}
 
-	@GameTest(structure = EMPTY, maxTicks = 40)
+	@GameTest(structure = EMPTY, maxTicks = 100)
 	public void traderFleesRavager(GameTestHelper helper) {
 		FixTests.traderFleesRavager(helper);
 	}
 
-	@GameTest(structure = EMPTY, maxTicks = 40)
+	@GameTest(structure = EMPTY, maxTicks = 100)
 	public void traderFleesRavagerVanilla(GameTestHelper helper) {
 		FixTests.traderFleesRavagerVanilla(helper);
 	}
@@ -598,12 +598,12 @@ public class FabricGameTests {
 		FixTests.crystalIgnoresSnowballVanilla(helper);
 	}
 
-	@GameTest(template = EMPTY, timeoutTicks = 40)
+	@GameTest(template = EMPTY, timeoutTicks = 100)
 	public void traderFleesRavager(GameTestHelper helper) {
 		FixTests.traderFleesRavager(helper);
 	}
 
-	@GameTest(template = EMPTY, timeoutTicks = 40)
+	@GameTest(template = EMPTY, timeoutTicks = 100)
 	public void traderFleesRavagerVanilla(GameTestHelper helper) {
 		FixTests.traderFleesRavagerVanilla(helper);
 	}
