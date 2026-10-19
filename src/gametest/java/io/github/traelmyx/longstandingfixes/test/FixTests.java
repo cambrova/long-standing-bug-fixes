@@ -605,7 +605,10 @@ public final class FixTests {
 		honey(helper, false);
 	}
 
-	/** A wind charge hangs in the air next to an explosion that breaks no blocks; see how far the blast moves it. */
+	/**
+	 * A wind charge hangs in the air next to an explosion that breaks no blocks; read its speed straight after the blast
+	 * (moving it would let it fly into the next test's area and burst).
+	 */
 	private static void windChargeBlast(GameTestHelper helper, boolean fixed) {
 		//? if >=1.21.11 {
 		/*for (int x = 0; x < 7; x++) for (int z = 0; z < 5; z++) for (int y = 1; y < 5; y++) helper.setBlock(new BlockPos(x, y, z), Blocks.AIR);
@@ -615,19 +618,16 @@ public final class FixTests {
 		charge.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
 		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(charge.getUUID());
 		level.addFreshEntity(charge);
-		var start = charge.position();
 		helper.runAfterDelay(2, () -> {
+			var before = charge.getDeltaMovement();
 			level.explode(null, at.x - 1.5, at.y, at.z, 3.0F, net.minecraft.world.level.Level.ExplosionInteraction.NONE);
-			helper.runAfterDelay(3, () -> {
-				double moved = charge.position().distanceTo(start);
-				LongStandingFixes.VANILLA_ENTITIES.remove(charge.getUUID());
-				boolean alive = charge.isAlive();
-				charge.discard();
-				System.out.printf("[long_standing_fixes] MC-279003 %s: the wind charge moved %.3f blocks (alive %s)%n", fixed ? "fixed" : "vanilla", moved, alive);
-				if (fixed) helper.assertTrue(moved > 0.3, "the explosion moved the wind charge only " + moved + " blocks");
-				else helper.assertTrue(moved < 0.05, "the wind charge moved " + moved + " blocks without the fix; is MC-279003 fixed?");
-				helper.succeed();
-			});
+			double speed = charge.getDeltaMovement().subtract(before).length();
+			LongStandingFixes.VANILLA_ENTITIES.remove(charge.getUUID());
+			charge.discard();
+			System.out.printf("[long_standing_fixes] MC-279003 %s: the blast gave the wind charge %.3f blocks a tick%n", fixed ? "fixed" : "vanilla", speed);
+			if (fixed) helper.assertTrue(speed > 0.3, "the explosion gave the wind charge only " + speed + " blocks a tick");
+			else helper.assertTrue(speed < 0.01, "the explosion gave the wind charge " + speed + " blocks a tick without the fix; is MC-279003 fixed?");
+			helper.succeed();
 		});
 		*///?} else {
 		// on 1.21.1 explosions still move wind charges; nothing to fix
