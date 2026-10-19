@@ -46,6 +46,16 @@ public final class LongStandingFixes {
 	public static boolean explosionsPushWindCharges = true;
 	/** MC-147694 (1.21.1): a mob that hits a raised shield is knocked back. */
 	public static boolean shieldsRepelMobs = true;
+	/** MC-163962: A villager trade's demand never drops below 0, so prices still go up when you trade a lot. */
+	public static boolean villagerDemand = true;
+	/** MC-264285: Lighting a creeper doesn't use up an unbreakable flint and steel. */
+	public static boolean unbreakableIgniters = true;
+	/** MC-179072: A swelling creeper calms down when its player switches to creative or spectator. */
+	public static boolean creepersDefuse = true;
+	/** MC-262422: Thunderstorm lightning doesn't aim at spectators. */
+	public static boolean lightningSkipsSpectators = true;
+	/** MC-153010: With doMobLoot off, foxes don't drop what they carry. */
+	public static boolean foxMobLoot = true;
 
 	/** Set while the item-used-on-block trigger runs for a waxed copper bulb (MC-269636). */
 	public static final ThreadLocal<Boolean> UNWAXING_BULB = new ThreadLocal<>();
@@ -102,6 +112,11 @@ public final class LongStandingFixes {
 		honeySlide = Boolean.parseBoolean(props.getProperty("MC-278572.honeySlideSpeed", "true"));
 		explosionsPushWindCharges = Boolean.parseBoolean(props.getProperty("MC-279003.explosionsPushWindCharges", "true"));
 		shieldsRepelMobs = Boolean.parseBoolean(props.getProperty("MC-147694.shieldsRepelMobs", "true"));
+		villagerDemand = Boolean.parseBoolean(props.getProperty("MC-163962.villagerDemandStopsAtZero", "true"));
+		unbreakableIgniters = Boolean.parseBoolean(props.getProperty("MC-264285.keepUnbreakableFlintAndSteel", "true"));
+		creepersDefuse = Boolean.parseBoolean(props.getProperty("MC-179072.creepersDefuseForCreative", "true"));
+		lightningSkipsSpectators = Boolean.parseBoolean(props.getProperty("MC-262422.lightningSkipsSpectators", "true"));
+		foxMobLoot = Boolean.parseBoolean(props.getProperty("MC-153010.foxesFollowDoMobLoot", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -117,6 +132,11 @@ public final class LongStandingFixes {
 		props.setProperty("MC-278572.honeySlideSpeed", Boolean.toString(honeySlide));
 		props.setProperty("MC-279003.explosionsPushWindCharges", Boolean.toString(explosionsPushWindCharges));
 		props.setProperty("MC-147694.shieldsRepelMobs", Boolean.toString(shieldsRepelMobs));
+		props.setProperty("MC-163962.villagerDemandStopsAtZero", Boolean.toString(villagerDemand));
+		props.setProperty("MC-264285.keepUnbreakableFlintAndSteel", Boolean.toString(unbreakableIgniters));
+		props.setProperty("MC-179072.creepersDefuseForCreative", Boolean.toString(creepersDefuse));
+		props.setProperty("MC-262422.lightningSkipsSpectators", Boolean.toString(lightningSkipsSpectators));
+		props.setProperty("MC-153010.foxesFollowDoMobLoot", Boolean.toString(foxMobLoot));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
@@ -130,5 +150,13 @@ public final class LongStandingFixes {
 	/** The signal a container of 4 one-item slots gives: 0 when empty, 4, 8, 11 or 15. */
 	public static int campfireSignal(int filledSlots) {
 		return filledSlots == 0 ? 0 : 1 + (int) Math.floor(filledSlots / 4.0 * 14.0);
+	}
+
+	/** The doMobLoot game rule. */
+	public static boolean mobLoot(net.minecraft.server.level.ServerLevel level) {
+		//? if >=1.21.11 {
+		/*return level.getGameRules().get(net.minecraft.world.level.gamerules.GameRules.MOB_DROPS);
+		*///?} else
+		return level.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_DOMOBLOOT);
 	}
 }

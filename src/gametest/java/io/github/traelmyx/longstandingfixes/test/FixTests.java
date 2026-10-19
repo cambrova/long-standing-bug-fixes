@@ -699,4 +699,192 @@ public final class FixTests {
 	public static void shieldRepelsMobVanilla(GameTestHelper helper) {
 		shield(helper, false);
 	}
+
+	/** A trade nobody uses restocks 100 times; its demand should end at 0, not at -1200. */
+	private static void demand(GameTestHelper helper, boolean fixed) {
+		var offer = new net.minecraft.world.item.trading.MerchantOffer(new net.minecraft.world.item.trading.ItemCost(Items.EMERALD, 1), new ItemStack(Items.BREAD), 12, 1, 0.05F);
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(offer);
+		for (int i = 0; i < 100; i++) offer.updateDemand();
+		int idle = offer.getDemand();
+		// then it sells out once; the next restock should raise the demand (and with it the price)
+		for (int i = 0; i < 12; i++) offer.increaseUses();
+		offer.updateDemand();
+		int busy = offer.getDemand();
+		LongStandingFixes.VANILLA_OBJECTS.remove(offer);
+		System.out.printf("[long_standing_fixes] MC-163962 %s: demand %d after 100 idle restocks, %d after selling out%n", fixed ? "fixed" : "vanilla", idle, busy);
+		if (fixed) helper.assertTrue(idle == 0 && busy == 12, "demand was " + idle + " after idle restocks and " + busy + " after selling out");
+		else helper.assertTrue(idle == -1200 && busy < 0, "vanilla demand was " + idle + " and " + busy + "; is MC-163962 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-163962: an unused trade's demand stops at 0. */
+	public static void villagerDemandStopsAtZero(GameTestHelper helper) {
+		demand(helper, true);
+	}
+
+	/** Without the fix it keeps falling. */
+	public static void villagerDemandStopsAtZeroVanilla(GameTestHelper helper) {
+		demand(helper, false);
+	}
+
+	/** Light a creeper with an unbreakable flint and steel. */
+	private static void unbreakableIgniter(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		var player = realPlayer(helper, fixed ? "test-unbreakable" : "test-unbreakable-vanilla");
+		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		//? if >=26 {
+		/*net.minecraft.world.entity.monster.Creeper creeper = helper.spawn(net.minecraft.world.entity.EntityTypes.CREEPER, new BlockPos(2, 1, 2));
+		*///?} else
+		net.minecraft.world.entity.monster.Creeper creeper = helper.spawn(EntityType.CREEPER, new BlockPos(2, 1, 2));
+		creeper.setNoAi(true);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(creeper.getUUID());
+		ItemStack flint = new ItemStack(Items.FLINT_AND_STEEL);
+		//? if >=1.21.11 {
+		/*flint.set(net.minecraft.core.component.DataComponents.UNBREAKABLE, net.minecraft.util.Unit.INSTANCE);
+		*///?} else
+		flint.set(net.minecraft.core.component.DataComponents.UNBREAKABLE, new net.minecraft.world.item.component.Unbreakable(true));
+		player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, flint);
+		click(player, creeper);
+		boolean lit = creeper.isIgnited();
+		ItemStack held = player.getItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND);
+		LongStandingFixes.VANILLA_ENTITIES.remove(creeper.getUUID());
+		creeper.discard();
+		helper.getLevel().getServer().getPlayerList().remove(player);
+		System.out.printf("[long_standing_fixes] MC-264285 %s: lit %s, flint and steel left: %s%n", fixed ? "fixed" : "vanilla", lit, held);
+		helper.assertTrue(lit, "the creeper was not lit");
+		if (fixed) helper.assertTrue(held.is(Items.FLINT_AND_STEEL) && held.getDamageValue() == 0, "the unbreakable flint and steel became " + held);
+		else helper.assertTrue(held.isEmpty(), "vanilla kept the unbreakable flint and steel (" + held + "); is MC-264285 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-264285: an unbreakable flint and steel survives lighting a creeper. */
+	public static void unbreakableFlintAndSteelKept(GameTestHelper helper) {
+		unbreakableIgniter(helper, true);
+	}
+
+	/** Without the fix it is used up. */
+	public static void unbreakableFlintAndSteelKeptVanilla(GameTestHelper helper) {
+		unbreakableIgniter(helper, false);
+	}
+
+	/** A creeper starts to swell next to a survival player, who then switches to creative. */
+	private static void defuse(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 6; x++) for (int z = 0; z < 5; z++) {
+			helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+			for (int y = 1; y < 4; y++) helper.setBlock(new BlockPos(x, y, z), Blocks.AIR);
+		}
+		var player = realPlayer(helper, fixed ? "test-defuse" : "test-defuse-vanilla");
+		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(1.5, 1, 2.5));
+		player.teleportTo(helper.getLevel(), at.x, at.y, at.z, -90.0F, 0.0F);
+		//? if >=26 {
+		/*net.minecraft.world.entity.monster.Creeper creeper = helper.spawn(net.minecraft.world.entity.EntityTypes.CREEPER, new BlockPos(3, 1, 2));
+		*///?} else
+		net.minecraft.world.entity.monster.Creeper creeper = helper.spawn(EntityType.CREEPER, new BlockPos(3, 1, 2));
+		creeper.setNoAi(true);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(creeper.getUUID());
+		creeper.setTarget(player);
+		var goal = new net.minecraft.world.entity.ai.goal.SwellGoal(creeper);
+		goal.start();
+		goal.tick();
+		int before = creeper.getSwellDir();
+		player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
+		goal.tick();
+		int after = creeper.getSwellDir();
+		LongStandingFixes.VANILLA_ENTITIES.remove(creeper.getUUID());
+		creeper.discard();
+		helper.getLevel().getServer().getPlayerList().remove(player);
+		System.out.printf("[long_standing_fixes] MC-179072 %s: swelling %d in survival, %d after switching to creative%n", fixed ? "fixed" : "vanilla", before, after);
+		helper.assertTrue(before == 1, "the creeper did not start to swell next to a survival player");
+		if (fixed) helper.assertTrue(after == -1, "the creeper kept swelling after the player switched to creative");
+		else helper.assertTrue(after == 1, "vanilla creeper stopped swelling (" + after + "); is MC-179072 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-179072: a creeper stops swelling when its player switches to creative. */
+	public static void creeperDefusesForCreative(GameTestHelper helper) {
+		defuse(helper, true);
+	}
+
+	/** Without the fix it keeps swelling. */
+	public static void creeperDefusesForCreativeVanilla(GameTestHelper helper) {
+		defuse(helper, false);
+	}
+
+	/** A spectator stands under open sky; ask where lightning aimed at their spot would strike. */
+	private static void lightning(GameTestHelper helper, boolean fixed) {
+		var player = realPlayer(helper, fixed ? "test-lightning" : "test-lightning-vanilla");
+		player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
+		var level = helper.getLevel();
+		var spot = helper.absolutePos(new BlockPos(2, 1, 2));
+		int top = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, spot.getX(), spot.getZ());
+		// above everything, so the spectator sees the sky
+		player.teleportTo(level, spot.getX() + 0.5, top + 3, spot.getZ() + 0.5, 0.0F, 0.0F);
+		BlockPos aim = new BlockPos(spot.getX(), top, spot.getZ());
+		BlockPos hit = ((io.github.traelmyx.longstandingfixes.mixin.LightningTargetInvoker) level).longstandingfixes$findLightningTargetAround(aim);
+		boolean atPlayer = hit.equals(player.blockPosition());
+		LongStandingFixes.VANILLA_OBJECTS.remove(player);
+		level.getServer().getPlayerList().remove(player);
+		System.out.printf("[long_standing_fixes] MC-262422 %s: lightning aimed at %s, spectator at %s%n", fixed ? "fixed" : "vanilla", hit, player.blockPosition());
+		if (fixed) helper.assertTrue(!atPlayer, "lightning aimed at the spectator");
+		else helper.assertTrue(atPlayer, "vanilla lightning did not aim at the spectator; is MC-262422 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-262422: thunderstorm lightning doesn't aim at spectators. */
+	public static void lightningSkipsSpectators(GameTestHelper helper) {
+		lightning(helper, true);
+	}
+
+	/** Without the fix it picks the spectator. */
+	public static void lightningSkipsSpectatorsVanilla(GameTestHelper helper) {
+		lightning(helper, false);
+	}
+
+	private static void setMobLoot(net.minecraft.server.level.ServerLevel level, boolean value) {
+		//? if >=1.21.11 {
+		/*level.getGameRules().set(net.minecraft.world.level.gamerules.GameRules.MOB_DROPS, value, level.getServer());
+		*///?} else
+		level.getGameRules().getRule(net.minecraft.world.level.GameRules.RULE_DOMOBLOOT).set(value, level.getServer());
+	}
+
+	/** A fox holding an emerald dies with doMobLoot off (switched off only for that moment). */
+	private static void fox(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		var level = helper.getLevel();
+		//? if >=26 {
+		/*var fox = helper.spawn(net.minecraft.world.entity.EntityTypes.FOX, new BlockPos(2, 1, 2));
+		*///?} else
+		var fox = helper.spawn(EntityType.FOX, new BlockPos(2, 1, 2));
+		fox.setNoAi(true);
+		fox.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.EMERALD));
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(fox.getUUID());
+		boolean rule = LongStandingFixes.mobLoot(level);
+		setMobLoot(level, false);
+		//? if >=1.21.11 {
+		/*fox.hurtServer(level, level.damageSources().genericKill(), 1000.0F);
+		*///?} else
+		fox.hurt(level.damageSources().genericKill(), 1000.0F);
+		setMobLoot(level, rule);
+		var box = new net.minecraft.world.phys.AABB(helper.absolutePos(new BlockPos(0, 0, 0))).inflate(5);
+		long emeralds = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, box, e -> e.getItem().is(Items.EMERALD)).size();
+		LongStandingFixes.VANILLA_ENTITIES.remove(fox.getUUID());
+		level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, box, e -> e.getItem().is(Items.EMERALD)).forEach(net.minecraft.world.entity.Entity::discard);
+		System.out.printf("[long_standing_fixes] MC-153010 %s: fox dead %s, dropped %d emeralds with doMobLoot off%n", fixed ? "fixed" : "vanilla", fox.isDeadOrDying(), emeralds);
+		helper.assertTrue(fox.isDeadOrDying(), "the fox did not die");
+		if (fixed) helper.assertTrue(emeralds == 0, "the fox dropped its emerald with doMobLoot off");
+		else helper.assertTrue(emeralds == 1, "vanilla fox dropped " + emeralds + " emeralds; is MC-153010 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-153010: with doMobLoot off a fox drops nothing. */
+	public static void foxFollowsDoMobLoot(GameTestHelper helper) {
+		fox(helper, true);
+	}
+
+	/** Without the fix it drops what it carries. */
+	public static void foxFollowsDoMobLootVanilla(GameTestHelper helper) {
+		fox(helper, false);
+	}
 }

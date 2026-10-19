@@ -80,6 +80,16 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("explosion_pushes_wind_charge_vanilla", () -> FixTests::explosionPushesWindChargeVanilla);
 		FUNCTIONS.register("shield_repels_mob", () -> FixTests::shieldRepelsMob);
 		FUNCTIONS.register("shield_repels_mob_vanilla", () -> FixTests::shieldRepelsMobVanilla);
+		FUNCTIONS.register("villager_demand_stops_at_zero", () -> FixTests::villagerDemandStopsAtZero);
+		FUNCTIONS.register("villager_demand_stops_at_zero_vanilla", () -> FixTests::villagerDemandStopsAtZeroVanilla);
+		FUNCTIONS.register("unbreakable_flint_and_steel_kept", () -> FixTests::unbreakableFlintAndSteelKept);
+		FUNCTIONS.register("unbreakable_flint_and_steel_kept_vanilla", () -> FixTests::unbreakableFlintAndSteelKeptVanilla);
+		FUNCTIONS.register("creeper_defuses_for_creative", () -> FixTests::creeperDefusesForCreative);
+		FUNCTIONS.register("creeper_defuses_for_creative_vanilla", () -> FixTests::creeperDefusesForCreativeVanilla);
+		FUNCTIONS.register("lightning_skips_spectators", () -> FixTests::lightningSkipsSpectators);
+		FUNCTIONS.register("lightning_skips_spectators_vanilla", () -> FixTests::lightningSkipsSpectatorsVanilla);
+		FUNCTIONS.register("fox_follows_do_mob_loot", () -> FixTests::foxFollowsDoMobLoot);
+		FUNCTIONS.register("fox_follows_do_mob_loot_vanilla", () -> FixTests::foxFollowsDoMobLootVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -117,6 +127,16 @@ public class NeoForgeGameTests {
 		register(event, env, "explosion_pushes_wind_charge_vanilla", 40, 1, 1);
 		register(event, env, "shield_repels_mob", 40, 1, 1);
 		register(event, env, "shield_repels_mob_vanilla", 40, 1, 1);
+		register(event, env, "villager_demand_stops_at_zero", 40, 1, 1);
+		register(event, env, "villager_demand_stops_at_zero_vanilla", 40, 1, 1);
+		register(event, env, "unbreakable_flint_and_steel_kept", 40, 1, 1);
+		register(event, env, "unbreakable_flint_and_steel_kept_vanilla", 40, 1, 1);
+		register(event, env, "creeper_defuses_for_creative", 40, 1, 1);
+		register(event, env, "creeper_defuses_for_creative_vanilla", 40, 1, 1);
+		register(event, env, "lightning_skips_spectators", 40, 1, 1);
+		register(event, env, "lightning_skips_spectators_vanilla", 40, 1, 1);
+		register(event, env, "fox_follows_do_mob_loot", 40, 1, 1);
+		register(event, env, "fox_follows_do_mob_loot_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -285,6 +305,56 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void shieldRepelsMobVanilla(GameTestHelper helper) {
 		FixTests.shieldRepelsMobVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void villagerDemandStopsAtZero(GameTestHelper helper) {
+		FixTests.villagerDemandStopsAtZero(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void villagerDemandStopsAtZeroVanilla(GameTestHelper helper) {
+		FixTests.villagerDemandStopsAtZeroVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void unbreakableFlintAndSteelKept(GameTestHelper helper) {
+		FixTests.unbreakableFlintAndSteelKept(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void unbreakableFlintAndSteelKeptVanilla(GameTestHelper helper) {
+		FixTests.unbreakableFlintAndSteelKeptVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void creeperDefusesForCreative(GameTestHelper helper) {
+		FixTests.creeperDefusesForCreative(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void creeperDefusesForCreativeVanilla(GameTestHelper helper) {
+		FixTests.creeperDefusesForCreativeVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void lightningSkipsSpectators(GameTestHelper helper) {
+		FixTests.lightningSkipsSpectators(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void lightningSkipsSpectatorsVanilla(GameTestHelper helper) {
+		FixTests.lightningSkipsSpectatorsVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void foxFollowsDoMobLoot(GameTestHelper helper) {
+		FixTests.foxFollowsDoMobLoot(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void foxFollowsDoMobLootVanilla(GameTestHelper helper) {
+		FixTests.foxFollowsDoMobLootVanilla(helper);
 	}
 	//?}
 }

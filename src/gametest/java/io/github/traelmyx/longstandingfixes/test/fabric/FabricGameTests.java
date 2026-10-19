@@ -163,6 +163,56 @@ public class FabricGameTests {
 	public void shieldRepelsMobVanilla(GameTestHelper helper) {
 		FixTests.shieldRepelsMobVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void villagerDemandStopsAtZero(GameTestHelper helper) {
+		FixTests.villagerDemandStopsAtZero(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void villagerDemandStopsAtZeroVanilla(GameTestHelper helper) {
+		FixTests.villagerDemandStopsAtZeroVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void unbreakableFlintAndSteelKept(GameTestHelper helper) {
+		FixTests.unbreakableFlintAndSteelKept(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void unbreakableFlintAndSteelKeptVanilla(GameTestHelper helper) {
+		FixTests.unbreakableFlintAndSteelKeptVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void creeperDefusesForCreative(GameTestHelper helper) {
+		FixTests.creeperDefusesForCreative(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void creeperDefusesForCreativeVanilla(GameTestHelper helper) {
+		FixTests.creeperDefusesForCreativeVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void lightningSkipsSpectators(GameTestHelper helper) {
+		FixTests.lightningSkipsSpectators(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void lightningSkipsSpectatorsVanilla(GameTestHelper helper) {
+		FixTests.lightningSkipsSpectatorsVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void foxFollowsDoMobLoot(GameTestHelper helper) {
+		FixTests.foxFollowsDoMobLoot(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void foxFollowsDoMobLootVanilla(GameTestHelper helper) {
+		FixTests.foxFollowsDoMobLootVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -316,6 +366,56 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void shieldRepelsMobVanilla(GameTestHelper helper) {
 		FixTests.shieldRepelsMobVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void villagerDemandStopsAtZero(GameTestHelper helper) {
+		FixTests.villagerDemandStopsAtZero(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void villagerDemandStopsAtZeroVanilla(GameTestHelper helper) {
+		FixTests.villagerDemandStopsAtZeroVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void unbreakableFlintAndSteelKept(GameTestHelper helper) {
+		FixTests.unbreakableFlintAndSteelKept(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void unbreakableFlintAndSteelKeptVanilla(GameTestHelper helper) {
+		FixTests.unbreakableFlintAndSteelKeptVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void creeperDefusesForCreative(GameTestHelper helper) {
+		FixTests.creeperDefusesForCreative(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void creeperDefusesForCreativeVanilla(GameTestHelper helper) {
+		FixTests.creeperDefusesForCreativeVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void lightningSkipsSpectators(GameTestHelper helper) {
+		FixTests.lightningSkipsSpectators(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void lightningSkipsSpectatorsVanilla(GameTestHelper helper) {
+		FixTests.lightningSkipsSpectatorsVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void foxFollowsDoMobLoot(GameTestHelper helper) {
+		FixTests.foxFollowsDoMobLoot(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void foxFollowsDoMobLootVanilla(GameTestHelper helper) {
+		FixTests.foxFollowsDoMobLootVanilla(helper);
 	}
 }
 ^///?}

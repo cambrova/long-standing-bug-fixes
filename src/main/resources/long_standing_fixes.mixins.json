@@ -11,15 +11,20 @@
 		"CreeperMixin",
 		"EntityMixin",
 		"FallingBlockEntityMixin",
+		"FoxMixin",
 		"HoneyBlockMixin",
-		"ItemEntityMixin",
 		"IronGolemMixin",
+		"ItemEntityMixin",
 		"ItemUsedOnLocationTriggerMixin",
+		"LightningTargetInvoker",
 		"LivingEntityMixin",
+		"MerchantOfferMixin",
 		"PlayerAdvancementsMixin",
 		"PlayerMixin",
 		"ServerExplosionMixin",
-		"ServerPlayerMixin"
+		"ServerLevelMixin",
+		"ServerPlayerMixin",
+		"SwellGoalMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
