@@ -44,10 +44,10 @@ public final class LongStandingFixes {
 	public static boolean honeySlide = true;
 	/** MC-279003 (1.21.4 and newer): explosions push wind charges again. */
 	public static boolean explosionsPushWindCharges = true;
-	/** MC-147694 (1.21.1): a mob that hits a raised shield is knocked back. */
-	public static boolean shieldsRepelMobs = true;
-	/** MC-163962: A villager trade's demand never drops below 0, so prices still go up when you trade a lot. */
-	public static boolean villagerDemand = true;
+	/** MC-147694 (1.21.1): a mob that hits a raised shield is knocked back. OFF by default: a combat change. */
+	public static boolean shieldsRepelMobs = false;
+	/** MC-163962: A villager trade's demand never drops below 0, so prices still go up when you trade a lot. OFF by default: trading halls rely on cheap trades. */
+	public static boolean villagerDemand = false;
 	/** MC-264285: Lighting a creeper doesn't use up an unbreakable flint and steel. */
 	public static boolean unbreakableIgniters = true;
 	/** MC-179072: A swelling creeper calms down when its player switches to creative or spectator. */
@@ -156,8 +156,8 @@ public final class LongStandingFixes {
 		dispenserLightsPortals = Boolean.parseBoolean(props.getProperty("MC-135198.dispensersLightPortals", "true"));
 		honeySlide = Boolean.parseBoolean(props.getProperty("MC-278572.honeySlideSpeed", "true"));
 		explosionsPushWindCharges = Boolean.parseBoolean(props.getProperty("MC-279003.explosionsPushWindCharges", "true"));
-		shieldsRepelMobs = Boolean.parseBoolean(props.getProperty("MC-147694.shieldsRepelMobs", "true"));
-		villagerDemand = Boolean.parseBoolean(props.getProperty("MC-163962.villagerDemandStopsAtZero", "true"));
+		shieldsRepelMobs = Boolean.parseBoolean(props.getProperty("MC-147694.shieldsRepelMobs", "false"));
+		villagerDemand = Boolean.parseBoolean(props.getProperty("MC-163962.villagerDemandStopsAtZero", "false"));
 		unbreakableIgniters = Boolean.parseBoolean(props.getProperty("MC-264285.keepUnbreakableFlintAndSteel", "true"));
 		creepersDefuse = Boolean.parseBoolean(props.getProperty("MC-179072.creepersDefuseForCreative", "true"));
 		lightningSkipsSpectators = Boolean.parseBoolean(props.getProperty("MC-262422.lightningSkipsSpectators", "true"));

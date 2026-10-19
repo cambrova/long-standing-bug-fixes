@@ -675,7 +675,11 @@ public final class FixTests {
 		var server = level.getServer();
 		var difficulty = server.getWorldData().getDifficulty();
 		server.setDifficulty(net.minecraft.world.Difficulty.NORMAL, true);
+		// the fix is off by default; switch it on for this hit only
+		boolean enabled = LongStandingFixes.shieldsRepelMobs;
+		LongStandingFixes.shieldsRepelMobs = true;
 		player.hurt(player.damageSources().mobAttack(zombie), 4.0F);
+		LongStandingFixes.shieldsRepelMobs = enabled;
 		server.setDifficulty(difficulty, true);
 		var push = zombie.getDeltaMovement();
 		LongStandingFixes.VANILLA_ENTITIES.remove(zombie.getUUID());
@@ -707,12 +711,16 @@ public final class FixTests {
 	private static void demand(GameTestHelper helper, boolean fixed) {
 		var offer = new net.minecraft.world.item.trading.MerchantOffer(new net.minecraft.world.item.trading.ItemCost(Items.EMERALD, 1), new ItemStack(Items.BREAD), 12, 1, 0.05F);
 		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(offer);
+		// the fix is off by default; switch it on for this test only
+		boolean enabled = LongStandingFixes.villagerDemand;
+		LongStandingFixes.villagerDemand = true;
 		for (int i = 0; i < 100; i++) offer.updateDemand();
 		int idle = offer.getDemand();
 		// then it sells out once; the next restock should raise the demand (and with it the price)
 		for (int i = 0; i < 12; i++) offer.increaseUses();
 		offer.updateDemand();
 		int busy = offer.getDemand();
+		LongStandingFixes.villagerDemand = enabled;
 		LongStandingFixes.VANILLA_OBJECTS.remove(offer);
 		System.out.printf("[long_standing_fixes] MC-163962 %s: demand %d after 100 idle restocks, %d after selling out%n", fixed ? "fixed" : "vanilla", idle, busy);
 		if (fixed) helper.assertTrue(idle == 0 && busy == 12, "demand was " + idle + " after idle restocks and " + busy + " after selling out");
