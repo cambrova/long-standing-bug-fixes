@@ -767,6 +767,14 @@ public final class FixTests {
 		unbreakableIgniter(helper, false);
 	}
 
+	/** Moves a test player within its level. */
+	private static void place(net.minecraft.server.level.ServerPlayer player, double x, double y, double z, float yRot) {
+		//? if >=1.21.11 {
+		/*player.snapTo(x, y, z, yRot, 0.0F);
+		*///?} else
+		player.moveTo(x, y, z, yRot, 0.0F);
+	}
+
 	/** A creeper starts to swell next to a survival player, who then switches to creative. */
 	private static void defuse(GameTestHelper helper, boolean fixed) {
 		for (int x = 0; x < 6; x++) for (int z = 0; z < 5; z++) {
@@ -776,7 +784,7 @@ public final class FixTests {
 		var player = realPlayer(helper, fixed ? "test-defuse" : "test-defuse-vanilla");
 		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
 		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(1.5, 1, 2.5));
-		player.teleportTo(helper.getLevel(), at.x, at.y, at.z, -90.0F, 0.0F);
+		place(player, at.x, at.y, at.z, -90.0F);
 		//? if >=26 {
 		/*net.minecraft.world.entity.monster.Creeper creeper = helper.spawn(net.minecraft.world.entity.EntityTypes.CREEPER, new BlockPos(3, 1, 2));
 		*///?} else
@@ -820,7 +828,7 @@ public final class FixTests {
 		var spot = helper.absolutePos(new BlockPos(2, 1, 2));
 		int top = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, spot.getX(), spot.getZ());
 		// above everything, so the spectator sees the sky
-		player.teleportTo(level, spot.getX() + 0.5, top + 3, spot.getZ() + 0.5, 0.0F, 0.0F);
+		place(player, spot.getX() + 0.5, top + 3, spot.getZ() + 0.5, 0.0F);
 		BlockPos aim = new BlockPos(spot.getX(), top, spot.getZ());
 		BlockPos hit = ((io.github.traelmyx.longstandingfixes.mixin.LightningTargetInvoker) level).longstandingfixes$findLightningTargetAround(aim);
 		boolean atPlayer = hit.equals(player.blockPosition());
