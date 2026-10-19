@@ -666,7 +666,12 @@ public final class FixTests {
 		zombie.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
 		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(zombie.getUUID());
 		float health = player.getHealth();
+		// mob hits do nothing to players on peaceful, which the test server may run on; switch for this one hit
+		var server = level.getServer();
+		var difficulty = server.getWorldData().getDifficulty();
+		server.setDifficulty(net.minecraft.world.Difficulty.NORMAL, true);
 		player.hurt(player.damageSources().mobAttack(zombie), 4.0F);
+		server.setDifficulty(difficulty, true);
 		var push = zombie.getDeltaMovement();
 		LongStandingFixes.VANILLA_ENTITIES.remove(zombie.getUUID());
 		level.getServer().getPlayerList().remove(player);
