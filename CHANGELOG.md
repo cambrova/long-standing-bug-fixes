@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0
+
+- MC-163962: a villager trade's demand stops at 0 instead of falling forever, so prices still go up when a trade is used a lot.
+- MC-264285: lighting a creeper no longer uses up an unbreakable flint and steel.
+- MC-179072: a swelling creeper calms down when its player switches to creative or spectator.
+- MC-262422: thunderstorm lightning no longer aims at spectators.
+- MC-153010: with doMobLoot off, foxes no longer drop what they carry in their mouth.
+
 ## 1.5.0
 
 - MC-278572 (1.21.11 and newer): dropped items, TNT and minecarts slide down honey blocks at the 1.21.1 speed again, instead of almost twice as fast.

@@ -19,6 +19,11 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-278572](https://bugs.mojang.com/browse/MC-278572) | Items, TNT and minecarts slide down honey at the 1.21.1 speed | 1.21.2+ |
 | [MC-279003](https://bugs.mojang.com/browse/MC-279003) | Explosions push wind charges | 1.21.4+ |
 | [MC-147694](https://bugs.mojang.com/browse/MC-147694) | Mobs that hit a raised shield are knocked back | 1.21.1 |
+| [MC-163962](https://bugs.mojang.com/browse/MC-163962) | Villager trade demand stops at 0 instead of falling forever | all |
+| [MC-264285](https://bugs.mojang.com/browse/MC-264285) | Lighting a creeper doesn't use up an unbreakable flint and steel | all |
+| [MC-179072](https://bugs.mojang.com/browse/MC-179072) | Creepers calm down when their player switches to creative or spectator | all |
+| [MC-262422](https://bugs.mojang.com/browse/MC-262422) | Thunderstorm lightning doesn't aim at spectators | all |
+| [MC-153010](https://bugs.mojang.com/browse/MC-153010) | Foxes follow doMobLoot | all |
 
 Server side (or singleplayer); clients don't need it.
 
