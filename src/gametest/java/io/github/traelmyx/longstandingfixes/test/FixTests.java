@@ -604,4 +604,44 @@ public final class FixTests {
 	public static void honeySlideSpeedVanilla(GameTestHelper helper) {
 		honey(helper, false);
 	}
+
+	/** A wind charge hangs in the air next to an explosion that breaks no blocks; see how far the blast moves it. */
+	private static void windChargeBlast(GameTestHelper helper, boolean fixed) {
+		//? if >=1.21.11 {
+		/*for (int x = 0; x < 7; x++) for (int z = 0; z < 5; z++) for (int y = 1; y < 5; y++) helper.setBlock(new BlockPos(x, y, z), Blocks.AIR);
+		var level = helper.getLevel();
+		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(3.5, 2.5, 2.5));
+		var charge = new net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.WindCharge(level, at.x, at.y, at.z, net.minecraft.world.phys.Vec3.ZERO);
+		charge.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(charge.getUUID());
+		level.addFreshEntity(charge);
+		var start = charge.position();
+		helper.runAfterDelay(2, () -> {
+			level.explode(null, at.x - 1.5, at.y, at.z, 3.0F, net.minecraft.world.level.Level.ExplosionInteraction.NONE);
+			helper.runAfterDelay(3, () -> {
+				double moved = charge.position().distanceTo(start);
+				LongStandingFixes.VANILLA_ENTITIES.remove(charge.getUUID());
+				boolean alive = charge.isAlive();
+				charge.discard();
+				System.out.printf("[long_standing_fixes] MC-279003 %s: the wind charge moved %.3f blocks (alive %s)%n", fixed ? "fixed" : "vanilla", moved, alive);
+				if (fixed) helper.assertTrue(moved > 0.3, "the explosion moved the wind charge only " + moved + " blocks");
+				else helper.assertTrue(moved < 0.05, "the wind charge moved " + moved + " blocks without the fix; is MC-279003 fixed?");
+				helper.succeed();
+			});
+		});
+		*///?} else {
+		// on 1.21.1 explosions still move wind charges; nothing to fix
+		helper.succeed();
+		//?}
+	}
+
+	/** MC-279003: an explosion pushes a wind charge away. */
+	public static void explosionPushesWindCharge(GameTestHelper helper) {
+		windChargeBlast(helper, true);
+	}
+
+	/** Without the fix the wind charge stays where it is. */
+	public static void explosionPushesWindChargeVanilla(GameTestHelper helper) {
+		windChargeBlast(helper, false);
+	}
 }

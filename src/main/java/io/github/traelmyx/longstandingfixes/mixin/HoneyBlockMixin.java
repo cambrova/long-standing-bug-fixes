@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /^*
  * MC-278572: since 1.21.2 honey converts an entity's fall speed as if gravity (0.08) and drag (0.98) had already been
- * applied after the block's effect, which is how mobs and players tick now. Items, TNT, minecarts and boats still get
- * block effects straight after they move, like before, so for them the conversion only makes them slide down about
+ * applied after the block's effect, which is how mobs and players tick now. Items, TNT and minecarts still get block
+ * effects straight after they move, like before, so for them the conversion only makes them slide down about
  * twice as fast. Non-living entities skip the conversion and slide at the 1.21.1 speed again.
  ^/
 @Mixin(HoneyBlock.class)
