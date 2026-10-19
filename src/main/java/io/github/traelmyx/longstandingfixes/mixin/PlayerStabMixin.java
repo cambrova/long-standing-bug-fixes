@@ -1,6 +1,6 @@
 package io.github.traelmyx.longstandingfixes.mixin;
 
-//? if >=1.21.11 {
+//? if >=26 {
 /*import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
  * MC-310859: a spear knocks its target back twice, first by a fixed 0.4 and then by the weapon's own knockback, which is
  * where the Knockback enchantment goes. For a player, the first push is sent to their game and then the "send my new
  * speed" flag is cleared, so the second push never reaches them and Knockback does nothing to players. The first push
- * now waits, and both are sent together, the way mobs get them.
+ * now waits, and both are sent together, the way mobs get them. 1.21.11 still pushed once with the sum, so it is fine.
  ^/
 @Mixin(Player.class)
 public abstract class PlayerStabMixin {
@@ -66,7 +66,7 @@ public abstract class PlayerStabMixin {
 	}
 }
 *///?} else {
-/** Not applied on 1.21.1, which has no spears (left out of the mixin list for that version). */
+/** Not applied before 26.1: 1.21.1 has no spears and 1.21.11 pushes once (left out of the mixin list for those versions). */
 public final class PlayerStabMixin {
 	private PlayerStabMixin() {
 	}

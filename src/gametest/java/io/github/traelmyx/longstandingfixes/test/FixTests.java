@@ -989,7 +989,11 @@ public final class FixTests {
 		CHANNELS.remove(victim);
 		System.out.printf("[long_standing_fixes] MC-310859 %s: hit %s, %d speed packets, last horizontal speed sent %.3f%n", fixed ? "fixed" : "vanilla", hit, packets, sent);
 		helper.assertTrue(hit && packets > 0, "the stab did not reach the victim (hit " + hit + ", " + packets + " speed packets)");
-		if (fixed) helper.assertTrue(sent > 0.6, "the victim's game got a speed of only " + sent + "; Knockback II should add to the 0.4 push");
+		//? if >=26 {
+		boolean bug = !fixed;
+		//?} else
+		/^boolean bug = false; // 1.21.11 pushes once with the sum^/
+		if (!bug) helper.assertTrue(sent > 0.6, "the victim's game got a speed of only " + sent + "; Knockback II should add to the 0.4 push");
 		else helper.assertTrue(Math.abs(sent - 0.4) < 0.05, "vanilla sent " + sent + ", expected the bare 0.4 push; is MC-310859 fixed?");
 		helper.succeed();
 		*///?} else {
