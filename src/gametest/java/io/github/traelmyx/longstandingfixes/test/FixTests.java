@@ -670,7 +670,10 @@ public final class FixTests {
 		var server = level.getServer();
 		var difficulty = server.getWorldData().getDifficulty();
 		server.setDifficulty(net.minecraft.world.Difficulty.NORMAL, true);
-		player.hurt(player.damageSources().mobAttack(zombie), 4.0F);
+		var source = player.damageSources().mobAttack(zombie);
+		boolean blocked = player.isDamageSourceBlocked(source), invulnerable = player.isInvulnerableTo(source);
+		boolean hurt = player.hurt(source, 4.0F);
+		System.out.printf("[long_standing_fixes] MC-147694 debug: difficulty was %s, blocked %s, invulnerable %s, hurt %s%n", difficulty, blocked, invulnerable, hurt);
 		server.setDifficulty(difficulty, true);
 		var push = zombie.getDeltaMovement();
 		LongStandingFixes.VANILLA_ENTITIES.remove(zombie.getUUID());
