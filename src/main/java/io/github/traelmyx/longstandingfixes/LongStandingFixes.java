@@ -44,6 +44,8 @@ public final class LongStandingFixes {
 	public static boolean honeySlide = true;
 	/** MC-279003 (1.21.4 and newer): explosions push wind charges again. */
 	public static boolean explosionsPushWindCharges = true;
+	/** MC-147694 (1.21.1): a mob that hits a raised shield is knocked back. */
+	public static boolean shieldsRepelMobs = true;
 
 	/** Set while the item-used-on-block trigger runs for a waxed copper bulb (MC-269636). */
 	public static final ThreadLocal<Boolean> UNWAXING_BULB = new ThreadLocal<>();
@@ -99,6 +101,7 @@ public final class LongStandingFixes {
 		dispenserLightsPortals = Boolean.parseBoolean(props.getProperty("MC-135198.dispensersLightPortals", "true"));
 		honeySlide = Boolean.parseBoolean(props.getProperty("MC-278572.honeySlideSpeed", "true"));
 		explosionsPushWindCharges = Boolean.parseBoolean(props.getProperty("MC-279003.explosionsPushWindCharges", "true"));
+		shieldsRepelMobs = Boolean.parseBoolean(props.getProperty("MC-147694.shieldsRepelMobs", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -113,6 +116,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-135198.dispensersLightPortals", Boolean.toString(dispenserLightsPortals));
 		props.setProperty("MC-278572.honeySlideSpeed", Boolean.toString(honeySlide));
 		props.setProperty("MC-279003.explosionsPushWindCharges", Boolean.toString(explosionsPushWindCharges));
+		props.setProperty("MC-147694.shieldsRepelMobs", Boolean.toString(shieldsRepelMobs));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

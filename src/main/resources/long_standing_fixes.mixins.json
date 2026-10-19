@@ -15,6 +15,7 @@
 		"ItemEntityMixin",
 		"IronGolemMixin",
 		"ItemUsedOnLocationTriggerMixin",
+		"LivingEntityMixin",
 		"PlayerAdvancementsMixin",
 		"PlayerMixin",
 		"ServerExplosionMixin",

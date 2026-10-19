@@ -644,4 +644,52 @@ public final class FixTests {
 	public static void explosionPushesWindChargeVanilla(GameTestHelper helper) {
 		windChargeBlast(helper, false);
 	}
+
+	/** A zombie hits a player who holds up a shield; see whether the zombie bounces off. */
+	private static void shield(GameTestHelper helper, boolean fixed) {
+		//? if <1.21.5 {
+		for (int x = 0; x < 6; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		var level = helper.getLevel();
+		var player = realPlayer(helper, fixed ? "test-shield" : "test-shield-vanilla");
+		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(1.5, 1, 2.5));
+		player.teleportTo(level, at.x, at.y, at.z, -90.0F, 0.0F);
+		player.setYHeadRot(-90.0F);
+		// newly joined players can't be hurt for 60 ticks
+		for (int i = 0; i < 61; i++) player.tick();
+		player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.SHIELD));
+		player.startUsingItem(net.minecraft.world.InteractionHand.OFF_HAND);
+		// a shield only blocks after it has been up for 5 ticks
+		for (int i = 0; i < 6; i++) player.doTick();
+		helper.assertTrue(player.isBlocking(), "the player is not blocking with the shield");
+		var zombie = helper.spawn(EntityType.ZOMBIE, new BlockPos(3, 1, 2));
+		zombie.setNoAi(true);
+		zombie.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(zombie.getUUID());
+		float health = player.getHealth();
+		player.hurt(player.damageSources().mobAttack(zombie), 4.0F);
+		var push = zombie.getDeltaMovement();
+		LongStandingFixes.VANILLA_ENTITIES.remove(zombie.getUUID());
+		level.getServer().getPlayerList().remove(player);
+		zombie.discard();
+		System.out.printf("[long_standing_fixes] MC-147694 %s: zombie pushed %.3f, %.3f; player health %.1f -> %.1f%n", fixed ? "fixed" : "vanilla", push.x, push.z, health, player.getHealth());
+		helper.assertTrue(player.getHealth() == health, "the shield did not block the hit");
+		// the zombie stands east of the player, so away from the shield is +x
+		if (fixed) helper.assertTrue(push.x > 0.3, "the zombie was not knocked back: " + push);
+		else helper.assertTrue(push.horizontalDistance() < 0.01, "the zombie was knocked back without the fix: " + push + "; is MC-147694 fixed?");
+		helper.succeed();
+		//?} else {
+		/*// shields were reworked in 1.21.5; the fix is for 1.21.1 only
+		helper.succeed();
+		*///?}
+	}
+
+	/** MC-147694: a mob that hits a raised shield is knocked back. */
+	public static void shieldRepelsMob(GameTestHelper helper) {
+		shield(helper, true);
+	}
+
+	/** Without the fix the mob stays put. */
+	public static void shieldRepelsMobVanilla(GameTestHelper helper) {
+		shield(helper, false);
+	}
 }
