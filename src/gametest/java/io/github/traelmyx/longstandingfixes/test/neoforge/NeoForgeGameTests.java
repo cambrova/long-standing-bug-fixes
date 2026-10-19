@@ -92,6 +92,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("fox_follows_do_mob_loot_vanilla", () -> FixTests::foxFollowsDoMobLootVanilla);
 		FUNCTIONS.register("cauldron_follows_mob_griefing", () -> FixTests::cauldronFollowsMobGriefing);
 		FUNCTIONS.register("cauldron_follows_mob_griefing_vanilla", () -> FixTests::cauldronFollowsMobGriefingVanilla);
+		FUNCTIONS.register("spear_knockback_on_players", () -> FixTests::spearKnockbackOnPlayers);
+		FUNCTIONS.register("spear_knockback_on_players_vanilla", () -> FixTests::spearKnockbackOnPlayersVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -141,6 +143,8 @@ public class NeoForgeGameTests {
 		register(event, env, "fox_follows_do_mob_loot_vanilla", 40, 1, 1);
 		register(event, env, "cauldron_follows_mob_griefing", 40, 1, 1);
 		register(event, env, "cauldron_follows_mob_griefing_vanilla", 40, 1, 1);
+		register(event, env, "spear_knockback_on_players", 40, 1, 1);
+		register(event, env, "spear_knockback_on_players_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -369,6 +373,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void cauldronFollowsMobGriefingVanilla(GameTestHelper helper) {
 		FixTests.cauldronFollowsMobGriefingVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void spearKnockbackOnPlayers(GameTestHelper helper) {
+		FixTests.spearKnockbackOnPlayers(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void spearKnockbackOnPlayersVanilla(GameTestHelper helper) {
+		FixTests.spearKnockbackOnPlayersVanilla(helper);
 	}
 	//?}
 }

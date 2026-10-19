@@ -223,6 +223,16 @@ public class FabricGameTests {
 	public void cauldronFollowsMobGriefingVanilla(GameTestHelper helper) {
 		FixTests.cauldronFollowsMobGriefingVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void spearKnockbackOnPlayers(GameTestHelper helper) {
+		FixTests.spearKnockbackOnPlayers(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void spearKnockbackOnPlayersVanilla(GameTestHelper helper) {
+		FixTests.spearKnockbackOnPlayersVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -436,6 +446,16 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void cauldronFollowsMobGriefingVanilla(GameTestHelper helper) {
 		FixTests.cauldronFollowsMobGriefingVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void spearKnockbackOnPlayers(GameTestHelper helper) {
+		FixTests.spearKnockbackOnPlayers(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void spearKnockbackOnPlayersVanilla(GameTestHelper helper) {
+		FixTests.spearKnockbackOnPlayersVanilla(helper);
 	}
 }
 ^///?}

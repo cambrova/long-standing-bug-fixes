@@ -58,6 +58,8 @@ public final class LongStandingFixes {
 	public static boolean foxMobLoot = true;
 	/** MC-248588: with mobGriefing off, burning mobs don't use up water or powder snow in cauldrons. */
 	public static boolean cauldronMobGriefing = true;
+	/** MC-310859 (1.21.11 and newer): spears with Knockback knock players back too. */
+	public static boolean spearKnockbackPlayers = true;
 
 	/** Set while the item-used-on-block trigger runs for a waxed copper bulb (MC-269636). */
 	public static final ThreadLocal<Boolean> UNWAXING_BULB = new ThreadLocal<>();
@@ -120,6 +122,7 @@ public final class LongStandingFixes {
 		lightningSkipsSpectators = Boolean.parseBoolean(props.getProperty("MC-262422.lightningSkipsSpectators", "true"));
 		foxMobLoot = Boolean.parseBoolean(props.getProperty("MC-153010.foxesFollowDoMobLoot", "true"));
 		cauldronMobGriefing = Boolean.parseBoolean(props.getProperty("MC-248588.cauldronsFollowMobGriefing", "true"));
+		spearKnockbackPlayers = Boolean.parseBoolean(props.getProperty("MC-310859.spearKnockbackOnPlayers", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -141,6 +144,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-262422.lightningSkipsSpectators", Boolean.toString(lightningSkipsSpectators));
 		props.setProperty("MC-153010.foxesFollowDoMobLoot", Boolean.toString(foxMobLoot));
 		props.setProperty("MC-248588.cauldronsFollowMobGriefing", Boolean.toString(cauldronMobGriefing));
+		props.setProperty("MC-310859.spearKnockbackOnPlayers", Boolean.toString(spearKnockbackPlayers));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

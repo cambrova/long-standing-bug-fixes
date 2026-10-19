@@ -175,13 +175,16 @@ public final class FixTests {
 		windCharge(helper, false);
 	}
 
+	/** Where each test player's outgoing packets end up, to read what the server sent them. */
+	private static final java.util.Map<Object, io.netty.channel.embedded.EmbeddedChannel> CHANNELS = java.util.Collections.synchronizedMap(new java.util.IdentityHashMap<>());
+
 	/** A plain server player in the player list; the helper's mock player always says it isn't a spectator. */
 	private static net.minecraft.server.level.ServerPlayer realPlayer(GameTestHelper helper, String name) {
 		var server = helper.getLevel().getServer();
 		var cookie = net.minecraft.server.network.CommonListenerCookie.createInitial(new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), name), false);
 		var player = new net.minecraft.server.level.ServerPlayer(server, helper.getLevel(), cookie.gameProfile(), cookie.clientInformation());
 		var connection = new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);
-		new io.netty.channel.embedded.EmbeddedChannel(connection);
+		CHANNELS.put(player, new io.netty.channel.embedded.EmbeddedChannel(connection));
 		server.getPlayerList().placeNewPlayer(connection, player, cookie);
 		//? if >=1.21.11 {
 		/*// a mock player's client never reports it has loaded, which makes it immune to all damage
@@ -943,5 +946,81 @@ public final class FixTests {
 	/** Without the fix it uses up a level. */
 	public static void cauldronFollowsMobGriefingVanilla(GameTestHelper helper) {
 		cauldron(helper, false);
+	}
+
+	/** One player stabs another with a Knockback II spear; read the speed the server sends the victim's game. */
+	private static void spear(GameTestHelper helper, boolean fixed) {
+		//? if >=1.21.11 {
+		/*for (int x = 0; x < 7; x++) for (int z = 0; z < 5; z++) {
+			helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+			for (int y = 1; y < 4; y++) helper.setBlock(new BlockPos(x, y, z), Blocks.AIR);
+		}
+		var level = helper.getLevel();
+		var attacker = realPlayer(helper, fixed ? "test-spear" : "test-spear-vanilla");
+		var victim = realPlayer(helper, fixed ? "test-stabbed" : "test-stabbed-vanilla");
+		attacker.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		victim.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		var a = helper.absoluteVec(new net.minecraft.world.phys.Vec3(1.5, 1, 2.5));
+		place(attacker, a.x, a.y, a.z, -90.0F);
+		place(victim, a.x + 2, a.y, a.z, 90.0F);
+		// newly joined players can't be hurt for 60 ticks
+		for (int i = 0; i < 61; i++) victim.tick();
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(victim);
+		ItemStack spear = new ItemStack(Items.IRON_SPEAR);
+		var knockback = level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(net.minecraft.world.item.enchantment.Enchantments.KNOCKBACK);
+		spear.enchant(knockback, 2);
+		attacker.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, spear);
+		var channel = CHANNELS.get(victim);
+		channel.runPendingTasks();
+		channel.outboundMessages().clear();
+		boolean hit = attacker.stabAttack(net.minecraft.world.entity.EquipmentSlot.MAINHAND, victim, 4.0F, true, true, false);
+		channel.runPendingTasks();
+		double sent = -1;
+		int packets = 0;
+		for (Object message : channel.outboundMessages())
+			if (message instanceof net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket motion && motionId(motion) == victim.getId()) {
+				packets++;
+				sent = motionOf(motion).horizontalDistance();
+			}
+		LongStandingFixes.VANILLA_OBJECTS.remove(victim);
+		level.getServer().getPlayerList().remove(attacker);
+		level.getServer().getPlayerList().remove(victim);
+		CHANNELS.remove(attacker);
+		CHANNELS.remove(victim);
+		System.out.printf("[long_standing_fixes] MC-310859 %s: hit %s, %d speed packets, last horizontal speed sent %.3f%n", fixed ? "fixed" : "vanilla", hit, packets, sent);
+		helper.assertTrue(hit && packets > 0, "the stab did not reach the victim (hit " + hit + ", " + packets + " speed packets)");
+		if (fixed) helper.assertTrue(sent > 0.6, "the victim's game got a speed of only " + sent + "; Knockback II should add to the 0.4 push");
+		else helper.assertTrue(Math.abs(sent - 0.4) < 0.05, "vanilla sent " + sent + ", expected the bare 0.4 push; is MC-310859 fixed?");
+		helper.succeed();
+		*///?} else {
+		// spears arrived in 1.21.11
+		helper.succeed();
+		//?}
+	}
+
+	//? if >=1.21.11 {
+	/*private static int motionId(net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket packet) {
+		//? if >=26 {
+		return packet.id();
+		//?} else
+		/^return packet.getId();^/
+	}
+
+	private static net.minecraft.world.phys.Vec3 motionOf(net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket packet) {
+		//? if >=26 {
+		return packet.movement();
+		//?} else
+		/^return packet.getMovement();^/
+	}
+	*///?}
+
+	/** MC-310859: a Knockback spear knocks a player back further than a plain push. */
+	public static void spearKnockbackOnPlayers(GameTestHelper helper) {
+		spear(helper, true);
+	}
+
+	/** Without the fix the player only gets the plain 0.4 push. */
+	public static void spearKnockbackOnPlayersVanilla(GameTestHelper helper) {
+		spear(helper, false);
 	}
 }
