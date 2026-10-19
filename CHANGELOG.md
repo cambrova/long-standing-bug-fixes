@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0
+
+- MC-164171 / MC-109083: when a wither skull or ghast fireball kills a player, its explosion no longer destroys the items they drop.
+
 ## 1.7.0
 
 - MC-248588: with mobGriefing off, a burning mob no longer uses up water or powder snow in a cauldron (it still stops burning).

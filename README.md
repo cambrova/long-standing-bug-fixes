@@ -26,6 +26,7 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-153010](https://bugs.mojang.com/browse/MC-153010) | Foxes follow doMobLoot | all |
 | [MC-248588](https://bugs.mojang.com/browse/MC-248588) | Burning mobs don't use up cauldrons with mobGriefing off | all |
 | [MC-310859](https://bugs.mojang.com/browse/MC-310859) | Spears with Knockback knock players back | 26.1+ |
+| [MC-164171](https://bugs.mojang.com/browse/MC-164171), [MC-109083](https://bugs.mojang.com/browse/MC-109083) | The wither skull or ghast fireball that kills you doesn't blow up your drops | all |
 
 Server side (or singleplayer); clients don't need it.
 
