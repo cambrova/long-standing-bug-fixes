@@ -16,12 +16,13 @@ import org.spongepowered.asm.mixin.injection.At;
  * into them don't shove them around). That left wind charges unmoved by TNT and by other wind charges. Explosions set
  * their speed directly again, the way they did up to 1.21.3.
  ^/
+// NeoForge adds a hurtEntities(List) overload that the original calls, hence the wildcard
 @Mixin(ServerExplosion.class)
 public abstract class ServerExplosionMixin {
 	//? if >=26.3 {
-	@WrapOperation(method = "hurtEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;pushFromExplosion(Lnet/minecraft/world/phys/Vec3;)V"))
+	@WrapOperation(method = "hurtEntities*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;pushFromExplosion(Lnet/minecraft/world/phys/Vec3;)V"))
 	//?} else
-	/^@WrapOperation(method = "hurtEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;push(Lnet/minecraft/world/phys/Vec3;)V"))^/
+	/^@WrapOperation(method = "hurtEntities*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;push(Lnet/minecraft/world/phys/Vec3;)V"))^/
 	private void longstandingfixes$pushWindCharges(Entity entity, Vec3 knockback, Operation<Void> original) {
 		if (LongStandingFixes.explosionsPushWindCharges && entity instanceof AbstractWindCharge
 			&& !LongStandingFixes.VANILLA_ENTITIES.contains(entity.getUUID())) {
