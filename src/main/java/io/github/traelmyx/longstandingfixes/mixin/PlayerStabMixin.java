@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -55,9 +56,9 @@ public abstract class PlayerStabMixin {
 	}
 
 	//? if >=26.3 {
-	@ModifyExpressionValue(method = "causeExtraKnockback", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;syncVelocity:Z"))
+	@ModifyExpressionValue(method = "causeExtraKnockback", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;syncVelocity:Z", opcode = Opcodes.GETFIELD))
 	//?} else
-	/^@ModifyExpressionValue(method = "causeExtraKnockback", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;hurtMarked:Z"))^/
+	/^@ModifyExpressionValue(method = "causeExtraKnockback", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;hurtMarked:Z", opcode = Opcodes.GETFIELD))^/
 	private boolean longstandingfixes$waitWithFirstPush(boolean sync) {
 		if (!longstandingfixes$holding.get()) return sync;
 		if (sync) longstandingfixes$held.set(true);
