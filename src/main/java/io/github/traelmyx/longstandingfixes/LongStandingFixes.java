@@ -60,6 +60,11 @@ public final class LongStandingFixes {
 	public static boolean cauldronMobGriefing = true;
 	/** MC-310859 (1.21.11 and newer): spears with Knockback knock players back too. */
 	public static boolean spearKnockbackPlayers = true;
+	/** MC-164171 / MC-109083: the wither skull or ghast fireball that kills a player doesn't blow up the items they drop. */
+	public static boolean keepDeathDrops = true;
+
+	/** How many entities are dying on this thread right now (MC-164171). */
+	public static final ThreadLocal<Integer> DYING = ThreadLocal.withInitial(() -> 0);
 
 	/** Set while the item-used-on-block trigger runs for a waxed copper bulb (MC-269636). */
 	public static final ThreadLocal<Boolean> UNWAXING_BULB = new ThreadLocal<>();
@@ -123,6 +128,7 @@ public final class LongStandingFixes {
 		foxMobLoot = Boolean.parseBoolean(props.getProperty("MC-153010.foxesFollowDoMobLoot", "true"));
 		cauldronMobGriefing = Boolean.parseBoolean(props.getProperty("MC-248588.cauldronsFollowMobGriefing", "true"));
 		spearKnockbackPlayers = Boolean.parseBoolean(props.getProperty("MC-310859.spearKnockbackOnPlayers", "true"));
+		keepDeathDrops = Boolean.parseBoolean(props.getProperty("MC-164171.killingBlastSparesDrops", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -145,6 +151,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-153010.foxesFollowDoMobLoot", Boolean.toString(foxMobLoot));
 		props.setProperty("MC-248588.cauldronsFollowMobGriefing", Boolean.toString(cauldronMobGriefing));
 		props.setProperty("MC-310859.spearKnockbackOnPlayers", Boolean.toString(spearKnockbackPlayers));
+		props.setProperty("MC-164171.killingBlastSparesDrops", Boolean.toString(keepDeathDrops));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

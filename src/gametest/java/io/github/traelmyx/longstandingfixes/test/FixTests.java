@@ -1027,4 +1027,65 @@ public final class FixTests {
 	public static void spearKnockbackOnPlayersVanilla(GameTestHelper helper) {
 		spear(helper, false);
 	}
+
+	/**
+	 * A wither skull kills a player carrying 64 stone and explodes, in that order and in the same tick, the way
+	 * WitherSkull.onHit does it. A stack of dirt that was already lying there should still be blown up.
+	 */
+	private static void deathDrops(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) {
+			helper.setBlock(new BlockPos(x, 0, z), Blocks.OBSIDIAN);
+			for (int y = 1; y < 4; y++) helper.setBlock(new BlockPos(x, y, z), Blocks.AIR);
+		}
+		var level = helper.getLevel();
+		var player = realPlayer(helper, fixed ? "test-skull" : "test-skull-vanilla");
+		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(2.5, 1, 2.5));
+		place(player, at.x, at.y, at.z, 0.0F);
+		for (int i = 0; i < 61; i++) player.tick();
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
+		player.getInventory().add(new ItemStack(Items.STONE, 64));
+		var dirt = new net.minecraft.world.entity.item.ItemEntity(level, at.x + 0.5, at.y, at.z, new ItemStack(Items.DIRT, 64));
+		dirt.setPickUpDelay(400);
+		level.addFreshEntity(dirt);
+		//? if >=26 {
+		/*var skull = new net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull(net.minecraft.world.entity.EntityTypes.WITHER_SKULL, level);
+		*///?} else if >=1.21.11 {
+		/*var skull = new net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull(EntityType.WITHER_SKULL, level);
+		*///?} else
+		var skull = new net.minecraft.world.entity.projectile.WitherSkull(EntityType.WITHER_SKULL, level);
+		skull.setPos(at.x, at.y + 1, at.z);
+		//? if >=1.21.11 {
+		/*player.hurtServer(level, player.damageSources().witherSkull(skull, null), 1000.0F);
+		*///?} else
+		player.hurt(player.damageSources().witherSkull(skull, null), 1000.0F);
+		boolean died = player.isDeadOrDying();
+		level.explode(skull, at.x, at.y + 1, at.z, 1.0F, false, net.minecraft.world.level.Level.ExplosionInteraction.MOB);
+		var box = new net.minecraft.world.phys.AABB(at, at).inflate(4);
+		int stone = 0, dirtLeft = 0;
+		for (var item : level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, box, e -> e.isAlive())) {
+			if (item.getItem().is(Items.STONE)) stone += item.getItem().getCount();
+			if (item.getItem().is(Items.DIRT)) dirtLeft += item.getItem().getCount();
+			item.discard();
+		}
+		LongStandingFixes.VANILLA_OBJECTS.remove(player);
+		level.getServer().getPlayerList().remove(player);
+		CHANNELS.remove(player);
+		System.out.printf("[long_standing_fixes] MC-164171 %s: player died %s, %d of 64 stone left, %d of 64 old dirt left%n", fixed ? "fixed" : "vanilla", died, stone, dirtLeft);
+		helper.assertTrue(died, "the wither skull did not kill the player");
+		helper.assertTrue(dirtLeft == 0, "the explosion did not destroy the item that was already on the ground");
+		if (fixed) helper.assertTrue(stone == 64, "only " + stone + " of the 64 dropped stone survived the blast");
+		else helper.assertTrue(stone == 0, "vanilla kept " + stone + " dropped stone; is MC-164171 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-164171: the blast of the skull that killed a player leaves the player's drops alone. */
+	public static void killingBlastSparesDrops(GameTestHelper helper) {
+		deathDrops(helper, true);
+	}
+
+	/** Without the fix the drops are destroyed. */
+	public static void killingBlastSparesDropsVanilla(GameTestHelper helper) {
+		deathDrops(helper, false);
+	}
 }
