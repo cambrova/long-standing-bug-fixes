@@ -16,6 +16,7 @@
 		"IronGolemMixin",
 		"ItemEntityMixin",
 		"ItemUsedOnLocationTriggerMixin",
+		"LayeredCauldronBlockMixin",
 		"LightningTargetInvoker",
 		"LivingEntityMixin",
 		"MerchantOfferMixin",

@@ -895,4 +895,53 @@ public final class FixTests {
 	public static void foxFollowsDoMobLootVanilla(GameTestHelper helper) {
 		fox(helper, false);
 	}
+
+	private static void setMobGriefing(net.minecraft.server.level.ServerLevel level, boolean value) {
+		//? if >=1.21.11 {
+		/*level.getGameRules().set(net.minecraft.world.level.gamerules.GameRules.MOB_GRIEFING, value, level.getServer());
+		*///?} else
+		level.getGameRules().getRule(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING).set(value, level.getServer());
+	}
+
+	/** A burning zombie stands in a full water cauldron while mobGriefing is off (only for that moment). */
+	private static void cauldron(GameTestHelper helper, boolean fixed) {
+		var level = helper.getLevel();
+		BlockPos at = new BlockPos(2, 1, 2);
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		helper.setBlock(at, Blocks.WATER_CAULDRON.defaultBlockState().setValue(net.minecraft.world.level.block.LayeredCauldronBlock.LEVEL, 3));
+		//? if >=26 {
+		/*var zombie = helper.spawn(net.minecraft.world.entity.EntityTypes.ZOMBIE, at);
+		*///?} else
+		var zombie = helper.spawn(EntityType.ZOMBIE, at);
+		zombie.setNoAi(true);
+		var pos = helper.absoluteVec(new net.minecraft.world.phys.Vec3(2.5, 1.3, 2.5));
+		zombie.setPos(pos.x, pos.y, pos.z);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(zombie.getUUID());
+		zombie.igniteForSeconds(5);
+		boolean rule = LongStandingFixes.mobGriefing(level);
+		setMobGriefing(level, false);
+		//? if >=1.21.11 {
+		/*zombie.applyEffectsFromBlocks(zombie.position(), zombie.position());
+		*///?} else
+		zombie.move(net.minecraft.world.entity.MoverType.SELF, new net.minecraft.world.phys.Vec3(0, -0.01, 0));
+		setMobGriefing(level, rule);
+		int left = helper.getBlockState(at).hasProperty(net.minecraft.world.level.block.LayeredCauldronBlock.LEVEL) ? helper.getBlockState(at).getValue(net.minecraft.world.level.block.LayeredCauldronBlock.LEVEL) : 0;
+		LongStandingFixes.VANILLA_ENTITIES.remove(zombie.getUUID());
+		boolean burning = zombie.isOnFire();
+		zombie.discard();
+		System.out.printf("[long_standing_fixes] MC-248588 %s: cauldron level %d of 3 left, zombie still burning %s%n", fixed ? "fixed" : "vanilla", left, burning);
+		if (fixed) helper.assertTrue(left == 3, "the burning zombie used up water with mobGriefing off: " + left + " of 3 left");
+		else helper.assertTrue(left == 2, "vanilla left " + left + " of 3 levels; is MC-248588 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-248588: with mobGriefing off a burning mob leaves a cauldron's water alone. */
+	public static void cauldronFollowsMobGriefing(GameTestHelper helper) {
+		cauldron(helper, true);
+	}
+
+	/** Without the fix it uses up a level. */
+	public static void cauldronFollowsMobGriefingVanilla(GameTestHelper helper) {
+		cauldron(helper, false);
+	}
 }

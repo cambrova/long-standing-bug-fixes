@@ -90,6 +90,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("lightning_skips_spectators_vanilla", () -> FixTests::lightningSkipsSpectatorsVanilla);
 		FUNCTIONS.register("fox_follows_do_mob_loot", () -> FixTests::foxFollowsDoMobLoot);
 		FUNCTIONS.register("fox_follows_do_mob_loot_vanilla", () -> FixTests::foxFollowsDoMobLootVanilla);
+		FUNCTIONS.register("cauldron_follows_mob_griefing", () -> FixTests::cauldronFollowsMobGriefing);
+		FUNCTIONS.register("cauldron_follows_mob_griefing_vanilla", () -> FixTests::cauldronFollowsMobGriefingVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -137,6 +139,8 @@ public class NeoForgeGameTests {
 		register(event, env, "lightning_skips_spectators_vanilla", 40, 1, 1);
 		register(event, env, "fox_follows_do_mob_loot", 40, 1, 1);
 		register(event, env, "fox_follows_do_mob_loot_vanilla", 40, 1, 1);
+		register(event, env, "cauldron_follows_mob_griefing", 40, 1, 1);
+		register(event, env, "cauldron_follows_mob_griefing_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -355,6 +359,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void foxFollowsDoMobLootVanilla(GameTestHelper helper) {
 		FixTests.foxFollowsDoMobLootVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void cauldronFollowsMobGriefing(GameTestHelper helper) {
+		FixTests.cauldronFollowsMobGriefing(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void cauldronFollowsMobGriefingVanilla(GameTestHelper helper) {
+		FixTests.cauldronFollowsMobGriefingVanilla(helper);
 	}
 	//?}
 }

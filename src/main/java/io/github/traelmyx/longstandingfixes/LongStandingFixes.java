@@ -56,6 +56,8 @@ public final class LongStandingFixes {
 	public static boolean lightningSkipsSpectators = true;
 	/** MC-153010: With doMobLoot off, foxes don't drop what they carry. */
 	public static boolean foxMobLoot = true;
+	/** MC-248588: with mobGriefing off, burning mobs don't use up water or powder snow in cauldrons. */
+	public static boolean cauldronMobGriefing = true;
 
 	/** Set while the item-used-on-block trigger runs for a waxed copper bulb (MC-269636). */
 	public static final ThreadLocal<Boolean> UNWAXING_BULB = new ThreadLocal<>();
@@ -117,6 +119,7 @@ public final class LongStandingFixes {
 		creepersDefuse = Boolean.parseBoolean(props.getProperty("MC-179072.creepersDefuseForCreative", "true"));
 		lightningSkipsSpectators = Boolean.parseBoolean(props.getProperty("MC-262422.lightningSkipsSpectators", "true"));
 		foxMobLoot = Boolean.parseBoolean(props.getProperty("MC-153010.foxesFollowDoMobLoot", "true"));
+		cauldronMobGriefing = Boolean.parseBoolean(props.getProperty("MC-248588.cauldronsFollowMobGriefing", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -137,6 +140,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-179072.creepersDefuseForCreative", Boolean.toString(creepersDefuse));
 		props.setProperty("MC-262422.lightningSkipsSpectators", Boolean.toString(lightningSkipsSpectators));
 		props.setProperty("MC-153010.foxesFollowDoMobLoot", Boolean.toString(foxMobLoot));
+		props.setProperty("MC-248588.cauldronsFollowMobGriefing", Boolean.toString(cauldronMobGriefing));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
@@ -150,6 +154,14 @@ public final class LongStandingFixes {
 	/** The signal a container of 4 one-item slots gives: 0 when empty, 4, 8, 11 or 15. */
 	public static int campfireSignal(int filledSlots) {
 		return filledSlots == 0 ? 0 : 1 + (int) Math.floor(filledSlots / 4.0 * 14.0);
+	}
+
+	/** The mobGriefing game rule. */
+	public static boolean mobGriefing(net.minecraft.server.level.ServerLevel level) {
+		//? if >=1.21.11 {
+		/*return level.getGameRules().get(net.minecraft.world.level.gamerules.GameRules.MOB_GRIEFING);
+		*///?} else
+		return level.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING);
 	}
 
 	/** The doMobLoot game rule. */
