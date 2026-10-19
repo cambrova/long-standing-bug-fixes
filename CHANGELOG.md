@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.0
+
+- MC-17876: health above 20 from health-boosting gear is no longer cut back to 20 when you log in or a chunk reloads.
+- MC-111801 / MC-253476: item cooldowns (ender pearls, a disabled shield, goat horns) are saved with the player, and your game is told about them again after you change dimension.
+
 ## 1.8.0
 
 - MC-164171 / MC-109083: when a wither skull or ghast fireball kills a player, its explosion no longer destroys the items they drop.
