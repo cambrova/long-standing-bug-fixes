@@ -1088,4 +1088,73 @@ public final class FixTests {
 	public static void killingBlastSparesDropsVanilla(GameTestHelper helper) {
 		deathDrops(helper, false);
 	}
+
+	/**
+	 * A zombie with a +10 max health helmet and 30 health is saved and loaded again (a relog or chunk reload); after two
+	 * ticks it should still have 30 health, not 20.
+	 */
+	private static void bonusHealth(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		var level = helper.getLevel();
+		//? if >=26 {
+		/*var type = net.minecraft.world.entity.EntityTypes.ZOMBIE;
+		*///?} else
+		var type = EntityType.ZOMBIE;
+		var zombie = helper.spawn(type, new BlockPos(2, 1, 2));
+		zombie.setNoAi(true);
+		zombie.setPersistenceRequired();
+		ItemStack helmet = new ItemStack(Items.LEATHER_HELMET);
+		//? if >=1.21.11 {
+		/*var id = net.minecraft.resources.Identifier.fromNamespaceAndPath(LongStandingFixes.MOD_ID, "test_health");
+		*///?} else
+		var id = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(LongStandingFixes.MOD_ID, "test_health");
+		helmet.set(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, net.minecraft.world.item.component.ItemAttributeModifiers.builder()
+			.add(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH, new net.minecraft.world.entity.ai.attributes.AttributeModifier(id, 10.0,
+				net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE), net.minecraft.world.entity.EquipmentSlotGroup.HEAD).build());
+		zombie.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, helmet);
+		helper.runAfterDelay(2, () -> {
+			zombie.setHealth(30.0F);
+			float before = zombie.getHealth();
+			//? if >=1.21.11 {
+			/*var out = net.minecraft.world.level.storage.TagValueOutput.createWithContext(net.minecraft.util.ProblemReporter.DISCARDING, level.registryAccess());
+			zombie.saveWithoutId(out);
+			var tag = out.buildResult();
+			*///?} else {
+			var tag = new net.minecraft.nbt.CompoundTag();
+			zombie.saveWithoutId(tag);
+			//?}
+			tag.remove("UUID");
+			var loaded = type.create(level
+				//? if >=1.21.11
+				/*, net.minecraft.world.entity.EntitySpawnReason.LOAD*/
+			);
+			if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(loaded);
+			//? if >=1.21.11 {
+			/*loaded.load(net.minecraft.world.level.storage.TagValueInput.create(net.minecraft.util.ProblemReporter.DISCARDING, level.registryAccess(), tag));
+			*///?} else
+			loaded.load(tag);
+			zombie.discard();
+			level.addFreshEntity(loaded);
+			helper.runAfterDelay(2, () -> {
+				float after = loaded.getHealth(), max = loaded.getMaxHealth();
+				LongStandingFixes.VANILLA_OBJECTS.remove(loaded);
+				loaded.discard();
+				System.out.printf("[long_standing_fixes] MC-17876 %s: health %.1f before saving, %.1f of %.1f after loading%n", fixed ? "fixed" : "vanilla", before, after, max);
+				helper.assertTrue(before == 30.0F && max == 30.0F, "the helmet did not raise max health to 30 (health " + before + ", max " + max + ")");
+				if (fixed) helper.assertTrue(after == 30.0F, "the zombie came back with " + after + " health instead of 30");
+				else helper.assertTrue(after == 20.0F, "vanilla zombie came back with " + after + " health; is MC-17876 fixed?");
+				helper.succeed();
+			});
+		});
+	}
+
+	/** MC-17876: bonus health from gear survives saving and loading. */
+	public static void bonusHealthSurvivesReload(GameTestHelper helper) {
+		bonusHealth(helper, true);
+	}
+
+	/** Without the fix it is capped at 20. */
+	public static void bonusHealthSurvivesReloadVanilla(GameTestHelper helper) {
+		bonusHealth(helper, false);
+	}
 }

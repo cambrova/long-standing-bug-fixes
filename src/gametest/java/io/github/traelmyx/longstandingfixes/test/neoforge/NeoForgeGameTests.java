@@ -96,6 +96,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("spear_knockback_on_players_vanilla", () -> FixTests::spearKnockbackOnPlayersVanilla);
 		FUNCTIONS.register("killing_blast_spares_drops", () -> FixTests::killingBlastSparesDrops);
 		FUNCTIONS.register("killing_blast_spares_drops_vanilla", () -> FixTests::killingBlastSparesDropsVanilla);
+		FUNCTIONS.register("bonus_health_survives_reload", () -> FixTests::bonusHealthSurvivesReload);
+		FUNCTIONS.register("bonus_health_survives_reload_vanilla", () -> FixTests::bonusHealthSurvivesReloadVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -149,6 +151,8 @@ public class NeoForgeGameTests {
 		register(event, env, "spear_knockback_on_players_vanilla", 40, 1, 1);
 		register(event, env, "killing_blast_spares_drops", 40, 1, 1);
 		register(event, env, "killing_blast_spares_drops_vanilla", 40, 1, 1);
+		register(event, env, "bonus_health_survives_reload", 40, 1, 1);
+		register(event, env, "bonus_health_survives_reload_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -397,6 +401,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void killingBlastSparesDropsVanilla(GameTestHelper helper) {
 		FixTests.killingBlastSparesDropsVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void bonusHealthSurvivesReload(GameTestHelper helper) {
+		FixTests.bonusHealthSurvivesReload(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void bonusHealthSurvivesReloadVanilla(GameTestHelper helper) {
+		FixTests.bonusHealthSurvivesReloadVanilla(helper);
 	}
 	//?}
 }

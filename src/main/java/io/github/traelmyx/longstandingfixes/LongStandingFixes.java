@@ -62,6 +62,8 @@ public final class LongStandingFixes {
 	public static boolean spearKnockbackPlayers = true;
 	/** MC-164171 / MC-109083: the wither skull or ghast fireball that kills a player doesn't blow up the items they drop. */
 	public static boolean keepDeathDrops = true;
+	/** MC-17876: health above 20 from health-boosting gear survives a relog or chunk reload. */
+	public static boolean keepBonusHealth = true;
 
 	/** An item that knows whether a death dropped it this very tick (MC-164171). */
 	public interface DeathDrop {
@@ -134,6 +136,7 @@ public final class LongStandingFixes {
 		cauldronMobGriefing = Boolean.parseBoolean(props.getProperty("MC-248588.cauldronsFollowMobGriefing", "true"));
 		spearKnockbackPlayers = Boolean.parseBoolean(props.getProperty("MC-310859.spearKnockbackOnPlayers", "true"));
 		keepDeathDrops = Boolean.parseBoolean(props.getProperty("MC-164171.killingBlastSparesDrops", "true"));
+		keepBonusHealth = Boolean.parseBoolean(props.getProperty("MC-17876.keepBonusHealthOnLoad", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -157,6 +160,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-248588.cauldronsFollowMobGriefing", Boolean.toString(cauldronMobGriefing));
 		props.setProperty("MC-310859.spearKnockbackOnPlayers", Boolean.toString(spearKnockbackPlayers));
 		props.setProperty("MC-164171.killingBlastSparesDrops", Boolean.toString(keepDeathDrops));
+		props.setProperty("MC-17876.keepBonusHealthOnLoad", Boolean.toString(keepBonusHealth));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

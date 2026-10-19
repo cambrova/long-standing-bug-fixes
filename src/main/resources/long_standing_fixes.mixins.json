@@ -21,6 +21,7 @@
 		"ItemUsedOnLocationTriggerMixin",
 		"LayeredCauldronBlockMixin",
 		"LightningTargetInvoker",
+		"LivingEntityHealthMixin",
 		"LivingEntityMixin",
 		"MerchantOfferMixin",
 		"PlayerAdvancementsMixin",
