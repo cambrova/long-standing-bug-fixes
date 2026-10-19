@@ -283,6 +283,36 @@ public class FabricGameTests {
 	public void spamLimitInRealTimeVanilla(GameTestHelper helper) {
 		FixTests.spamLimitInRealTimeVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void crystalIgnoresSnowball(GameTestHelper helper) {
+		FixTests.crystalIgnoresSnowball(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void crystalIgnoresSnowballVanilla(GameTestHelper helper) {
+		FixTests.crystalIgnoresSnowballVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void traderFleesRavager(GameTestHelper helper) {
+		FixTests.traderFleesRavager(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void traderFleesRavagerVanilla(GameTestHelper helper) {
+		FixTests.traderFleesRavagerVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void shulkerRefusesLevitation(GameTestHelper helper) {
+		FixTests.shulkerRefusesLevitation(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void shulkerRefusesLevitationVanilla(GameTestHelper helper) {
+		FixTests.shulkerRefusesLevitationVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -556,6 +586,36 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void spamLimitInRealTimeVanilla(GameTestHelper helper) {
 		FixTests.spamLimitInRealTimeVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void crystalIgnoresSnowball(GameTestHelper helper) {
+		FixTests.crystalIgnoresSnowball(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void crystalIgnoresSnowballVanilla(GameTestHelper helper) {
+		FixTests.crystalIgnoresSnowballVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void traderFleesRavager(GameTestHelper helper) {
+		FixTests.traderFleesRavager(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void traderFleesRavagerVanilla(GameTestHelper helper) {
+		FixTests.traderFleesRavagerVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void shulkerRefusesLevitation(GameTestHelper helper) {
+		FixTests.shulkerRefusesLevitation(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void shulkerRefusesLevitationVanilla(GameTestHelper helper) {
+		FixTests.shulkerRefusesLevitationVanilla(helper);
 	}
 }
 ^///?}

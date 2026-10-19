@@ -1295,4 +1295,113 @@ public final class FixTests {
 	public static void spamLimitInRealTimeVanilla(GameTestHelper helper) {
 		spam(helper, false);
 	}
+
+	/** A snowball hits an end crystal (60 blocks above the test, so a vanilla blast can't reach the other tests). */
+	private static void crystal(GameTestHelper helper, boolean fixed) {
+		var level = helper.getLevel();
+		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(2.5, 60, 2.5));
+		//? if >=26 {
+		/*var crystal = new net.minecraft.world.entity.boss.enderdragon.EndCrystal(net.minecraft.world.entity.EntityTypes.END_CRYSTAL, level);
+		var snowball = new net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball(level, at.x, at.y + 2, at.z, new ItemStack(Items.SNOWBALL));
+		*///?} else if >=1.21.11 {
+		/*var crystal = new net.minecraft.world.entity.boss.enderdragon.EndCrystal(EntityType.END_CRYSTAL, level);
+		var snowball = new net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball(level, at.x, at.y + 2, at.z, new ItemStack(Items.SNOWBALL));
+		*///?} else {
+		var crystal = new net.minecraft.world.entity.boss.enderdragon.EndCrystal(EntityType.END_CRYSTAL, level);
+		var snowball = new net.minecraft.world.entity.projectile.Snowball(level, at.x, at.y + 2, at.z);
+		//?}
+		crystal.setPos(at.x, at.y, at.z);
+		crystal.setShowBottom(false);
+		level.addFreshEntity(crystal);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(crystal.getUUID());
+		var source = level.damageSources().thrown(snowball, null);
+		//? if >=1.21.11 {
+		/*crystal.hurtServer(level, source, 0.0F);
+		*///?} else
+		crystal.hurt(source, 0.0F);
+		boolean intact = crystal.isAlive();
+		LongStandingFixes.VANILLA_ENTITIES.remove(crystal.getUUID());
+		crystal.discard();
+		System.out.printf("[long_standing_fixes] MC-101851 %s: end crystal still there after a snowball hit: %s%n", fixed ? "fixed" : "vanilla", intact);
+		if (fixed) helper.assertTrue(intact, "a snowball blew up the end crystal");
+		else helper.assertTrue(!intact, "vanilla crystal survived a snowball; is MC-101851 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-101851: a harmless snowball hit leaves an end crystal alone. */
+	public static void crystalIgnoresSnowball(GameTestHelper helper) {
+		crystal(helper, true);
+	}
+
+	/** Without the fix the crystal explodes. */
+	public static void crystalIgnoresSnowballVanilla(GameTestHelper helper) {
+		crystal(helper, false);
+	}
+
+	/** A wandering trader stands 5 blocks from a (frozen) ravager; after 10 ticks it should be running away. */
+	private static void traderRavager(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 12; x++) for (int z = 0; z < 5; z++) {
+			helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+			for (int y = 1; y < 4; y++) helper.setBlock(new BlockPos(x, y, z), Blocks.AIR);
+		}
+		//? if >=26 {
+		/*var trader = helper.spawn(net.minecraft.world.entity.EntityTypes.WANDERING_TRADER, new BlockPos(6, 1, 2));
+		var ravager = helper.spawn(net.minecraft.world.entity.EntityTypes.RAVAGER, new BlockPos(1, 1, 2));
+		*///?} else {
+		var trader = helper.spawn(EntityType.WANDERING_TRADER, new BlockPos(6, 1, 2));
+		var ravager = helper.spawn(EntityType.RAVAGER, new BlockPos(1, 1, 2));
+		//?}
+		ravager.setNoAi(true);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(trader.getUUID());
+		helper.runAfterDelay(10, () -> {
+			boolean fleeing = trader.goalSelector.getAvailableGoals().stream()
+				.anyMatch(g -> g.isRunning() && g.getGoal() instanceof net.minecraft.world.entity.ai.goal.AvoidEntityGoal);
+			LongStandingFixes.VANILLA_ENTITIES.remove(trader.getUUID());
+			trader.discard();
+			ravager.discard();
+			System.out.printf("[long_standing_fixes] MC-262810 %s: wandering trader running from the ravager: %s%n", fixed ? "fixed" : "vanilla", fleeing);
+			if (fixed) helper.assertTrue(fleeing, "the wandering trader did not run from the ravager");
+			else helper.assertTrue(!fleeing, "vanilla trader ran from the ravager; is MC-262810 fixed?");
+			helper.succeed();
+		});
+	}
+
+	/** MC-262810: wandering traders run from ravagers. */
+	public static void traderFleesRavager(GameTestHelper helper) {
+		traderRavager(helper, true);
+	}
+
+	/** Without the fix they don't. */
+	public static void traderFleesRavagerVanilla(GameTestHelper helper) {
+		traderRavager(helper, false);
+	}
+
+	/** Give a shulker Levitation. */
+	private static void shulker(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		//? if >=26 {
+		/*var shulker = helper.spawn(net.minecraft.world.entity.EntityTypes.SHULKER, new BlockPos(2, 1, 2));
+		*///?} else
+		var shulker = helper.spawn(EntityType.SHULKER, new BlockPos(2, 1, 2));
+		shulker.setNoAi(true);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(shulker.getUUID());
+		shulker.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.LEVITATION, 200));
+		boolean levitating = shulker.hasEffect(net.minecraft.world.effect.MobEffects.LEVITATION);
+		LongStandingFixes.VANILLA_ENTITIES.remove(shulker.getUUID());
+		shulker.discard();
+		System.out.printf("[long_standing_fixes] MC-205843 %s: shulker has Levitation: %s%n", fixed ? "fixed" : "vanilla", levitating);
+		if (fixed) helper.assertTrue(!levitating, "the shulker took Levitation");
+		else helper.assertTrue(levitating, "vanilla shulker refused Levitation; is MC-205843 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-205843: shulkers can't get Levitation. */
+	public static void shulkerRefusesLevitation(GameTestHelper helper) {
+		shulker(helper, true);
+	}
+
+	/** Without the fix they take it. */
+	public static void shulkerRefusesLevitationVanilla(GameTestHelper helper) {
+		shulker(helper, false);
+	}
 }

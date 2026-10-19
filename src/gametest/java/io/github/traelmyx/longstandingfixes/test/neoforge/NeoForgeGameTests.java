@@ -104,6 +104,12 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("cooldown_survives_dimension_change_vanilla", () -> FixTests::cooldownSurvivesDimensionChangeVanilla);
 		FUNCTIONS.register("spam_limit_in_real_time", () -> FixTests::spamLimitInRealTime);
 		FUNCTIONS.register("spam_limit_in_real_time_vanilla", () -> FixTests::spamLimitInRealTimeVanilla);
+		FUNCTIONS.register("crystal_ignores_snowball", () -> FixTests::crystalIgnoresSnowball);
+		FUNCTIONS.register("crystal_ignores_snowball_vanilla", () -> FixTests::crystalIgnoresSnowballVanilla);
+		FUNCTIONS.register("trader_flees_ravager", () -> FixTests::traderFleesRavager);
+		FUNCTIONS.register("trader_flees_ravager_vanilla", () -> FixTests::traderFleesRavagerVanilla);
+		FUNCTIONS.register("shulker_refuses_levitation", () -> FixTests::shulkerRefusesLevitation);
+		FUNCTIONS.register("shulker_refuses_levitation_vanilla", () -> FixTests::shulkerRefusesLevitationVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -165,6 +171,12 @@ public class NeoForgeGameTests {
 		register(event, env, "cooldown_survives_dimension_change_vanilla", 40, 1, 1);
 		register(event, env, "spam_limit_in_real_time", 40, 1, 1);
 		register(event, env, "spam_limit_in_real_time_vanilla", 40, 1, 1);
+		register(event, env, "crystal_ignores_snowball", 40, 1, 1);
+		register(event, env, "crystal_ignores_snowball_vanilla", 40, 1, 1);
+		register(event, env, "trader_flees_ravager", 40, 1, 1);
+		register(event, env, "trader_flees_ravager_vanilla", 40, 1, 1);
+		register(event, env, "shulker_refuses_levitation", 40, 1, 1);
+		register(event, env, "shulker_refuses_levitation_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -453,6 +465,36 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void spamLimitInRealTimeVanilla(GameTestHelper helper) {
 		FixTests.spamLimitInRealTimeVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void crystalIgnoresSnowball(GameTestHelper helper) {
+		FixTests.crystalIgnoresSnowball(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void crystalIgnoresSnowballVanilla(GameTestHelper helper) {
+		FixTests.crystalIgnoresSnowballVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void traderFleesRavager(GameTestHelper helper) {
+		FixTests.traderFleesRavager(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void traderFleesRavagerVanilla(GameTestHelper helper) {
+		FixTests.traderFleesRavagerVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void shulkerRefusesLevitation(GameTestHelper helper) {
+		FixTests.shulkerRefusesLevitation(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void shulkerRefusesLevitationVanilla(GameTestHelper helper) {
+		FixTests.shulkerRefusesLevitationVanilla(helper);
 	}
 	//?}
 }

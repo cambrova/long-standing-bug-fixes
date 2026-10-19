@@ -11,6 +11,7 @@
 		"CooldownInstanceAccessor",
 		"CreeperMixin",
 		"DeathMixin",
+		"EndCrystalMixin",
 		"EntityExplosionMixin",
 		"EntityMixin",
 		"FallingBlockEntityMixin",
@@ -23,6 +24,7 @@
 		"ItemUsedOnLocationTriggerMixin",
 		"LayeredCauldronBlockMixin",
 		"LightningTargetInvoker",
+		"LivingEntityEffectMixin",
 		"LivingEntityHealthMixin",
 		"LivingEntityMixin",
 		"MerchantOfferMixin",
@@ -35,7 +37,8 @@
 		"ServerPlayerCooldownsMixin",
 		"ServerPlayerMixin",
 		"SwellGoalMixin",
-		"TickThrottlerAccessor"
+		"TickThrottlerAccessor",
+		"WanderingTraderMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

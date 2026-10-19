@@ -68,6 +68,12 @@ public final class LongStandingFixes {
 	public static boolean keepCooldowns = true;
 	/** MC-276819: spam counters cool down in real time, so a lagging server doesn't kick players for normal chat. */
 	public static boolean spamRealTime = true;
+	/** MC-101851: Snowballs, eggs and ender pearls no longer blow up end crystals. */
+	public static boolean crystalsIgnoreHarmlessHits = true;
+	/** MC-262810: Wandering traders run from ravagers too. */
+	public static boolean tradersFleeRavagers = true;
+	/** MC-205843: Shulkers can no longer get Levitation. */
+	public static boolean shulkersNoLevitation = true;
 
 	/** The clock the spam counters cool down by; the game tests swap it for one they can wind forward. */
 	public static java.util.function.LongSupplier CLOCK = System::nanoTime;
@@ -162,6 +168,9 @@ public final class LongStandingFixes {
 		keepBonusHealth = Boolean.parseBoolean(props.getProperty("MC-17876.keepBonusHealthOnLoad", "true"));
 		keepCooldowns = Boolean.parseBoolean(props.getProperty("MC-111801.keepItemCooldowns", "true"));
 		spamRealTime = Boolean.parseBoolean(props.getProperty("MC-276819.spamLimitInRealTime", "true"));
+		crystalsIgnoreHarmlessHits = Boolean.parseBoolean(props.getProperty("MC-101851.crystalsIgnoreHarmlessHits", "true"));
+		tradersFleeRavagers = Boolean.parseBoolean(props.getProperty("MC-262810.tradersFleeRavagers", "true"));
+		shulkersNoLevitation = Boolean.parseBoolean(props.getProperty("MC-205843.shulkersCantLevitate", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -188,6 +197,9 @@ public final class LongStandingFixes {
 		props.setProperty("MC-17876.keepBonusHealthOnLoad", Boolean.toString(keepBonusHealth));
 		props.setProperty("MC-111801.keepItemCooldowns", Boolean.toString(keepCooldowns));
 		props.setProperty("MC-276819.spamLimitInRealTime", Boolean.toString(spamRealTime));
+		props.setProperty("MC-101851.crystalsIgnoreHarmlessHits", Boolean.toString(crystalsIgnoreHarmlessHits));
+		props.setProperty("MC-262810.tradersFleeRavagers", Boolean.toString(tradersFleeRavagers));
+		props.setProperty("MC-205843.shulkersCantLevitate", Boolean.toString(shulkersNoLevitation));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
