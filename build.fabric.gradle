@@ -76,9 +76,9 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-	// MC-280273 only exists from 1.21.5; MC-168976's log line is gone from 1.21.6
+	// MC-280273 only exists from 1.21.5; MC-168976's log line is gone from 1.21.6; MC-278572 starts in 1.21.2
 	filesMatching('long_standing_fixes.mixins.json') { filter { line ->
-		(stonecutter.eval(mc, '<1.21.5') && line.contains('ItemEntityMixin')) || (stonecutter.eval(mc, '>=1.21.6') && line.contains('"EntityMixin"')) ? null : line } }
+		(stonecutter.eval(mc, '<1.21.5') && line.contains('ItemEntityMixin')) || (stonecutter.eval(mc, '<1.21.2') && line.contains('HoneyBlockMixin')) || (stonecutter.eval(mc, '>=1.21.6') && line.contains('"EntityMixin"')) ? null : line } }
 	exclude 'META-INF/neoforge.mods.toml'
 	def props = [
 		id     : project.property('mod.id'),

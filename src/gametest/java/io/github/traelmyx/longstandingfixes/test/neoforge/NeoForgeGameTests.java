@@ -74,6 +74,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("cat_blocks_only_its_chest_vanilla", () -> FixTests::catBlocksOnlyItsChestVanilla);
 		FUNCTIONS.register("dispenser_lights_portal", () -> FixTests::dispenserLightsPortal);
 		FUNCTIONS.register("dispenser_lights_portal_vanilla", () -> FixTests::dispenserLightsPortalVanilla);
+		FUNCTIONS.register("honey_slide_speed", () -> FixTests::honeySlideSpeed);
+		FUNCTIONS.register("honey_slide_speed_vanilla", () -> FixTests::honeySlideSpeedVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -105,6 +107,8 @@ public class NeoForgeGameTests {
 		register(event, env, "cat_blocks_only_its_chest_vanilla", 40, 1, 1);
 		register(event, env, "dispenser_lights_portal", 40, 1, 1);
 		register(event, env, "dispenser_lights_portal_vanilla", 40, 1, 1);
+		register(event, env, "honey_slide_speed", 60, 1, 1);
+		register(event, env, "honey_slide_speed_vanilla", 60, 1, 1);
 	}
 
 	//? if >=26 {
@@ -243,6 +247,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void dispenserLightsPortalVanilla(GameTestHelper helper) {
 		FixTests.dispenserLightsPortalVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 60)
+	public static void honeySlideSpeed(GameTestHelper helper) {
+		FixTests.honeySlideSpeed(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 60)
+	public static void honeySlideSpeedVanilla(GameTestHelper helper) {
+		FixTests.honeySlideSpeedVanilla(helper);
 	}
 	//?}
 }

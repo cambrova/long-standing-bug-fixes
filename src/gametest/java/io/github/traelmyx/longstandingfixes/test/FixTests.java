@@ -538,4 +538,70 @@ public final class FixTests {
 	public static void dispenserLightsPortalVanilla(GameTestHelper helper) {
 		dispenserPortal(helper, false);
 	}
+
+	/**
+	 * An item, a primed TNT and a minecart slide down the sides of a honey column; their fall speed is measured over ten
+	 * ticks once they are sliding. 1.21.1 lets them slide at about 0.09 blocks a tick; since 1.21.2 it is about 0.16.
+	 */
+	private static void honey(GameTestHelper helper, boolean fixed) {
+		var level = helper.getLevel();
+		BlockPos column = new BlockPos(3, 1, 3);
+		for (int x = 1; x < 6; x++) for (int z = 1; z < 6; z++) for (int y = 1; y <= 8; y++)
+			helper.setBlock(new BlockPos(x, y, z), x == 3 && z == 3 && y <= 7 ? Blocks.HONEY_BLOCK : Blocks.AIR);
+		var base = helper.absoluteVec(net.minecraft.world.phys.Vec3.atLowerCornerOf(column));
+		double y = base.y + 6;
+		var item = new net.minecraft.world.entity.item.ItemEntity(level, base.x + 0.9375 + 0.125 + 1.0E-4, y, base.z + 0.5, new ItemStack(Items.DIAMOND));
+		item.setPickUpDelay(400);
+		var tnt = new net.minecraft.world.entity.item.PrimedTnt(level, base.x + 0.0625 - 0.49 - 1.0E-4, y, base.z + 0.5, null);
+		tnt.setFuse(400);
+		//? if >=26 {
+		/*var cart = net.minecraft.world.entity.EntityTypes.MINECART.create(level, net.minecraft.world.entity.EntitySpawnReason.TRIGGERED);
+		*///?} else if >=1.21.11 {
+		/*var cart = EntityType.MINECART.create(level, net.minecraft.world.entity.EntitySpawnReason.TRIGGERED);
+		*///?} else
+		var cart = EntityType.MINECART.create(level);
+		cart.setPos(base.x + 0.5, y, base.z + 0.9375 + 0.49 + 1.0E-4);
+		java.util.List<net.minecraft.world.entity.Entity> sliders = java.util.List.of(item, tnt, cart);
+		for (var e : sliders) {
+			e.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+			if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(e.getUUID());
+			level.addFreshEntity(e);
+		}
+		double[] from = new double[3];
+		helper.runAfterDelay(20, () -> {
+			for (int i = 0; i < 3; i++) from[i] = sliders.get(i).getY();
+		});
+		helper.runAfterDelay(30, () -> {
+			String[] names = {"item", "TNT", "minecart"};
+			StringBuilder speeds = new StringBuilder();
+			boolean allOld = true, allNew = true;
+			for (int i = 0; i < 3; i++) {
+				var e = sliders.get(i);
+				double speed = (from[i] - e.getY()) / 10;
+				speeds.append(names[i]).append(String.format(" %.4f ", speed));
+				allOld &= speed > 0.07 && speed < 0.11;
+				allNew &= speed > 0.13;
+				LongStandingFixes.VANILLA_ENTITIES.remove(e.getUUID());
+				e.discard();
+			}
+			System.out.printf("[long_standing_fixes] MC-278572 %s: %s(blocks a tick)%n", fixed ? "fixed" : "vanilla", speeds);
+			//? if >=1.21.11 {
+			/*boolean bug = !fixed;
+			*///?} else
+			boolean bug = false; // 1.21.1 never had it
+			if (bug) helper.assertTrue(allNew, "without the fix the slide speeds were " + speeds + "; is MC-278572 fixed?");
+			else helper.assertTrue(allOld, "slide speeds were " + speeds + ", expected about 0.09");
+			helper.succeed();
+		});
+	}
+
+	/** MC-278572: items, TNT and minecarts slide down honey at the 1.21.1 speed. */
+	public static void honeySlideSpeed(GameTestHelper helper) {
+		honey(helper, true);
+	}
+
+	/** Without the fix they slide almost twice as fast (on 1.21.1 there's nothing to fix). */
+	public static void honeySlideSpeedVanilla(GameTestHelper helper) {
+		honey(helper, false);
+	}
 }

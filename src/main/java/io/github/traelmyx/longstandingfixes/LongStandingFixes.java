@@ -40,6 +40,8 @@ public final class LongStandingFixes {
 	public static boolean catOnChestAbove = true;
 	/** MC-135198: dispensers with flint and steel light a portal through any empty spot inside the frame. */
 	public static boolean dispenserLightsPortals = true;
+	/** MC-278572 (1.21.2 and newer): items, TNT, minecarts and boats slide down honey at the old speed again. */
+	public static boolean honeySlide = true;
 
 	/** Set while the item-used-on-block trigger runs for a waxed copper bulb (MC-269636). */
 	public static final ThreadLocal<Boolean> UNWAXING_BULB = new ThreadLocal<>();
@@ -93,6 +95,7 @@ public final class LongStandingFixes {
 		sculkBattedProjectiles = Boolean.parseBoolean(props.getProperty("MC-210491.sculkHearsBattedFireballs", "true"));
 		catOnChestAbove = Boolean.parseBoolean(props.getProperty("MC-265635.catsOnlyBlockTheirChest", "true"));
 		dispenserLightsPortals = Boolean.parseBoolean(props.getProperty("MC-135198.dispensersLightPortals", "true"));
+		honeySlide = Boolean.parseBoolean(props.getProperty("MC-278572.honeySlideSpeed", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -105,6 +108,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-210491.sculkHearsBattedFireballs", Boolean.toString(sculkBattedProjectiles));
 		props.setProperty("MC-265635.catsOnlyBlockTheirChest", Boolean.toString(catOnChestAbove));
 		props.setProperty("MC-135198.dispensersLightPortals", Boolean.toString(dispenserLightsPortals));
+		props.setProperty("MC-278572.honeySlideSpeed", Boolean.toString(honeySlide));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
