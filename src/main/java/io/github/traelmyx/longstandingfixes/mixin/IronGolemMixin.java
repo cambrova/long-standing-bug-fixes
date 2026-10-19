@@ -1,6 +1,9 @@
 package io.github.traelmyx.longstandingfixes.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.traelmyx.longstandingfixes.LongStandingFixes;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.behavior.EntityTracker;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
@@ -22,6 +25,9 @@ import java.util.Comparator;
  * MC-159069: before 1.14 a baby villager would walk up to an iron golem holding out a poppy, look at it for a moment and
  * take it. Since the switch to the new villager AI they ignore it. Here the nearest baby villager walks over again, and once
  * it stands next to the golem it takes the flower.
+ * <p>
+ * MC-95782: golems leave hostile mobs on their own team alone, except when they bump into one, which makes them attack
+ * it anyway. Bumping into a teammate no longer starts a fight.
  */
 @Mixin(IronGolem.class)
 public abstract class IronGolemMixin {
@@ -42,5 +48,15 @@ public abstract class IronGolemMixin {
 			// taken: the golem lowers its arm, as in 1.13
 			golem.offerFlower(false);
 		}
+	}
+
+	//? if >=1.21.11 {
+	/*@WrapOperation(method = "doPush", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/golem/IronGolem;setTarget(Lnet/minecraft/world/entity/LivingEntity;)V"))
+	*///?} else
+	@WrapOperation(method = "doPush", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/IronGolem;setTarget(Lnet/minecraft/world/entity/LivingEntity;)V"))
+	private void longstandingfixes$sparesTeammates(IronGolem golem, LivingEntity target, Operation<Void> original) {
+		if (LongStandingFixes.golemsSpareTeammates && target != null && golem.isAlliedTo(target)
+			&& !LongStandingFixes.VANILLA_ENTITIES.contains(golem.getUUID())) return;
+		original.call(golem, target);
 	}
 }

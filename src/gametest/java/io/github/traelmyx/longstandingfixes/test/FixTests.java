@@ -1422,4 +1422,52 @@ public final class FixTests {
 	public static void shulkerRefusesLevitationVanilla(GameTestHelper helper) {
 		shulker(helper, false);
 	}
+
+	/** An iron golem and a zombie on the same team stand in one spot for 200 ticks, bumping into each other. */
+	private static void golemTeam(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) {
+			helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+			for (int y = 1; y < 4; y++) helper.setBlock(new BlockPos(x, y, z), x == 0 || x == 4 || z == 0 || z == 4 ? Blocks.GLASS : Blocks.AIR);
+		}
+		//? if >=26 {
+		/*var golem = helper.spawn(net.minecraft.world.entity.EntityTypes.IRON_GOLEM, new BlockPos(2, 1, 2));
+		var zombie = helper.spawn(net.minecraft.world.entity.EntityTypes.ZOMBIE, new BlockPos(2, 1, 2));
+		*///?} else {
+		var golem = helper.spawn(EntityType.IRON_GOLEM, new BlockPos(2, 1, 2));
+		var zombie = helper.spawn(EntityType.ZOMBIE, new BlockPos(2, 1, 2));
+		//?}
+		zombie.setNoAi(true);
+		var scoreboard = helper.getLevel().getScoreboard();
+		String name = "lsf_" + (fixed ? "team" : "team_v");
+		var team = scoreboard.getPlayerTeam(name);
+		if (team == null) team = scoreboard.addPlayerTeam(name);
+		scoreboard.addPlayerToTeam(golem.getScoreboardName(), team);
+		scoreboard.addPlayerToTeam(zombie.getScoreboardName(), team);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(golem.getUUID());
+		boolean[] attacked = {false};
+		for (int t = 1; t <= 200; t++) helper.runAfterDelay(t, () -> {
+			attacked[0] |= golem.getTarget() == zombie;
+			// keep them overlapping
+			zombie.setPos(golem.getX(), golem.getY(), golem.getZ());
+		});
+		helper.runAfterDelay(201, () -> {
+			LongStandingFixes.VANILLA_ENTITIES.remove(golem.getUUID());
+			golem.discard();
+			zombie.discard();
+			System.out.printf("[long_standing_fixes] MC-95782 %s: golem went for its teammate within 200 ticks: %s%n", fixed ? "fixed" : "vanilla", attacked[0]);
+			if (fixed) helper.assertTrue(!attacked[0], "the iron golem attacked a zombie on its own team");
+			else helper.assertTrue(attacked[0], "vanilla golem left its teammate alone; is MC-95782 fixed?");
+			helper.succeed();
+		});
+	}
+
+	/** MC-95782: a golem bumping into a hostile teammate doesn't attack it. */
+	public static void golemSparesTeammate(GameTestHelper helper) {
+		golemTeam(helper, true);
+	}
+
+	/** Without the fix it attacks. */
+	public static void golemSparesTeammateVanilla(GameTestHelper helper) {
+		golemTeam(helper, false);
+	}
 }

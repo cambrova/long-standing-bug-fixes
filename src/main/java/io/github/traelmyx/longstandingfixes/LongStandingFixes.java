@@ -74,6 +74,8 @@ public final class LongStandingFixes {
 	public static boolean tradersFleeRavagers = true;
 	/** MC-205843: Shulkers can no longer get Levitation. */
 	public static boolean shulkersNoLevitation = true;
+	/** MC-95782: iron golems don't attack hostile mobs on their own team when they bump into them. */
+	public static boolean golemsSpareTeammates = true;
 
 	/** The clock the spam counters cool down by; the game tests swap it for one they can wind forward. */
 	public static java.util.function.LongSupplier CLOCK = System::nanoTime;
@@ -171,6 +173,7 @@ public final class LongStandingFixes {
 		crystalsIgnoreHarmlessHits = Boolean.parseBoolean(props.getProperty("MC-101851.crystalsIgnoreHarmlessHits", "false"));
 		tradersFleeRavagers = Boolean.parseBoolean(props.getProperty("MC-262810.tradersFleeRavagers", "true"));
 		shulkersNoLevitation = Boolean.parseBoolean(props.getProperty("MC-205843.shulkersCantLevitate", "true"));
+		golemsSpareTeammates = Boolean.parseBoolean(props.getProperty("MC-95782.golemsSpareTeammates", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -200,6 +203,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-101851.crystalsIgnoreHarmlessHits", Boolean.toString(crystalsIgnoreHarmlessHits));
 		props.setProperty("MC-262810.tradersFleeRavagers", Boolean.toString(tradersFleeRavagers));
 		props.setProperty("MC-205843.shulkersCantLevitate", Boolean.toString(shulkersNoLevitation));
+		props.setProperty("MC-95782.golemsSpareTeammates", Boolean.toString(golemsSpareTeammates));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

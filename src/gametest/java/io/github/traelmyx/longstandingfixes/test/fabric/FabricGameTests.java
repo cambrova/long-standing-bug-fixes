@@ -313,6 +313,16 @@ public class FabricGameTests {
 	public void shulkerRefusesLevitationVanilla(GameTestHelper helper) {
 		FixTests.shulkerRefusesLevitationVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 260)
+	public void golemSparesTeammate(GameTestHelper helper) {
+		FixTests.golemSparesTeammate(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 260)
+	public void golemSparesTeammateVanilla(GameTestHelper helper) {
+		FixTests.golemSparesTeammateVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -616,6 +626,16 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void shulkerRefusesLevitationVanilla(GameTestHelper helper) {
 		FixTests.shulkerRefusesLevitationVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 260)
+	public void golemSparesTeammate(GameTestHelper helper) {
+		FixTests.golemSparesTeammate(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 260)
+	public void golemSparesTeammateVanilla(GameTestHelper helper) {
+		FixTests.golemSparesTeammateVanilla(helper);
 	}
 }
 ^///?}

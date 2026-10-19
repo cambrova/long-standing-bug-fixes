@@ -110,6 +110,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("trader_flees_ravager_vanilla", () -> FixTests::traderFleesRavagerVanilla);
 		FUNCTIONS.register("shulker_refuses_levitation", () -> FixTests::shulkerRefusesLevitation);
 		FUNCTIONS.register("shulker_refuses_levitation_vanilla", () -> FixTests::shulkerRefusesLevitationVanilla);
+		FUNCTIONS.register("golem_spares_teammate", () -> FixTests::golemSparesTeammate);
+		FUNCTIONS.register("golem_spares_teammate_vanilla", () -> FixTests::golemSparesTeammateVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -177,6 +179,8 @@ public class NeoForgeGameTests {
 		register(event, env, "trader_flees_ravager_vanilla", 100, 1, 1);
 		register(event, env, "shulker_refuses_levitation", 40, 1, 1);
 		register(event, env, "shulker_refuses_levitation_vanilla", 40, 1, 1);
+		register(event, env, "golem_spares_teammate", 260, 1, 1);
+		register(event, env, "golem_spares_teammate_vanilla", 260, 1, 1);
 	}
 
 	//? if >=26 {
@@ -495,6 +499,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void shulkerRefusesLevitationVanilla(GameTestHelper helper) {
 		FixTests.shulkerRefusesLevitationVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 260)
+	public static void golemSparesTeammate(GameTestHelper helper) {
+		FixTests.golemSparesTeammate(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 260)
+	public static void golemSparesTeammateVanilla(GameTestHelper helper) {
+		FixTests.golemSparesTeammateVanilla(helper);
 	}
 	//?}
 }
