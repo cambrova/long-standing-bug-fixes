@@ -1157,4 +1157,102 @@ public final class FixTests {
 	public static void bonusHealthSurvivesReloadVanilla(GameTestHelper helper) {
 		bonusHealth(helper, false);
 	}
+
+	private static void pearlCooldown(net.minecraft.server.level.ServerPlayer player, int ticks) {
+		//? if >=1.21.11 {
+		/*player.getCooldowns().addCooldown(new ItemStack(Items.ENDER_PEARL), ticks);
+		*///?} else
+		player.getCooldowns().addCooldown(Items.ENDER_PEARL, ticks);
+	}
+
+	private static boolean pearlOnCooldown(net.minecraft.server.level.ServerPlayer player) {
+		//? if >=1.21.11 {
+		/*return player.getCooldowns().isOnCooldown(new ItemStack(Items.ENDER_PEARL));
+		*///?} else
+		return player.getCooldowns().isOnCooldown(Items.ENDER_PEARL);
+	}
+
+	/** A player with an ender pearl cooldown is saved and their data loaded into a freshly joined player (a relog). */
+	private static void cooldownRelog(GameTestHelper helper, boolean fixed) {
+		var level = helper.getLevel();
+		var before = realPlayer(helper, fixed ? "test-pearl" : "test-pearl-vanilla");
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(before);
+		pearlCooldown(before, 200);
+		//? if >=1.21.11 {
+		/*var out = net.minecraft.world.level.storage.TagValueOutput.createWithContext(net.minecraft.util.ProblemReporter.DISCARDING, level.registryAccess());
+		before.saveWithoutId(out);
+		var tag = out.buildResult();
+		*///?} else {
+		var tag = new net.minecraft.nbt.CompoundTag();
+		before.saveWithoutId(tag);
+		//?}
+		tag.remove("UUID");
+		LongStandingFixes.VANILLA_OBJECTS.remove(before);
+		level.getServer().getPlayerList().remove(before);
+		CHANNELS.remove(before);
+		var after = realPlayer(helper, fixed ? "test-pearl-again" : "test-pearl-again-vanilla");
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(after);
+		//? if >=1.21.11 {
+		/*after.load(net.minecraft.world.level.storage.TagValueInput.create(net.minecraft.util.ProblemReporter.DISCARDING, level.registryAccess(), tag));
+		*///?} else
+		after.load(tag);
+		after.tick();
+		boolean cooling = pearlOnCooldown(after);
+		LongStandingFixes.VANILLA_OBJECTS.remove(after);
+		level.getServer().getPlayerList().remove(after);
+		CHANNELS.remove(after);
+		System.out.printf("[long_standing_fixes] MC-111801 %s: ender pearl still on cooldown after the relog: %s%n", fixed ? "fixed" : "vanilla", cooling);
+		if (fixed) helper.assertTrue(cooling, "the ender pearl cooldown was lost on relog");
+		else helper.assertTrue(!cooling, "vanilla kept the cooldown over a relog; is MC-111801 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-111801: an item cooldown survives logging out and back in. */
+	public static void cooldownSurvivesRelog(GameTestHelper helper) {
+		cooldownRelog(helper, true);
+	}
+
+	/** Without the fix it is gone. */
+	public static void cooldownSurvivesRelogVanilla(GameTestHelper helper) {
+		cooldownRelog(helper, false);
+	}
+
+	/** A player with an ender pearl cooldown goes to the Nether; count the cooldown packets their game gets. */
+	private static void cooldownDimension(GameTestHelper helper, boolean fixed) {
+		var server = helper.getLevel().getServer();
+		var player = realPlayer(helper, fixed ? "test-traveller" : "test-traveller-vanilla");
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
+		player.tick();
+		pearlCooldown(player, 200);
+		var nether = server.getLevel(net.minecraft.world.level.Level.NETHER);
+		//? if >=1.21.11 {
+		/*player.teleportTo(nether, 0.5, 64, 0.5, java.util.Set.of(), 0.0F, 0.0F, true);
+		*///?} else
+		player.teleportTo(nether, 0.5, 64, 0.5, 0.0F, 0.0F);
+		var channel = CHANNELS.get(player);
+		channel.runPendingTasks();
+		channel.outboundMessages().clear();
+		player.tick();
+		channel.runPendingTasks();
+		long resent = channel.outboundMessages().stream().filter(m -> m instanceof net.minecraft.network.protocol.game.ClientboundCooldownPacket).count();
+		boolean cooling = pearlOnCooldown(player);
+		LongStandingFixes.VANILLA_OBJECTS.remove(player);
+		server.getPlayerList().remove(player);
+		CHANNELS.remove(player);
+		System.out.printf("[long_standing_fixes] MC-253476 %s: server still has the cooldown %s, cooldown packets sent after the trip: %d%n", fixed ? "fixed" : "vanilla", cooling, resent);
+		helper.assertTrue(cooling, "the server lost the cooldown on the way to the Nether");
+		if (fixed) helper.assertTrue(resent >= 1, "the player's game was not told about the cooldown after changing dimension");
+		else helper.assertTrue(resent == 0, "vanilla re-sent " + resent + " cooldowns; is MC-253476 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-253476: after changing dimension the player's game is told about running cooldowns again. */
+	public static void cooldownSurvivesDimensionChange(GameTestHelper helper) {
+		cooldownDimension(helper, true);
+	}
+
+	/** Without the fix nothing is sent and the game forgets them. */
+	public static void cooldownSurvivesDimensionChangeVanilla(GameTestHelper helper) {
+		cooldownDimension(helper, false);
+	}
 }

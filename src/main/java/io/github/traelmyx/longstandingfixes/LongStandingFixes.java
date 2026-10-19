@@ -64,6 +64,17 @@ public final class LongStandingFixes {
 	public static boolean keepDeathDrops = true;
 	/** MC-17876: health above 20 from health-boosting gear survives a relog or chunk reload. */
 	public static boolean keepBonusHealth = true;
+	/** MC-111801 / MC-253476: item cooldowns survive logging out and changing dimension. */
+	public static boolean keepCooldowns = true;
+
+	/** A player's item cooldowns, written as text and read back (MC-111801). */
+	public interface Cooldowns {
+		String longstandingfixes$save();
+
+		void longstandingfixes$load(String saved);
+
+		void longstandingfixes$resend();
+	}
 
 	/** An item that knows whether a death dropped it this very tick (MC-164171). */
 	public interface DeathDrop {
@@ -137,6 +148,7 @@ public final class LongStandingFixes {
 		spearKnockbackPlayers = Boolean.parseBoolean(props.getProperty("MC-310859.spearKnockbackOnPlayers", "true"));
 		keepDeathDrops = Boolean.parseBoolean(props.getProperty("MC-164171.killingBlastSparesDrops", "true"));
 		keepBonusHealth = Boolean.parseBoolean(props.getProperty("MC-17876.keepBonusHealthOnLoad", "true"));
+		keepCooldowns = Boolean.parseBoolean(props.getProperty("MC-111801.keepItemCooldowns", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -161,6 +173,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-310859.spearKnockbackOnPlayers", Boolean.toString(spearKnockbackPlayers));
 		props.setProperty("MC-164171.killingBlastSparesDrops", Boolean.toString(keepDeathDrops));
 		props.setProperty("MC-17876.keepBonusHealthOnLoad", Boolean.toString(keepBonusHealth));
+		props.setProperty("MC-111801.keepItemCooldowns", Boolean.toString(keepCooldowns));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

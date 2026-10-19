@@ -253,6 +253,26 @@ public class FabricGameTests {
 	public void bonusHealthSurvivesReloadVanilla(GameTestHelper helper) {
 		FixTests.bonusHealthSurvivesReloadVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void cooldownSurvivesRelog(GameTestHelper helper) {
+		FixTests.cooldownSurvivesRelog(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void cooldownSurvivesRelogVanilla(GameTestHelper helper) {
+		FixTests.cooldownSurvivesRelogVanilla(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void cooldownSurvivesDimensionChange(GameTestHelper helper) {
+		FixTests.cooldownSurvivesDimensionChange(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void cooldownSurvivesDimensionChangeVanilla(GameTestHelper helper) {
+		FixTests.cooldownSurvivesDimensionChangeVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -496,6 +516,26 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void bonusHealthSurvivesReloadVanilla(GameTestHelper helper) {
 		FixTests.bonusHealthSurvivesReloadVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void cooldownSurvivesRelog(GameTestHelper helper) {
+		FixTests.cooldownSurvivesRelog(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void cooldownSurvivesRelogVanilla(GameTestHelper helper) {
+		FixTests.cooldownSurvivesRelogVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void cooldownSurvivesDimensionChange(GameTestHelper helper) {
+		FixTests.cooldownSurvivesDimensionChange(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void cooldownSurvivesDimensionChangeVanilla(GameTestHelper helper) {
+		FixTests.cooldownSurvivesDimensionChangeVanilla(helper);
 	}
 }
 ^///?}
