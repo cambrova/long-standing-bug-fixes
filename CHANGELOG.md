@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.0
+
+- MC-278572 (1.21.11 and newer): dropped items, TNT and minecarts slide down honey blocks at the 1.21.1 speed again, instead of almost twice as fast.
+- MC-279003 (1.21.11 and newer): explosions push wind charges again, including other wind charges.
+- MC-147694 (1.21.1): a mob that hits a raised shield is knocked back, like before 1.14.
+
 ## 1.4.0
 
 - MC-265635: a cat sitting on the upper of two stacked chests no longer keeps the lower one shut.

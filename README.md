@@ -16,6 +16,9 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-210491](https://bugs.mojang.com/browse/MC-210491) | Sculk sensors hear a player batting a fireball away | all |
 | [MC-265635](https://bugs.mojang.com/browse/MC-265635) | A cat sitting on a chest only keeps that chest shut, not the one below | all |
 | [MC-135198](https://bugs.mojang.com/browse/MC-135198) | Dispensers with flint and steel light a portal through any empty spot inside the frame | all |
+| [MC-278572](https://bugs.mojang.com/browse/MC-278572) | Items, TNT and minecarts slide down honey at the 1.21.1 speed | 1.21.2+ |
+| [MC-279003](https://bugs.mojang.com/browse/MC-279003) | Explosions push wind charges | 1.21.4+ |
+| [MC-147694](https://bugs.mojang.com/browse/MC-147694) | Mobs that hit a raised shield are knocked back | 1.21.1 |
 
 Server side (or singleplayer); clients don't need it.
 
