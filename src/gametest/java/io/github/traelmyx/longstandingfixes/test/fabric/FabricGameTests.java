@@ -363,6 +363,16 @@ public class FabricGameTests {
 	public void riddenMobsAttackVanilla(GameTestHelper helper) {
 		FixTests.riddenMobsAttackVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 100)
+	public void namesLookedUpInBackground(GameTestHelper helper) {
+		FixTests.namesLookedUpInBackground(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 100)
+	public void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
+		FixTests.namesLookedUpInBackgroundVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -716,6 +726,16 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 120)
 	public void riddenMobsAttackVanilla(GameTestHelper helper) {
 		FixTests.riddenMobsAttackVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 100)
+	public void namesLookedUpInBackground(GameTestHelper helper) {
+		FixTests.namesLookedUpInBackground(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 100)
+	public void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
+		FixTests.namesLookedUpInBackgroundVanilla(helper);
 	}
 }
 ^///?}

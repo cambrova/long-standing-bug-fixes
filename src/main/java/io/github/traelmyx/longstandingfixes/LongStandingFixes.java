@@ -84,6 +84,41 @@ public final class LongStandingFixes {
 	public static boolean bucketedCubesSplitPersistent = true;
 	/** MC-262182: mobs that fight in melee still hit a target in reach while another mob rides them. */
 	public static boolean riddenMobsAttack = true;
+	/** MC-99601: typing /whitelist add, /op or /ban for a name the server hasn't seen doesn't freeze the server during the lookup. */
+	public static boolean namesLookedUpInBackground = true;
+
+	/** The command a player or the console is running on this thread, so it can run again after a name lookup (MC-99601). */
+	public record RunningCommand(net.minecraft.commands.CommandSourceStack source, String command) {
+	}
+
+	public static final ThreadLocal<RunningCommand> RUNNING_COMMAND = new ThreadLocal<>();
+	/** Names whose background lookup found nothing; the command that asked runs once more and fails as usual. */
+	public static final java.util.Set<String> FAILED_LOOKUPS = java.util.concurrent.ConcurrentHashMap.newKeySet();
+	/** Where player names are looked up off the main thread. */
+	public static final java.util.concurrent.ExecutorService LOOKUPS = java.util.concurrent.Executors.newFixedThreadPool(2, task -> {
+		Thread thread = new Thread(task, "Long-Standing Bug Fixes name lookup");
+		thread.setDaemon(true);
+		return thread;
+	});
+
+	/** The server's player-name cache, asked whether it already knows a name. */
+	public interface ProfileCachePeek {
+		boolean longstandingfixes$isCached(String name);
+	}
+
+	/** Lower-case names the game tests make slow to look up, standing in for a slow answer from Mojang. */
+	public static final java.util.Set<String> SLOW_TEST_NAMES = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
+	/** Waits a second if the game tests asked for this name to be slow; true if it was one of theirs. */
+	public static boolean slowTestLookup(String name) {
+		if (!SLOW_TEST_NAMES.contains(name.toLowerCase(java.util.Locale.ROOT))) return false;
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
+		return true;
+	}
 
 	/** The clock the spam counters cool down by; the game tests swap it for one they can wind forward. */
 	public static java.util.function.LongSupplier CLOCK = System::nanoTime;
@@ -186,6 +221,7 @@ public final class LongStandingFixes {
 		elytraStopsInWater = Boolean.parseBoolean(props.getProperty("MC-298489.elytraStopsInWater", "true"));
 		bucketedCubesSplitPersistent = Boolean.parseBoolean(props.getProperty("MC-308361.bucketedSulfurCubesSplitPersistent", "true"));
 		riddenMobsAttack = Boolean.parseBoolean(props.getProperty("MC-262182.riddenMobsAttack", "true"));
+		namesLookedUpInBackground = Boolean.parseBoolean(props.getProperty("MC-99601.lookUpNamesInBackground", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -220,6 +256,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-298489.elytraStopsInWater", Boolean.toString(elytraStopsInWater));
 		props.setProperty("MC-308361.bucketedSulfurCubesSplitPersistent", Boolean.toString(bucketedCubesSplitPersistent));
 		props.setProperty("MC-262182.riddenMobsAttack", Boolean.toString(riddenMobsAttack));
+		props.setProperty("MC-99601.lookUpNamesInBackground", Boolean.toString(namesLookedUpInBackground));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

@@ -437,7 +437,13 @@ public final class FixTests {
 	}
 
 	private static void fireball(GameTestHelper helper, boolean fixed) {
-		for (int x = 0; x < 8; x++) for (int z = 0; z < 8; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		for (int x = 0; x < 8; x++) for (int z = 0; z < 8; z++) {
+			helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+			// wool walls and a wool roof keep the noise of neighbouring tests away from the sensor
+			boolean wall = x == 0 || z == 0 || x == 7 || z == 7;
+			for (int y = 1; y < 5; y++) if (wall) helper.setBlock(new BlockPos(x, y, z), Blocks.WHITE_WOOL);
+			helper.setBlock(new BlockPos(x, 5, z), Blocks.WHITE_WOOL);
+		}
 		BlockPos sensor = new BlockPos(1, 1, 1);
 		helper.setBlock(sensor, Blocks.SCULK_SENSOR);
 		var player = realPlayer(helper, "test-batter");
@@ -455,7 +461,7 @@ public final class FixTests {
 		Runnable[] attempt = new Runnable[1];
 		int[] waited = {0};
 		attempt[0] = () -> {
-			if (sensorActive(helper, sensor) && waited[0]++ < 200) {
+			if (sensorActive(helper, sensor) && waited[0]++ < 100) {
 				helper.runAfterDelay(1, attempt[0]);
 				return;
 			}
@@ -1663,5 +1669,54 @@ public final class FixTests {
 	/** Without the fix it never attacks. */
 	public static void riddenMobsAttackVanilla(GameTestHelper helper) {
 		riddenAttack(helper, false);
+	}
+
+	/** The console whitelists a name the server has never seen, and Mojang takes a second to answer. */
+	private static void whitelistLookup(GameTestHelper helper, boolean fixed) {
+		var server = helper.getLevel().getServer();
+		if (server.getCommands().getDispatcher().getRoot().getChild("whitelist") == null) {
+			// only dedicated servers have /whitelist
+			helper.succeed();
+			return;
+		}
+		String name = fixed ? "lsbfSlowFixed" : "lsbfSlowVanilla";
+		String key = name.toLowerCase(java.util.Locale.ROOT);
+		LongStandingFixes.SLOW_TEST_NAMES.add(key);
+		if (!fixed) LongStandingFixes.VANILLA_NAMES.add(key);
+		var console = server.createCommandSourceStack().withSuppressedOutput();
+		long start = System.nanoTime();
+		server.getCommands().performPrefixedCommand(console, "whitelist add " + name);
+		long blockedMs = (System.nanoTime() - start) / 1_000_000;
+		java.util.function.BooleanSupplier listed = () -> java.util.Arrays.stream(server.getPlayerList().getWhiteList().getUserList()).anyMatch(name::equalsIgnoreCase);
+		boolean listedAtOnce = listed.getAsBoolean();
+		System.out.printf("[long_standing_fixes] MC-99601 %s: /whitelist add held the server for %d ms, listed straight away: %s%n", fixed ? "fixed" : "vanilla", blockedMs, listedAtOnce);
+		Runnable cleanUp = () -> {
+			LongStandingFixes.SLOW_TEST_NAMES.remove(key);
+			LongStandingFixes.VANILLA_NAMES.remove(key);
+			server.getCommands().performPrefixedCommand(console, "whitelist remove " + name);
+		};
+		if (fixed) {
+			helper.assertTrue(blockedMs < 500, "the server stood still for " + blockedMs + " ms during the lookup");
+			helper.succeedWhen(() -> {
+				helper.assertTrue(listed.getAsBoolean(), "the command has not run again after the lookup yet");
+				System.out.printf("[long_standing_fixes] MC-99601 fixed: %s is on the whitelist after the background lookup%n", name);
+				cleanUp.run();
+			});
+		} else {
+			cleanUp.run();
+			helper.assertTrue(blockedMs >= 900, "vanilla only held the server for " + blockedMs + " ms; is MC-99601 fixed?");
+			helper.assertTrue(listedAtOnce, "vanilla did not whitelist the name");
+			helper.succeed();
+		}
+	}
+
+	/** MC-99601: a slow name lookup no longer freezes the server, and the command still finishes. */
+	public static void namesLookedUpInBackground(GameTestHelper helper) {
+		whitelistLookup(helper, true);
+	}
+
+	/** Without the fix the server waits for the answer. */
+	public static void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
+		whitelistLookup(helper, false);
 	}
 }
