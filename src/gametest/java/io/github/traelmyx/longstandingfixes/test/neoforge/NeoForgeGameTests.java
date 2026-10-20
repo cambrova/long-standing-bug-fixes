@@ -116,6 +116,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("adventure_spawn_on_surface_vanilla", () -> FixTests::adventureSpawnOnSurfaceVanilla);
 		FUNCTIONS.register("elytra_stops_in_water", () -> FixTests::elytraStopsInWater);
 		FUNCTIONS.register("elytra_stops_in_water_vanilla", () -> FixTests::elytraStopsInWaterVanilla);
+		FUNCTIONS.register("bucketed_sulfur_cubes_split_persistent", () -> FixTests::bucketedSulfurCubesSplitPersistent);
+		FUNCTIONS.register("bucketed_sulfur_cubes_split_persistent_vanilla", () -> FixTests::bucketedSulfurCubesSplitPersistentVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -189,6 +191,8 @@ public class NeoForgeGameTests {
 		register(event, env, "adventure_spawn_on_surface_vanilla", 40, 1, 1);
 		register(event, env, "elytra_stops_in_water", 40, 1, 1);
 		register(event, env, "elytra_stops_in_water_vanilla", 40, 1, 1);
+		register(event, env, "bucketed_sulfur_cubes_split_persistent", 40, 1, 1);
+		register(event, env, "bucketed_sulfur_cubes_split_persistent_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -537,6 +541,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 40)
 	public static void elytraStopsInWaterVanilla(GameTestHelper helper) {
 		FixTests.elytraStopsInWaterVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void bucketedSulfurCubesSplitPersistent(GameTestHelper helper) {
+		FixTests.bucketedSulfurCubesSplitPersistent(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void bucketedSulfurCubesSplitPersistentVanilla(GameTestHelper helper) {
+		FixTests.bucketedSulfurCubesSplitPersistentVanilla(helper);
 	}
 	//?}
 }

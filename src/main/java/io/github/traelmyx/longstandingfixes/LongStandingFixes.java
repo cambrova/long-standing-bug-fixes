@@ -80,6 +80,8 @@ public final class LongStandingFixes {
 	public static boolean adventureSpawnOnSurface = true;
 	/** MC-298489: gliding ends in water, so the elytra stops losing durability while you sink or swim. */
 	public static boolean elytraStopsInWater = true;
+	/** MC-308361 (26.2 and newer): the small cubes a bucketed sulfur cube splits into don't despawn either. */
+	public static boolean bucketedCubesSplitPersistent = true;
 
 	/** The clock the spam counters cool down by; the game tests swap it for one they can wind forward. */
 	public static java.util.function.LongSupplier CLOCK = System::nanoTime;
@@ -180,6 +182,7 @@ public final class LongStandingFixes {
 		golemsSpareTeammates = Boolean.parseBoolean(props.getProperty("MC-95782.golemsSpareTeammates", "true"));
 		adventureSpawnOnSurface = Boolean.parseBoolean(props.getProperty("MC-302519.adventureSpawnOnSurface", "true"));
 		elytraStopsInWater = Boolean.parseBoolean(props.getProperty("MC-298489.elytraStopsInWater", "true"));
+		bucketedCubesSplitPersistent = Boolean.parseBoolean(props.getProperty("MC-308361.bucketedSulfurCubesSplitPersistent", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -212,6 +215,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-95782.golemsSpareTeammates", Boolean.toString(golemsSpareTeammates));
 		props.setProperty("MC-302519.adventureSpawnOnSurface", Boolean.toString(adventureSpawnOnSurface));
 		props.setProperty("MC-298489.elytraStopsInWater", Boolean.toString(elytraStopsInWater));
+		props.setProperty("MC-308361.bucketedSulfurCubesSplitPersistent", Boolean.toString(bucketedCubesSplitPersistent));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

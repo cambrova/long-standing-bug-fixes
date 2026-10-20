@@ -1574,4 +1574,44 @@ public final class FixTests {
 	public static void elytraStopsInWaterVanilla(GameTestHelper helper) {
 		elytraWater(helper, false);
 	}
+
+	/** A full-size sulfur cube that came out of a bucket dies and splits; are its small cubes kept from despawning? */
+	private static void sulfurSplit(GameTestHelper helper, boolean fixed) {
+		//? if >=26 {
+		/*var level = helper.getLevel();
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+		var cube = helper.spawn(net.minecraft.world.entity.EntityTypes.SULFUR_CUBE, new BlockPos(2, 1, 2));
+		cube.setNoAi(true);
+		cube.setBaby(false);
+		cube.setSize(2, true);
+		cube.setFromBucket(true);
+		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(cube.getUUID());
+		helper.assertTrue(cube.getSize() == 2 && !cube.isBaby() && cube.requiresCustomPersistence(), "the setup failed: size " + cube.getSize() + ", persistent " + cube.requiresCustomPersistence());
+		// what dying does once the death animation is over
+		cube.setHealth(0.0F);
+		cube.remove(net.minecraft.world.entity.Entity.RemovalReason.KILLED);
+		LongStandingFixes.VANILLA_ENTITIES.remove(cube.getUUID());
+		var children = level.getEntitiesOfClass(net.minecraft.world.entity.monster.cubemob.SulfurCube.class, cube.getBoundingBox().inflate(3.0), child -> child != cube);
+		long kept = children.stream().filter(net.minecraft.world.entity.monster.cubemob.SulfurCube::requiresCustomPersistence).count();
+		children.forEach(net.minecraft.world.entity.Entity::discard);
+		System.out.printf("[long_standing_fixes] MC-308361 %s: %d small cubes, %d kept from despawning%n", fixed ? "fixed" : "vanilla", children.size(), kept);
+		helper.assertTrue(!children.isEmpty(), "the sulfur cube did not split");
+		if (fixed) helper.assertTrue(kept == children.size(), "only " + kept + " of " + children.size() + " small cubes are kept from despawning");
+		else helper.assertTrue(kept == 0, "vanilla kept " + kept + " small cubes; is MC-308361 fixed?");
+		helper.succeed();
+		*///?} else {
+		// sulfur cubes arrived in 26.2
+		helper.succeed();
+		//?}
+	}
+
+	/** MC-308361: the small cubes a bucketed sulfur cube splits into don't despawn. */
+	public static void bucketedSulfurCubesSplitPersistent(GameTestHelper helper) {
+		sulfurSplit(helper, true);
+	}
+
+	/** Without the fix they can despawn. */
+	public static void bucketedSulfurCubesSplitPersistentVanilla(GameTestHelper helper) {
+		sulfurSplit(helper, false);
+	}
 }

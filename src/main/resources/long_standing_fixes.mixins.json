@@ -39,6 +39,7 @@
 		"ServerLevelMixin",
 		"ServerPlayerCooldownsMixin",
 		"ServerPlayerMixin",
+		"SulfurCubeMixin",
 		"SwellGoalMixin",
 		"TickThrottlerAccessor",
 		"WanderingTraderMixin"
