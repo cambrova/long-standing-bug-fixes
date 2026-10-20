@@ -34,6 +34,9 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-205843](https://bugs.mojang.com/browse/MC-205843) | Shulkers can't get Levitation | all |
 | [MC-95782](https://bugs.mojang.com/browse/MC-95782) | Iron golems don't attack teammates they bump into | all |
 | [MC-101851](https://bugs.mojang.com/browse/MC-101851) | Snowballs, eggs and ender pearls don't blow up end crystals (off by default) | all |
+| [MC-302519](https://bugs.mojang.com/browse/MC-302519) | Adventure-mode respawns land on the surface, not in the bedrock | 1.21.9+ |
+| [MC-298489](https://bugs.mojang.com/browse/MC-298489) | Gliding ends in water, so elytras don't wear out while you swim | all |
+| [MC-308361](https://bugs.mojang.com/browse/MC-308361) | Small cubes split from a bucketed sulfur cube don't despawn | 26.2+ |
 
 Server side (or singleplayer); clients don't need it.
 

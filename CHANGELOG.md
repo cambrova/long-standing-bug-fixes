@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.0
+
+- MC-302519 (1.21.11 and newer): with Adventure as the default game mode, players respawn on the surface instead of at the bottom of the world.
+- MC-298489: gliding ends when you're in water, so an elytra no longer wears out while you sink or swim.
+- MC-308361 (26.2 and newer): the small cubes a bucketed sulfur cube splits into no longer despawn.
+
 ## 1.10.0
 
 - MC-276819: spam limits for chat, commands and item drops cool down by real time, so a lagging server no longer kicks players for normal chat.
