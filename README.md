@@ -1,6 +1,6 @@
 # Long-Standing Bug Fixes
 
-Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is small, does what the bug report asks for, and has its own switch in `config/long_standing_fixes.properties`.
+Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is small, does what the bug report asks for, and has its own switch in `config/long_standing_fixes.properties`. Fixes marked "off by default" change something players use on purpose; switch them on if you want them.
 
 | Bug | Fix | Versions |
 |---|---|---|
@@ -18,8 +18,8 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-135198](https://bugs.mojang.com/browse/MC-135198) | Dispensers with flint and steel light a portal through any empty spot inside the frame | all |
 | [MC-278572](https://bugs.mojang.com/browse/MC-278572) | Items, TNT and minecarts slide down honey at the 1.21.1 speed | 1.21.2+ |
 | [MC-279003](https://bugs.mojang.com/browse/MC-279003) | Explosions push wind charges | 1.21.4+ |
-| [MC-147694](https://bugs.mojang.com/browse/MC-147694) | Mobs that hit a raised shield are knocked back | 1.21.1 |
-| [MC-163962](https://bugs.mojang.com/browse/MC-163962) | Villager trade demand stops at 0 instead of falling forever | all |
+| [MC-147694](https://bugs.mojang.com/browse/MC-147694) | Mobs that hit a raised shield are knocked back (off by default) | 1.21.1 |
+| [MC-163962](https://bugs.mojang.com/browse/MC-163962) | Villager trade demand stops at 0 instead of falling forever (off by default) | all |
 | [MC-264285](https://bugs.mojang.com/browse/MC-264285) | Lighting a creeper doesn't use up an unbreakable flint and steel | all |
 | [MC-179072](https://bugs.mojang.com/browse/MC-179072) | Creepers calm down when their player switches to creative or spectator | all |
 | [MC-262422](https://bugs.mojang.com/browse/MC-262422) | Thunderstorm lightning doesn't aim at spectators | all |
@@ -29,6 +29,11 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-164171](https://bugs.mojang.com/browse/MC-164171), [MC-109083](https://bugs.mojang.com/browse/MC-109083) | The wither skull or ghast fireball that kills you doesn't blow up your drops | all |
 | [MC-17876](https://bugs.mojang.com/browse/MC-17876) | Bonus health from gear survives logging in and chunk reloads | all |
 | [MC-111801](https://bugs.mojang.com/browse/MC-111801), [MC-253476](https://bugs.mojang.com/browse/MC-253476) | Item cooldowns survive logging out and changing dimension | all |
+| [MC-276819](https://bugs.mojang.com/browse/MC-276819) | Spam limits cool down in real time on a lagging server | all |
+| [MC-262810](https://bugs.mojang.com/browse/MC-262810) | Wandering traders run from ravagers | all |
+| [MC-205843](https://bugs.mojang.com/browse/MC-205843) | Shulkers can't get Levitation | all |
+| [MC-95782](https://bugs.mojang.com/browse/MC-95782) | Iron golems don't attack teammates they bump into | all |
+| [MC-101851](https://bugs.mojang.com/browse/MC-101851) | Snowballs, eggs and ender pearls don't blow up end crystals (off by default) | all |
 
 Server side (or singleplayer); clients don't need it.
 

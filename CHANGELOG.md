@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.10.0
+
+- MC-276819: spam limits for chat, commands and item drops cool down by real time, so a lagging server no longer kicks players for normal chat.
+- MC-262810: wandering traders run from ravagers.
+- MC-205843: shulkers can no longer get Levitation.
+- MC-95782: iron golems no longer attack hostile mobs on their own team when they bump into them.
+- MC-101851 (optional, off by default): snowballs, eggs and ender pearls no longer blow up end crystals.
+- MC-163962 and MC-147694 are now optional and off by default on new installs. If you already have `config/long_standing_fixes.properties`, your settings stay as they are.
+
 ## 1.9.0
 
 - MC-17876: health above 20 from health-boosting gear is no longer cut back to 20 when you log in or a chunk reloads.
