@@ -1720,8 +1720,22 @@ public final class FixTests {
 			server.getCommands().performPrefixedCommand(console, "whitelist remove " + name);
 		};
 		if (fixed) {
-			// the test server ticks as fast as it can, so the 1-second lookup spans a few hundred ticks
 			helper.assertTrue(blockedMs < 500, "the server stood still for " + blockedMs + " ms during the lookup");
+			// the test server ticks as fast as it can and would time out long before a second has passed, so wait here for
+			// the background lookup to land in the cache; the command then runs again on one of the next ticks
+			//? if >=1.21.11 {
+			/*var cache = (LongStandingFixes.ProfileCachePeek) server.services().nameToIdCache();
+			*///?} else
+			var cache = (LongStandingFixes.ProfileCachePeek) server.getProfileCache();
+			long deadline = System.nanoTime() + 5_000_000_000L;
+			while (!cache.longstandingfixes$isCached(key) && System.nanoTime() < deadline) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					break;
+				}
+			}
 			helper.succeedWhen(() -> {
 				helper.assertTrue(listed.getAsBoolean(), "the command has not run again after the lookup yet");
 				System.out.printf("[long_standing_fixes] MC-99601 fixed: %s is on the whitelist after the background lookup%n", name);

@@ -37,6 +37,8 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-302519](https://bugs.mojang.com/browse/MC-302519) | Adventure-mode respawns land on the surface, not in the bedrock | 1.21.9+ |
 | [MC-298489](https://bugs.mojang.com/browse/MC-298489) | Gliding ends in water, so elytras don't wear out while you swim | all |
 | [MC-308361](https://bugs.mojang.com/browse/MC-308361) | Small cubes split from a bucketed sulfur cube don't despawn | 26.2+ |
+| [MC-262182](https://bugs.mojang.com/browse/MC-262182) | Melee mobs carrying a rider still hit a target in reach | all |
+| [MC-99601](https://bugs.mojang.com/browse/MC-99601) | Typed `/whitelist`, `/op` and `/ban` look up unknown names without freezing the server | all |
 
 Server side (or singleplayer); clients don't need it.
 

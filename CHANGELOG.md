@@ -5,6 +5,8 @@
 - MC-302519 (1.21.11 and newer): with Adventure as the default game mode, players respawn on the surface instead of at the bottom of the world.
 - MC-298489: gliding ends when you're in water, so an elytra no longer wears out while you sink or swim.
 - MC-308361 (26.2 and newer): the small cubes a bucketed sulfur cube splits into no longer despawn.
+- MC-262182: mobs that fight in melee still hit a target in reach while another mob rides them.
+- MC-99601: `/whitelist`, `/op`, `/ban` and other commands typed by a player or the console look up unknown player names in the background, so the server no longer freezes; the command finishes by itself once the name is known.
 
 ## 1.10.0
 
