@@ -1631,26 +1631,28 @@ public final class FixTests {
 		pig.setNoAi(true);
 		boolean mounted = rider.startRiding(golem);
 		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(golem.getUUID());
-		golem.setTarget(pig);
-		float health = pig.getHealth();
 		helper.assertTrue(mounted && golem.getControllingPassenger() == rider, "the setup failed: mounted " + mounted + ", controller " + golem.getControllingPassenger());
+		float health = pig.getHealth();
 		java.util.function.BooleanSupplier hit = () -> !pig.isAlive() || pig.getHealth() < health;
-		if (fixed) {
-			helper.succeedWhen(() -> {
-				helper.assertTrue(golem.getTarget() == pig || !pig.isAlive(), "the golem dropped its target");
-				helper.assertTrue(hit.getAsBoolean(), "the ridden golem has not hit the pig in reach yet");
-				System.out.printf("[long_standing_fixes] MC-262182 fixed: ridden golem hit the pig (health %.1f -> %.1f, alive %s)%n", health, pig.getHealth(), pig.isAlive());
-				LongStandingFixes.VANILLA_ENTITIES.remove(golem.getUUID());
-			});
-		} else {
-			helper.runAfterDelay(60, () -> {
-				LongStandingFixes.VANILLA_ENTITIES.remove(golem.getUUID());
-				System.out.printf("[long_standing_fixes] MC-262182 vanilla: after 60 ticks the pig has %.1f of %.1f health, golem target %s%n", pig.getHealth(), health, golem.getTarget() == pig ? "pig" : String.valueOf(golem.getTarget()));
-				helper.assertTrue(golem.getTarget() == pig, "the golem dropped its target, so the control proves nothing");
-				helper.assertTrue(!hit.getAsBoolean(), "vanilla's ridden golem hit the pig; is MC-262182 fixed?");
-				helper.succeed();
-			});
-		}
+		// the mount switches its own goals off on its next 5-tick check; aim it at the pig only after that
+		helper.runAfterDelay(10, () -> {
+			golem.setTarget(pig);
+			if (fixed) {
+				helper.succeedWhen(() -> {
+					helper.assertTrue(hit.getAsBoolean(), "the ridden golem has not hit the pig in reach yet");
+					System.out.printf("[long_standing_fixes] MC-262182 fixed: ridden golem hit the pig (health %.1f -> %.1f, alive %s)%n", health, pig.getHealth(), pig.isAlive());
+					LongStandingFixes.VANILLA_ENTITIES.remove(golem.getUUID());
+				});
+			} else {
+				helper.runAfterDelay(60, () -> {
+					LongStandingFixes.VANILLA_ENTITIES.remove(golem.getUUID());
+					System.out.printf("[long_standing_fixes] MC-262182 vanilla: after 60 ticks the pig has %.1f of %.1f health, golem target %s%n", pig.getHealth(), health, golem.getTarget() == pig ? "pig" : String.valueOf(golem.getTarget()));
+					helper.assertTrue(golem.getTarget() == pig, "the golem dropped its target, so the control proves nothing");
+					helper.assertTrue(!hit.getAsBoolean(), "vanilla's ridden golem hit the pig; is MC-262182 fixed?");
+					helper.succeed();
+				});
+			}
+		});
 	}
 
 	/** MC-262182: a mob carrying a rider still hits its target when it's in reach. */

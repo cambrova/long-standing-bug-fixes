@@ -354,12 +354,12 @@ public class FabricGameTests {
 		FixTests.bucketedSulfurCubesSplitPersistentVanilla(helper);
 	}
 
-	@GameTest(structure = EMPTY, maxTicks = 100)
+	@GameTest(structure = EMPTY, maxTicks = 120)
 	public void riddenMobsAttack(GameTestHelper helper) {
 		FixTests.riddenMobsAttack(helper);
 	}
 
-	@GameTest(structure = EMPTY, maxTicks = 100)
+	@GameTest(structure = EMPTY, maxTicks = 120)
 	public void riddenMobsAttackVanilla(GameTestHelper helper) {
 		FixTests.riddenMobsAttackVanilla(helper);
 	}
@@ -708,12 +708,12 @@ public class FabricGameTests {
 		FixTests.bucketedSulfurCubesSplitPersistentVanilla(helper);
 	}
 
-	@GameTest(template = EMPTY, timeoutTicks = 100)
+	@GameTest(template = EMPTY, timeoutTicks = 120)
 	public void riddenMobsAttack(GameTestHelper helper) {
 		FixTests.riddenMobsAttack(helper);
 	}
 
-	@GameTest(template = EMPTY, timeoutTicks = 100)
+	@GameTest(template = EMPTY, timeoutTicks = 120)
 	public void riddenMobsAttackVanilla(GameTestHelper helper) {
 		FixTests.riddenMobsAttackVanilla(helper);
 	}

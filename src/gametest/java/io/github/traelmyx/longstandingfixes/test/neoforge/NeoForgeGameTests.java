@@ -195,8 +195,8 @@ public class NeoForgeGameTests {
 		register(event, env, "elytra_stops_in_water_vanilla", 40, 1, 1);
 		register(event, env, "bucketed_sulfur_cubes_split_persistent", 40, 1, 1);
 		register(event, env, "bucketed_sulfur_cubes_split_persistent_vanilla", 40, 1, 1);
-		register(event, env, "ridden_mobs_attack", 100, 1, 1);
-		register(event, env, "ridden_mobs_attack_vanilla", 100, 1, 1);
+		register(event, env, "ridden_mobs_attack", 120, 1, 1);
+		register(event, env, "ridden_mobs_attack_vanilla", 120, 1, 1);
 	}
 
 	//? if >=26 {
@@ -557,12 +557,12 @@ public class NeoForgeGameTests {
 		FixTests.bucketedSulfurCubesSplitPersistentVanilla(helper);
 	}
 
-	@GameTest(template = "empty", timeoutTicks = 100)
+	@GameTest(template = "empty", timeoutTicks = 120)
 	public static void riddenMobsAttack(GameTestHelper helper) {
 		FixTests.riddenMobsAttack(helper);
 	}
 
-	@GameTest(template = "empty", timeoutTicks = 100)
+	@GameTest(template = "empty", timeoutTicks = 120)
 	public static void riddenMobsAttackVanilla(GameTestHelper helper) {
 		FixTests.riddenMobsAttackVanilla(helper);
 	}
