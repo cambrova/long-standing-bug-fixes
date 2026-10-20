@@ -199,8 +199,8 @@ public class NeoForgeGameTests {
 		register(event, env, "bucketed_sulfur_cubes_split_persistent_vanilla", 40, 1, 1);
 		register(event, env, "ridden_mobs_attack", 120, 1, 1);
 		register(event, env, "ridden_mobs_attack_vanilla", 120, 1, 1);
-		register(event, env, "names_looked_up_in_background", 100, 1, 1);
-		register(event, env, "names_looked_up_in_background_vanilla", 100, 1, 1);
+		register(event, env, "names_looked_up_in_background", 1200, 1, 1);
+		register(event, env, "names_looked_up_in_background_vanilla", 1200, 1, 1);
 	}
 
 	//? if >=26 {
@@ -571,12 +571,12 @@ public class NeoForgeGameTests {
 		FixTests.riddenMobsAttackVanilla(helper);
 	}
 
-	@GameTest(template = "empty", timeoutTicks = 100)
+	@GameTest(template = "empty", timeoutTicks = 1200)
 	public static void namesLookedUpInBackground(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackground(helper);
 	}
 
-	@GameTest(template = "empty", timeoutTicks = 100)
+	@GameTest(template = "empty", timeoutTicks = 1200)
 	public static void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackgroundVanilla(helper);
 	}

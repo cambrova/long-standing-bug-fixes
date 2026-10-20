@@ -1720,6 +1720,7 @@ public final class FixTests {
 			server.getCommands().performPrefixedCommand(console, "whitelist remove " + name);
 		};
 		if (fixed) {
+			// the test server ticks as fast as it can, so the 1-second lookup spans a few hundred ticks
 			helper.assertTrue(blockedMs < 500, "the server stood still for " + blockedMs + " ms during the lookup");
 			helper.succeedWhen(() -> {
 				helper.assertTrue(listed.getAsBoolean(), "the command has not run again after the lookup yet");

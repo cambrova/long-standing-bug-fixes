@@ -364,12 +364,12 @@ public class FabricGameTests {
 		FixTests.riddenMobsAttackVanilla(helper);
 	}
 
-	@GameTest(structure = EMPTY, maxTicks = 100)
+	@GameTest(structure = EMPTY, maxTicks = 1200)
 	public void namesLookedUpInBackground(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackground(helper);
 	}
 
-	@GameTest(structure = EMPTY, maxTicks = 100)
+	@GameTest(structure = EMPTY, maxTicks = 1200)
 	public void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackgroundVanilla(helper);
 	}
@@ -728,12 +728,12 @@ public class FabricGameTests {
 		FixTests.riddenMobsAttackVanilla(helper);
 	}
 
-	@GameTest(template = EMPTY, timeoutTicks = 100)
+	@GameTest(template = EMPTY, timeoutTicks = 1200)
 	public void namesLookedUpInBackground(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackground(helper);
 	}
 
-	@GameTest(template = EMPTY, timeoutTicks = 100)
+	@GameTest(template = EMPTY, timeoutTicks = 1200)
 	public void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackgroundVanilla(helper);
 	}
