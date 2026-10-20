@@ -33,6 +33,7 @@
 		"LivingEntityHealthMixin",
 		"LivingEntityMixin",
 		"MerchantOfferMixin",
+		"MinecraftServerServicesAccessor",
 		"MobGoalsAccessor",
 		"MobRiddenAttackMixin",
 		"PlayerAdvancementsMixin",

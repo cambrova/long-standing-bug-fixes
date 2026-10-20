@@ -441,8 +441,8 @@ public final class FixTests {
 			helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
 			// wool walls and a wool roof keep the noise of neighbouring tests away from the sensor
 			boolean wall = x == 0 || z == 0 || x == 7 || z == 7;
-			for (int y = 1; y < 5; y++) if (wall) helper.setBlock(new BlockPos(x, y, z), Blocks.WHITE_WOOL);
-			helper.setBlock(new BlockPos(x, 5, z), Blocks.WHITE_WOOL);
+			for (int y = 1; y < 5; y++) if (wall) helper.setBlock(new BlockPos(x, y, z), block("white_wool"));
+			helper.setBlock(new BlockPos(x, 5, z), block("white_wool"));
 		}
 		BlockPos sensor = new BlockPos(1, 1, 1);
 		helper.setBlock(sensor, Blocks.SCULK_SENSOR);
@@ -1671,6 +1671,29 @@ public final class FixTests {
 		riddenAttack(helper, false);
 	}
 
+	/** Gives the test server the real player-name cache a dedicated server has, instead of its stand-in. */
+	private static void realNameCache(net.minecraft.server.MinecraftServer server) {
+		var accessor = (io.github.traelmyx.longstandingfixes.mixin.MinecraftServerServicesAccessor) server;
+		var services = accessor.longstandingfixes$services();
+		java.io.File file;
+		try {
+			file = java.nio.file.Files.createTempFile("lsbf-usercache", ".json").toFile();
+			file.deleteOnExit();
+			java.nio.file.Files.writeString(file.toPath(), "[]");
+		} catch (java.io.IOException e) {
+			throw new java.io.UncheckedIOException(e);
+		}
+		//? if >=1.21.11 {
+		/*if (services.nameToIdCache() instanceof net.minecraft.server.players.CachedUserNameToIdResolver) return;
+		var cache = new net.minecraft.server.players.CachedUserNameToIdResolver(services.profileRepository(), file);
+		accessor.longstandingfixes$setServices(new net.minecraft.server.Services(services.sessionService(), services.servicesKeySet(), services.profileRepository(), cache, services.profileResolver()));
+		*///?} else {
+		if (services.profileCache() != null) return;
+		var cache = new net.minecraft.server.players.GameProfileCache(services.profileRepository(), file);
+		accessor.longstandingfixes$setServices(new net.minecraft.server.Services(services.sessionService(), services.servicesKeySet(), services.profileRepository(), cache));
+		//?}
+	}
+
 	/** The console whitelists a name the server has never seen, and Mojang takes a second to answer. */
 	private static void whitelistLookup(GameTestHelper helper, boolean fixed) {
 		var server = helper.getLevel().getServer();
@@ -1679,6 +1702,7 @@ public final class FixTests {
 			helper.succeed();
 			return;
 		}
+		realNameCache(server);
 		String name = fixed ? "lsbfSlowFixed" : "lsbfSlowVanilla";
 		String key = name.toLowerCase(java.util.Locale.ROOT);
 		LongStandingFixes.SLOW_TEST_NAMES.add(key);
