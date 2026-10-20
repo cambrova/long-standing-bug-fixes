@@ -82,6 +82,8 @@ public final class LongStandingFixes {
 	public static boolean elytraStopsInWater = true;
 	/** MC-308361 (26.2 and newer): the small cubes a bucketed sulfur cube splits into don't despawn either. */
 	public static boolean bucketedCubesSplitPersistent = true;
+	/** MC-262182: mobs that fight in melee still hit a target in reach while another mob rides them. */
+	public static boolean riddenMobsAttack = true;
 
 	/** The clock the spam counters cool down by; the game tests swap it for one they can wind forward. */
 	public static java.util.function.LongSupplier CLOCK = System::nanoTime;
@@ -183,6 +185,7 @@ public final class LongStandingFixes {
 		adventureSpawnOnSurface = Boolean.parseBoolean(props.getProperty("MC-302519.adventureSpawnOnSurface", "true"));
 		elytraStopsInWater = Boolean.parseBoolean(props.getProperty("MC-298489.elytraStopsInWater", "true"));
 		bucketedCubesSplitPersistent = Boolean.parseBoolean(props.getProperty("MC-308361.bucketedSulfurCubesSplitPersistent", "true"));
+		riddenMobsAttack = Boolean.parseBoolean(props.getProperty("MC-262182.riddenMobsAttack", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -216,6 +219,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-302519.adventureSpawnOnSurface", Boolean.toString(adventureSpawnOnSurface));
 		props.setProperty("MC-298489.elytraStopsInWater", Boolean.toString(elytraStopsInWater));
 		props.setProperty("MC-308361.bucketedSulfurCubesSplitPersistent", Boolean.toString(bucketedCubesSplitPersistent));
+		props.setProperty("MC-262182.riddenMobsAttack", Boolean.toString(riddenMobsAttack));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {

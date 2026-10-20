@@ -353,6 +353,16 @@ public class FabricGameTests {
 	public void bucketedSulfurCubesSplitPersistentVanilla(GameTestHelper helper) {
 		FixTests.bucketedSulfurCubesSplitPersistentVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 100)
+	public void riddenMobsAttack(GameTestHelper helper) {
+		FixTests.riddenMobsAttack(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 100)
+	public void riddenMobsAttackVanilla(GameTestHelper helper) {
+		FixTests.riddenMobsAttackVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -696,6 +706,16 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void bucketedSulfurCubesSplitPersistentVanilla(GameTestHelper helper) {
 		FixTests.bucketedSulfurCubesSplitPersistentVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 100)
+	public void riddenMobsAttack(GameTestHelper helper) {
+		FixTests.riddenMobsAttack(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 100)
+	public void riddenMobsAttackVanilla(GameTestHelper helper) {
+		FixTests.riddenMobsAttackVanilla(helper);
 	}
 }
 ^///?}
