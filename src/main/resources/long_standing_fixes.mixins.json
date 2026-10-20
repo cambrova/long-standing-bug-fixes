@@ -25,6 +25,7 @@
 		"LayeredCauldronBlockMixin",
 		"LightningTargetInvoker",
 		"LivingEntityEffectMixin",
+		"LivingEntityGlideMixin",
 		"LivingEntityHealthMixin",
 		"LivingEntityMixin",
 		"MerchantOfferMixin",

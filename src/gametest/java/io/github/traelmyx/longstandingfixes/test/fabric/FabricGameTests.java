@@ -333,6 +333,16 @@ public class FabricGameTests {
 	public void adventureSpawnOnSurfaceVanilla(GameTestHelper helper) {
 		FixTests.adventureSpawnOnSurfaceVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void elytraStopsInWater(GameTestHelper helper) {
+		FixTests.elytraStopsInWater(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 40)
+	public void elytraStopsInWaterVanilla(GameTestHelper helper) {
+		FixTests.elytraStopsInWaterVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -656,6 +666,16 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 40)
 	public void adventureSpawnOnSurfaceVanilla(GameTestHelper helper) {
 		FixTests.adventureSpawnOnSurfaceVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void elytraStopsInWater(GameTestHelper helper) {
+		FixTests.elytraStopsInWater(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 40)
+	public void elytraStopsInWaterVanilla(GameTestHelper helper) {
+		FixTests.elytraStopsInWaterVanilla(helper);
 	}
 }
 ^///?}

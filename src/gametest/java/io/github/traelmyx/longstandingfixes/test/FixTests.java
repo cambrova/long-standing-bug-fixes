@@ -1529,4 +1529,49 @@ public final class FixTests {
 	public static void adventureSpawnOnSurfaceVanilla(GameTestHelper helper) {
 		adventureSpawn(helper, false);
 	}
+
+	/** A survival player glides into a pool and stays under water for 100 ticks; count what the elytra loses. */
+	private static void elytraWater(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) {
+			helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+			boolean wall = x == 0 || z == 0 || x == 4 || z == 4;
+			for (int y = 1; y < 6; y++) helper.setBlock(new BlockPos(x, y, z), wall ? Blocks.GLASS : Blocks.WATER);
+		}
+		var player = realPlayer(helper, fixed ? "test-glider" : "test-glider-vanilla");
+		player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+		ItemStack elytra = new ItemStack(Items.ELYTRA);
+		player.setItemSlot(net.minecraft.world.entity.EquipmentSlot.CHEST, elytra);
+		var at = helper.absoluteVec(new net.minecraft.world.phys.Vec3(2.5, 2.5, 2.5));
+		place(player, at.x, at.y, at.z, 0.0F);
+		if (!fixed) LongStandingFixes.VANILLA_OBJECTS.add(player);
+		player.startFallFlying();
+		boolean wasGliding = player.isFallFlying();
+		for (int i = 0; i < 100; i++) {
+			// hold the player mid-pool, the way swimming keeps them off the bottom
+			place(player, at.x, at.y, at.z, 0.0F);
+			player.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+			player.doTick();
+		}
+		boolean inWater = player.isInWater();
+		boolean stillGliding = player.isFallFlying();
+		int worn = player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.CHEST).getDamageValue();
+		LongStandingFixes.VANILLA_OBJECTS.remove(player);
+		helper.getLevel().getServer().getPlayerList().remove(player);
+		CHANNELS.remove(player);
+		System.out.printf("[long_standing_fixes] MC-298489 %s: in water %s, gliding %s -> %s, elytra lost %d durability in 100 ticks%n", fixed ? "fixed" : "vanilla", inWater, wasGliding, stillGliding, worn);
+		helper.assertTrue(wasGliding && inWater, "the setup failed: gliding " + wasGliding + ", in water " + inWater);
+		if (fixed) helper.assertTrue(worn == 0 && !stillGliding, "the elytra lost " + worn + " durability under water (still gliding: " + stillGliding + ")");
+		else helper.assertTrue(worn > 0, "vanilla kept the elytra intact under water; is MC-298489 fixed?");
+		helper.succeed();
+	}
+
+	/** MC-298489: an elytra doesn't wear out while its wearer is in water. */
+	public static void elytraStopsInWater(GameTestHelper helper) {
+		elytraWater(helper, true);
+	}
+
+	/** Without the fix it keeps losing durability. */
+	public static void elytraStopsInWaterVanilla(GameTestHelper helper) {
+		elytraWater(helper, false);
+	}
 }
