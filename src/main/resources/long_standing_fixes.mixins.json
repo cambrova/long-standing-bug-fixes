@@ -31,6 +31,7 @@
 		"MobGoalsAccessor",
 		"PlayerAdvancementsMixin",
 		"PlayerMixin",
+		"PlayerSpawnFinderMixin",
 		"PlayerStabMixin",
 		"ServerExplosionMixin",
 		"ServerGamePacketListenerImplMixin",

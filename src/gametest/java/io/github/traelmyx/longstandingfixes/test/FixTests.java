@@ -1480,4 +1480,53 @@ public final class FixTests {
 	public static void golemSparesTeammateVanilla(GameTestHelper helper) {
 		golemTeam(helper, false);
 	}
+
+	/**
+	 * Asks the spawn finder for a spot above a far-away, unloaded flat-world chunk while the default game mode is
+	 * Adventure, the way a respawn does when nobody is near the world spawn.
+	 */
+	private static void adventureSpawn(GameTestHelper helper, boolean fixed) {
+		//? if >=1.21.11 {
+		/*var level = helper.getLevel();
+		int far = fixed ? 20008 : -20008;
+		BlockPos suggestion = new BlockPos(far, helper.absolutePos(new BlockPos(0, 1, 0)).getY(), far);
+		helper.assertTrue(!level.hasChunk(suggestion.getX() >> 4, suggestion.getZ() >> 4), "the chunk at " + suggestion + " is already loaded");
+		var worldData = level.getServer().getWorldData();
+		var before = worldData.getGameType();
+		if (!fixed) LongStandingFixes.VANILLA_BLOCKS.add(suggestion);
+		net.minecraft.world.phys.Vec3 spawn;
+		try {
+			worldData.setGameType(net.minecraft.world.level.GameType.ADVENTURE);
+			var future = net.minecraft.server.level.PlayerSpawnFinder.findSpawn(level, suggestion);
+			helper.assertTrue(future.isDone(), "the Adventure spawn search did not finish straight away");
+			spawn = future.join();
+		} finally {
+			worldData.setGameType(before);
+			LongStandingFixes.VANILLA_BLOCKS.remove(suggestion);
+		}
+		BlockPos feet = BlockPos.containing(spawn);
+		System.out.printf("[long_standing_fixes] MC-302519 %s: spawn suggested at y %d, found y %.1f (world bottom %d)%n", fixed ? "fixed" : "vanilla", suggestion.getY(), spawn.y, level.getMinY());
+		if (fixed) {
+			helper.assertTrue(feet.getY() > level.getMinY() + 1, "the player would spawn at y " + spawn.y + ", next to the bedrock");
+			helper.assertTrue(!level.getBlockState(feet.below()).isAir() && level.getBlockState(feet).isAir() && level.getBlockState(feet.above()).isAir(),
+				"y " + spawn.y + " is not standing room on the surface");
+		} else {
+			helper.assertTrue(feet.getY() == level.getMinY() + 1, "vanilla found y " + spawn.y + ", expected the bottom of the world; is MC-302519 fixed?");
+		}
+		helper.succeed();
+		*///?} else {
+		// 1.21.1 keeps the spawn chunks loaded and has no spawn finder
+		helper.succeed();
+		//?}
+	}
+
+	/** MC-302519: with Adventure as the default game mode, the spawn is found on the surface. */
+	public static void adventureSpawnOnSurface(GameTestHelper helper) {
+		adventureSpawn(helper, true);
+	}
+
+	/** Without the fix it is at the bottom of the world. */
+	public static void adventureSpawnOnSurfaceVanilla(GameTestHelper helper) {
+		adventureSpawn(helper, false);
+	}
 }

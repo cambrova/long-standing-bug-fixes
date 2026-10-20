@@ -112,6 +112,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("shulker_refuses_levitation_vanilla", () -> FixTests::shulkerRefusesLevitationVanilla);
 		FUNCTIONS.register("golem_spares_teammate", () -> FixTests::golemSparesTeammate);
 		FUNCTIONS.register("golem_spares_teammate_vanilla", () -> FixTests::golemSparesTeammateVanilla);
+		FUNCTIONS.register("adventure_spawn_on_surface", () -> FixTests::adventureSpawnOnSurface);
+		FUNCTIONS.register("adventure_spawn_on_surface_vanilla", () -> FixTests::adventureSpawnOnSurfaceVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -181,6 +183,8 @@ public class NeoForgeGameTests {
 		register(event, env, "shulker_refuses_levitation_vanilla", 40, 1, 1);
 		register(event, env, "golem_spares_teammate", 260, 1, 1);
 		register(event, env, "golem_spares_teammate_vanilla", 260, 1, 1);
+		register(event, env, "adventure_spawn_on_surface", 40, 1, 1);
+		register(event, env, "adventure_spawn_on_surface_vanilla", 40, 1, 1);
 	}
 
 	//? if >=26 {
@@ -509,6 +513,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 260)
 	public static void golemSparesTeammateVanilla(GameTestHelper helper) {
 		FixTests.golemSparesTeammateVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void adventureSpawnOnSurface(GameTestHelper helper) {
+		FixTests.adventureSpawnOnSurface(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 40)
+	public static void adventureSpawnOnSurfaceVanilla(GameTestHelper helper) {
+		FixTests.adventureSpawnOnSurfaceVanilla(helper);
 	}
 	//?}
 }

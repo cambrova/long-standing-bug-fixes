@@ -76,6 +76,8 @@ public final class LongStandingFixes {
 	public static boolean shulkersNoLevitation = true;
 	/** MC-95782: iron golems don't attack hostile mobs on their own team when they bump into them. */
 	public static boolean golemsSpareTeammates = true;
+	/** MC-302519 (1.21.11 and newer): with Adventure as the default game mode, players respawn on the surface, not in the bedrock. */
+	public static boolean adventureSpawnOnSurface = true;
 
 	/** The clock the spam counters cool down by; the game tests swap it for one they can wind forward. */
 	public static java.util.function.LongSupplier CLOCK = System::nanoTime;
@@ -174,6 +176,7 @@ public final class LongStandingFixes {
 		tradersFleeRavagers = Boolean.parseBoolean(props.getProperty("MC-262810.tradersFleeRavagers", "true"));
 		shulkersNoLevitation = Boolean.parseBoolean(props.getProperty("MC-205843.shulkersCantLevitate", "true"));
 		golemsSpareTeammates = Boolean.parseBoolean(props.getProperty("MC-95782.golemsSpareTeammates", "true"));
+		adventureSpawnOnSurface = Boolean.parseBoolean(props.getProperty("MC-302519.adventureSpawnOnSurface", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -204,6 +207,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-262810.tradersFleeRavagers", Boolean.toString(tradersFleeRavagers));
 		props.setProperty("MC-205843.shulkersCantLevitate", Boolean.toString(shulkersNoLevitation));
 		props.setProperty("MC-95782.golemsSpareTeammates", Boolean.toString(golemsSpareTeammates));
+		props.setProperty("MC-302519.adventureSpawnOnSurface", Boolean.toString(adventureSpawnOnSurface));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
