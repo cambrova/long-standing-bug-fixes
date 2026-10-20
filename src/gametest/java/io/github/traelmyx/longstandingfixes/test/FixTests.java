@@ -450,21 +450,31 @@ public final class FixTests {
 		var fireball = helper.spawn(EntityType.FIREBALL, new BlockPos(4, 2, 4));
 		fireball.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
 		if (!fixed) LongStandingFixes.VANILLA_ENTITIES.add(fireball.getUUID());
-		// let the sensor settle after everything above moved and appeared
-		helper.runAfterDelay(60, () -> {
-			helper.assertTrue(!sensorActive(helper, sensor), "the sculk sensor was still active before the hit");
+		// let the sensor settle; tests running next to this one make noise too, so wait until it is quiet
+		int damageFrequency = net.minecraft.world.level.gameevent.vibrations.VibrationSystem.getGameEventFrequency(net.minecraft.world.level.gameevent.GameEvent.ENTITY_DAMAGE);
+		Runnable[] attempt = new Runnable[1];
+		int[] waited = {0};
+		attempt[0] = () -> {
+			if (sensorActive(helper, sensor) && waited[0]++ < 200) {
+				helper.runAfterDelay(1, attempt[0]);
+				return;
+			}
+			helper.assertTrue(!sensorActive(helper, sensor), "the sculk sensor never went quiet before the hit");
 			player.attack(fireball);
 			// gone before it can fly into anything and explode, which sensors would hear anyway
 			fireball.discard();
 			helper.runAfterDelay(10, () -> {
-				boolean active = sensorActive(helper, sensor);
+				var be = (net.minecraft.world.level.block.entity.SculkSensorBlockEntity) helper.getLevel().getBlockEntity(helper.absolutePos(sensor));
+				// a neighbouring test can set the sensor off too; only a hit (entity damage) vibration counts
+				boolean heard = sensorActive(helper, sensor) && be.getLastVibrationFrequency() == damageFrequency;
 				LongStandingFixes.VANILLA_ENTITIES.remove(fireball.getUUID());
 				helper.getLevel().getServer().getPlayerList().remove(player);
-				if (fixed) helper.assertTrue(active, "the sculk sensor did not hear the fireball being hit");
-				else helper.assertTrue(!active, "vanilla's sculk sensor heard the fireball being hit; is MC-210491 fixed?");
+				if (fixed) helper.assertTrue(heard, "the sculk sensor did not hear the fireball being hit");
+				else helper.assertTrue(!heard, "vanilla's sculk sensor heard the fireball being hit; is MC-210491 fixed?");
 				helper.succeed();
 			});
-		});
+		};
+		helper.runAfterDelay(60, attempt[0]);
 	}
 
 	/** MC-210491: a sculk sensor hears a player batting a fireball away. */
