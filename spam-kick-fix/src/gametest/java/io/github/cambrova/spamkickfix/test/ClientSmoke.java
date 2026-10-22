@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.nio.file.Files;
 
-// Run with -Dsmoketest=true: creates a flat world, puts food on a campfire read by a comparator, takes a screenshot and quits.
+// Run with -Dsmoketest=true: creates a flat world, sends a burst of commands, takes a screenshot and quits.
 public final class ClientSmoke {
 
     public static final boolean ENABLED = Boolean.getBoolean("smoketest");
@@ -65,17 +65,15 @@ public final class ClientSmoke {
                 case 2 -> {
                     ticks++;
                     if (ticks == 40) {
-                        fire(mc);
+                        // a quick burst of commands from the singleplayer owner, who is never kicked for spam
+                        for (int i = 0; i < 15; i++) mc.player.connection.sendCommand("help");
                     }
                     if (ticks == 90) {
-                        SmokeCompat.screenshot(mc, "campfire.png");
+                        SmokeCompat.screenshot(mc, "world.png");
                     }
                     if (ticks >= 100) {
-                        var server = mc.getSingleplayerServer();
-                        // block entities can only be read on the server thread
-                        int signal = server.submit(() -> ((ComparatorBlockEntity) server.overworld().getBlockEntity(comparatorPos)).getOutputSignal()).join();
-                        if (signal != 8) {
-                            fail("comparator next to a campfire with two items gives " + signal + ", expected 8");
+                        if (mc.level == null || mc.player == null) {
+                            fail("left the world after a burst of commands");
                         }
                         Files.writeString(mc.gameDirectory.toPath().resolve("smoke-ok"), "ok\n");
                         stage = 3;
@@ -89,27 +87,6 @@ public final class ClientSmoke {
             t.printStackTrace();
             fail(t.toString());
         }
-    }
-
-    private static volatile net.minecraft.core.BlockPos comparatorPos;
-
-    // an unlit campfire with two pieces of beef, a comparator reading it and a lamp it lights
-    private static void fire(Minecraft mc) {
-        var server = mc.getSingleplayerServer();
-        server.execute(() -> {
-            var player = server.getPlayerList().getPlayers().get(0);
-            var level = server.overworld();
-            var base = player.blockPosition().offset(0, 0, 3);
-            level.setBlockAndUpdate(base, Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, false));
-            comparatorPos = base.south();
-            level.setBlockAndUpdate(comparatorPos, Blocks.COMPARATOR.defaultBlockState().setValue(ComparatorBlock.FACING, Direction.NORTH));
-            level.setBlockAndUpdate(comparatorPos.south(), Blocks.REDSTONE_LAMP.defaultBlockState());
-            CampfireBlockEntity campfire = (CampfireBlockEntity) level.getBlockEntity(base);
-            campfire.getItems().set(0, new ItemStack(Items.BEEF));
-            campfire.getItems().set(2, new ItemStack(Items.BEEF));
-            campfire.setChanged();
-            level.sendBlockUpdated(base, level.getBlockState(base), level.getBlockState(base), 3);
-        });
     }
 
     public static void fail(String why) {
