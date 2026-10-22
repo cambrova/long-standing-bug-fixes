@@ -2,6 +2,7 @@ name: build
 
 on:
   push:
+    paths-ignore: ['spam-kick-fix/**', '.github/workflows/spam-kick-fix.yml']
   pull_request:
   workflow_dispatch:
 

@@ -1,0 +1,30 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/cambrova/long-standing-bug-fixes/issues"
+
+[[mods]]
+modId = "${id}"
+version = "${version}"
+displayName = "${name}"
+authors = "cambrova"
+${logo_key} = "assets/spam_kick_fix/icon.png"
+displayTest = "IGNORE_ALL_VERSION"
+description = '''Players are no longer kicked "for spamming" because the server is lagging: the chat and command limits cool down in real time. On 1.21.1 and 1.21.11 commands get their own limit, like in 26.2, and both limits can be changed or turned off in the config.'''
+
+[[mixins]]
+config = "spam_kick_fix.mixins.json"
+
+[[dependencies.${id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neoforge_major},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "${mc_dep}"
+ordering = "NONE"
+side = "BOTH"

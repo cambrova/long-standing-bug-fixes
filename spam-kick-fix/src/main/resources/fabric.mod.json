@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"id": "${id}",
+	"version": "${version}",
+	"name": "${name}",
+	"description": "Players are no longer kicked \"for spamming\" because the server is lagging: the chat and command limits cool down in real time. On 1.21.1 and 1.21.11 commands get their own limit, like in 26.2, and both limits can be changed or turned off in the config.",
+	"authors": ["cambrova"],
+	"contact": {
+		"sources": "https://github.com/cambrova/long-standing-bug-fixes/tree/main/spam-kick-fix",
+		"issues": "https://github.com/cambrova/long-standing-bug-fixes/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/spam_kick_fix/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["io.github.cambrova.spamkickfix.fabric.SpamKickFixFabric"]
+	},
+	"mixins": ["spam_kick_fix.mixins.json"],
+	"depends": {
+		"fabricloader": ">=0.16.0",
+		"minecraft": "${mc_dep}",
+		"java": ">=${java}"
+	}
+}
