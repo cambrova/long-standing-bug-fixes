@@ -120,6 +120,25 @@ public final class LongStandingFixes {
 		return true;
 	}
 
+	/** Tells Spam Kick Fix that this version leaves the real-time spam cool-down to it when both are installed. */
+	public static final boolean SPAM_KICK_FIX_AWARE = true;
+
+	private static Boolean spamKickFix;
+
+	/** Spam Kick Fix does the MC-276819 cool-down itself (with more options); running both would cool down twice. */
+	public static boolean spamKickFixInstalled() {
+		if (spamKickFix == null) {
+			try {
+				Class.forName("io.github.cambrova.spamkickfix.SpamKickFix", false, LongStandingFixes.class.getClassLoader());
+				spamKickFix = true;
+				LOGGER.info("Spam Kick Fix is installed; leaving the real-time spam cool-down (MC-276819) to it");
+			} catch (ClassNotFoundException e) {
+				spamKickFix = false;
+			}
+		}
+		return spamKickFix;
+	}
+
 	/** The clock the spam counters cool down by; the game tests swap it for one they can wind forward. */
 	public static java.util.function.LongSupplier CLOCK = System::nanoTime;
 

@@ -58,7 +58,7 @@ public abstract class ServerGamePacketListenerImplMixin implements LongStandingF
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void longstandingfixes$coolDownInRealTime(CallbackInfo ci) {
 		long now = LongStandingFixes.CLOCK.getAsLong();
-		if (this.longstandingfixes$lastTick != 0 && LongStandingFixes.spamRealTime && !LongStandingFixes.VANILLA_OBJECTS.contains(this.player)) {
+		if (this.longstandingfixes$lastTick != 0 && LongStandingFixes.spamRealTime && !LongStandingFixes.VANILLA_OBJECTS.contains(this.player) && !LongStandingFixes.spamKickFixInstalled()) {
 			this.longstandingfixes$behind = Math.max(0, this.longstandingfixes$behind + now - this.longstandingfixes$lastTick - longstandingfixes$TICK);
 			int missed = (int) Math.min(200, this.longstandingfixes$behind / longstandingfixes$TICK);
 			this.longstandingfixes$behind -= missed * longstandingfixes$TICK;
