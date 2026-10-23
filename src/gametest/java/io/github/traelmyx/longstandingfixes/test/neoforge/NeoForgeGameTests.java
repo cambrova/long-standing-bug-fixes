@@ -122,6 +122,8 @@ public class NeoForgeGameTests {
 		FUNCTIONS.register("ridden_mobs_attack_vanilla", () -> FixTests::riddenMobsAttackVanilla);
 		FUNCTIONS.register("names_looked_up_in_background", () -> FixTests::namesLookedUpInBackground);
 		FUNCTIONS.register("names_looked_up_in_background_vanilla", () -> FixTests::namesLookedUpInBackgroundVanilla);
+		FUNCTIONS.register("dripleaf_leaf_waits_a_tick", () -> FixTests::dripleafLeafWaitsATick);
+		FUNCTIONS.register("dripleaf_leaf_waits_a_tick_vanilla", () -> FixTests::dripleafLeafWaitsATickVanilla);
 	}
 
 	private static void registerTests(RegisterGameTestsEvent event) {
@@ -201,6 +203,8 @@ public class NeoForgeGameTests {
 		register(event, env, "ridden_mobs_attack_vanilla", 120, 1, 1);
 		register(event, env, "names_looked_up_in_background", 1200, 1, 1);
 		register(event, env, "names_looked_up_in_background_vanilla", 1200, 1, 1);
+		register(event, env, "dripleaf_leaf_waits_a_tick", 60, 1, 1);
+		register(event, env, "dripleaf_leaf_waits_a_tick_vanilla", 60, 1, 1);
 	}
 
 	//? if >=26 {
@@ -579,6 +583,16 @@ public class NeoForgeGameTests {
 	@GameTest(template = "empty", timeoutTicks = 1200)
 	public static void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackgroundVanilla(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 60)
+	public static void dripleafLeafWaitsATick(GameTestHelper helper) {
+		FixTests.dripleafLeafWaitsATick(helper);
+	}
+
+	@GameTest(template = "empty", timeoutTicks = 60)
+	public static void dripleafLeafWaitsATickVanilla(GameTestHelper helper) {
+		FixTests.dripleafLeafWaitsATickVanilla(helper);
 	}
 	//?}
 }

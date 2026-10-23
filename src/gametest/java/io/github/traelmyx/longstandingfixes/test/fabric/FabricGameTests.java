@@ -373,6 +373,16 @@ public class FabricGameTests {
 	public void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackgroundVanilla(helper);
 	}
+
+	@GameTest(structure = EMPTY, maxTicks = 60)
+	public void dripleafLeafWaitsATick(GameTestHelper helper) {
+		FixTests.dripleafLeafWaitsATick(helper);
+	}
+
+	@GameTest(structure = EMPTY, maxTicks = 60)
+	public void dripleafLeafWaitsATickVanilla(GameTestHelper helper) {
+		FixTests.dripleafLeafWaitsATickVanilla(helper);
+	}
 }
 //?} else {
 /^public class FabricGameTests implements FabricGameTest {
@@ -736,6 +746,16 @@ public class FabricGameTests {
 	@GameTest(template = EMPTY, timeoutTicks = 1200)
 	public void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
 		FixTests.namesLookedUpInBackgroundVanilla(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 60)
+	public void dripleafLeafWaitsATick(GameTestHelper helper) {
+		FixTests.dripleafLeafWaitsATick(helper);
+	}
+
+	@GameTest(template = EMPTY, timeoutTicks = 60)
+	public void dripleafLeafWaitsATickVanilla(GameTestHelper helper) {
+		FixTests.dripleafLeafWaitsATickVanilla(helper);
 	}
 }
 ^///?}

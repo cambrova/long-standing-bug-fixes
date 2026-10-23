@@ -1758,4 +1758,39 @@ public final class FixTests {
 	public static void namesLookedUpInBackgroundVanilla(GameTestHelper helper) {
 		whitelistLookup(helper, false);
 	}
+
+	/** A three-block big dripleaf on dirt; the stem right under the leaf is broken and replaced by dirt in the same tick. */
+	private static void dripleaf(GameTestHelper helper, boolean fixed) {
+		for (int x = 0; x < 3; x++) for (int z = 0; z < 3; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.DIRT);
+		BlockPos lower = new BlockPos(1, 1, 1), upper = new BlockPos(1, 2, 1), leaf = new BlockPos(1, 3, 1);
+		helper.setBlock(lower, Blocks.BIG_DRIPLEAF_STEM);
+		helper.setBlock(upper, Blocks.BIG_DRIPLEAF_STEM);
+		helper.setBlock(leaf, Blocks.BIG_DRIPLEAF);
+		if (!fixed) LongStandingFixes.VANILLA_BLOCKS.add(helper.absolutePos(leaf));
+		helper.runAfterDelay(5, () -> {
+			helper.assertTrue(helper.getBlockState(leaf).is(Blocks.BIG_DRIPLEAF), "the setup failed: no leaf on top");
+			var level = helper.getLevel();
+			BlockPos at = helper.absolutePos(upper);
+			level.destroyBlock(at, false);
+			level.setBlockAndUpdate(at, Blocks.DIRT.defaultBlockState());
+			helper.runAfterDelay(10, () -> {
+				boolean kept = helper.getBlockState(leaf).is(Blocks.BIG_DRIPLEAF);
+				LongStandingFixes.VANILLA_BLOCKS.remove(helper.absolutePos(leaf));
+				System.out.printf("[long_standing_fixes] MC-213961 %s: leaf still there after swapping the stem under it for dirt: %s%n", fixed ? "fixed" : "vanilla", kept);
+				if (fixed) helper.assertTrue(kept, "the leaf broke when the stem under it was swapped for dirt");
+				else helper.assertTrue(!kept, "vanilla kept the leaf; is MC-213961 fixed?");
+				helper.succeed();
+			});
+		});
+	}
+
+	/** MC-213961: the stem right under a big dripleaf's leaf can be swapped like any other stem. */
+	public static void dripleafLeafWaitsATick(GameTestHelper helper) {
+		dripleaf(helper, true);
+	}
+
+	/** Without the fix the leaf breaks at once. */
+	public static void dripleafLeafWaitsATickVanilla(GameTestHelper helper) {
+		dripleaf(helper, false);
+	}
 }

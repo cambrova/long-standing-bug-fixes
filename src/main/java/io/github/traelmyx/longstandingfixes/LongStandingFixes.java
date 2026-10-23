@@ -86,6 +86,8 @@ public final class LongStandingFixes {
 	public static boolean riddenMobsAttack = true;
 	/** MC-99601: typing /whitelist add, /op or /ban for a name the server hasn't seen doesn't freeze the server during the lookup. */
 	public static boolean namesLookedUpInBackground = true;
+	/** MC-213961: a big dripleaf's leaf checks its support a tick later, like its stems, so the stem under it can be swapped. */
+	public static boolean dripleafWaitsATick = true;
 
 	/** The command a player or the console is running on this thread, so it can run again after a name lookup (MC-99601). */
 	public record RunningCommand(net.minecraft.commands.CommandSourceStack source, String command) {
@@ -241,6 +243,7 @@ public final class LongStandingFixes {
 		bucketedCubesSplitPersistent = Boolean.parseBoolean(props.getProperty("MC-308361.bucketedSulfurCubesSplitPersistent", "true"));
 		riddenMobsAttack = Boolean.parseBoolean(props.getProperty("MC-262182.riddenMobsAttack", "true"));
 		namesLookedUpInBackground = Boolean.parseBoolean(props.getProperty("MC-99601.lookUpNamesInBackground", "true"));
+		dripleafWaitsATick = Boolean.parseBoolean(props.getProperty("MC-213961.dripleafLeafWaitsATick", "true"));
 		props.setProperty("MC-166272.campfireComparator", Boolean.toString(campfireComparator));
 		props.setProperty("MC-159069.babyVillagersTakePoppies", Boolean.toString(golemPoppy));
 		props.setProperty("MC-217397.burningSkeletonsShootBurningArrows", Boolean.toString(burningSkeletons));
@@ -276,6 +279,7 @@ public final class LongStandingFixes {
 		props.setProperty("MC-308361.bucketedSulfurCubesSplitPersistent", Boolean.toString(bucketedCubesSplitPersistent));
 		props.setProperty("MC-262182.riddenMobsAttack", Boolean.toString(riddenMobsAttack));
 		props.setProperty("MC-99601.lookUpNamesInBackground", Boolean.toString(namesLookedUpInBackground));
+		props.setProperty("MC-213961.dripleafLeafWaitsATick", Boolean.toString(dripleafWaitsATick));
 		try {
 			Files.createDirectories(configDir);
 			try (Writer writer = Files.newBufferedWriter(file)) {
