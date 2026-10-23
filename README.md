@@ -39,6 +39,7 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 | [MC-308361](https://bugs.mojang.com/browse/MC-308361) | Small cubes split from a bucketed sulfur cube don't despawn | 26.2+ |
 | [MC-262182](https://bugs.mojang.com/browse/MC-262182) | Melee mobs carrying a rider still hit a target in reach | all |
 | [MC-99601](https://bugs.mojang.com/browse/MC-99601) | Typed `/whitelist`, `/op` and `/ban` look up unknown names without freezing the server | all |
+| [MC-213961](https://bugs.mojang.com/browse/MC-213961) | The stem under a big dripleaf's leaf can be swapped without breaking the leaf | all |
 
 Server side (or singleplayer); clients don't need it.
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.0
+
+- MC-213961: the stem right under a big dripleaf's leaf can be swapped for another block without breaking the leaf, like every other stem.
+- When Spam Kick Fix is also installed, this mod leaves the lag fix for chat and command spam limits (MC-276819) to it, so the limits don't cool down twice.
+
 ## 1.11.0
 
 - MC-302519 (1.21.11 and newer): with Adventure as the default game mode, players respawn on the surface instead of at the bottom of the world.
