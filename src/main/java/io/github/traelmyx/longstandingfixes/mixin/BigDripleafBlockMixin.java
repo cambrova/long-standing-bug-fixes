@@ -39,7 +39,7 @@ public abstract class BigDripleafBlockMixin {
 		if (!LongStandingFixes.dripleafWaitsATick || direction != Direction.DOWN || state.canSurvive(level, pos) || LongStandingFixes.VANILLA_BLOCKS.contains(pos))
 			return;
 		ticks.scheduleTick(pos, (BigDripleafBlock) (Object) this, 1);
-		if (state.getValue(BigDripleafBlock.WATERLOGGED))
+		if (state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED))
 			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		cir.setReturnValue(state);
 	}
