@@ -1583,7 +1583,7 @@ public final class FixTests {
 
 	/** A full-size sulfur cube that came out of a bucket dies and splits; are its small cubes kept from despawning? */
 	private static void sulfurSplit(GameTestHelper helper, boolean fixed) {
-		//? if >=26 {
+		//? if >=26.2 {
 		/*var level = helper.getLevel();
 		for (int x = 0; x < 5; x++) for (int z = 0; z < 5; z++) helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
 		var cube = helper.spawn(net.minecraft.world.entity.EntityTypes.SULFUR_CUBE, new BlockPos(2, 1, 2));

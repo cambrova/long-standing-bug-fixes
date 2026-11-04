@@ -1,6 +1,6 @@
 package io.github.traelmyx.longstandingfixes.mixin;
 
-//? if >=26 {
+//? if >=26.2 {
 /*import io.github.traelmyx.longstandingfixes.LongStandingFixes;
 import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 import net.minecraft.world.entity.monster.cubemob.SulfurCube;
