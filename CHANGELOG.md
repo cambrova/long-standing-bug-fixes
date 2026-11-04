@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.1
+
+- Builds for Minecraft 26.1.2 (Fabric and NeoForge). Everything else is unchanged.
+- On 26.1.2, the sulfur cube fix (MC-308361) and the spear knockback fix (MC-310859) don't apply: there are no sulfur cubes yet, and 26.1 pushes once like 1.21.11.
+
 ## 1.12.0
 
 - MC-213961: the stem right under a big dripleaf's leaf can be swapped for another block without breaking the leaf, like every other stem.

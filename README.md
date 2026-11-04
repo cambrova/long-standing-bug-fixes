@@ -43,6 +43,6 @@ Fixes for confirmed, still-open bugs from Mojang's bug tracker. Each fix is smal
 
 Server side (or singleplayer); clients don't need it.
 
-Tests: every fix has a GameTest for the fix and a control test that runs the same setup on vanilla behaviour and checks the bug is still there, on 1.21.1, 1.21.11, 26.2 and 26.3 for NeoForge and Fabric. A client smoke test builds a campfire with a comparator and takes a screenshot.
+Tests: every fix has a GameTest for the fix and a control test that runs the same setup on vanilla behaviour and checks the bug is still there, on 1.21.1, 1.21.11, 26.1.2, 26.2 and 26.3 for NeoForge and Fabric. A client smoke test builds a campfire with a comparator and takes a screenshot.
 
 MIT licensed.
