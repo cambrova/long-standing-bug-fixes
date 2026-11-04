@@ -22,7 +22,7 @@ public final class SmokeCompat {
     }
 
     public static Screen screen(Minecraft mc) {
-        //? if >=26 {
+        //? if >=26.2 {
         /*return mc.gui.screen();
         *///?} else {
         return mc.screen;
@@ -30,7 +30,7 @@ public final class SmokeCompat {
     }
 
     public static void setScreen(Minecraft mc, Screen screen) {
-        //? if >=26 {
+        //? if >=26.2 {
         /*mc.gui.setScreen(screen);
         *///?} else {
         mc.setScreen(screen);
@@ -38,7 +38,7 @@ public final class SmokeCompat {
     }
 
     public static boolean overlayHidden(Minecraft mc) {
-        //? if >=26 {
+        //? if >=26.2 {
         /*return mc.gui.overlay() == null;
         *///?} else {
         return mc.getOverlay() == null;
@@ -50,12 +50,18 @@ public final class SmokeCompat {
     }
 
     public static void createWorld(Minecraft mc, GameType type, net.minecraft.resources.ResourceKey<net.minecraft.world.level.levelgen.presets.WorldPreset> preset, long seed, boolean structures) {
-        //? if >=26 {
+        //? if >=26.2 {
         /*LevelSettings settings = new LevelSettings("smoke", type,
             new LevelSettings.DifficultySettings(Difficulty.PEACEFUL, false, false), true, WorldDataConfiguration.DEFAULT);
         mc.createWorldOpenFlows().createFreshLevel("smoke", settings, new WorldOptions(seed, structures, false),
             registries -> registries.lookupOrThrow(Registries.WORLD_PRESET).getOrThrow(preset).value().createWorldDimensions(),
             mc.gui.screen());
+        *///?} else if >=26 {
+        /*LevelSettings settings = new LevelSettings("smoke", type,
+            new LevelSettings.DifficultySettings(Difficulty.PEACEFUL, false, false), true, WorldDataConfiguration.DEFAULT);
+        mc.createWorldOpenFlows().createFreshLevel("smoke", settings, new WorldOptions(seed, structures, false),
+            registries -> registries.lookupOrThrow(Registries.WORLD_PRESET).getOrThrow(preset).value().createWorldDimensions(),
+            mc.screen);
         *///?} else if >=1.21.11 {
         /*LevelSettings settings = new LevelSettings("smoke", type, false, Difficulty.PEACEFUL, true,
             new GameRules(WorldDataConfiguration.DEFAULT.enabledFeatures()), WorldDataConfiguration.DEFAULT);
@@ -71,7 +77,7 @@ public final class SmokeCompat {
     }
 
     public static void hideGui(Minecraft mc, boolean hide) {
-        //? if >=26 {
+        //? if >=26.2 {
         /*if (mc.gui.hud.isHidden() != hide) mc.gui.hud.toggle();
         *///?} else {
         mc.options.hideGui = hide;
@@ -80,7 +86,7 @@ public final class SmokeCompat {
 
     /** Saves a screenshot into screenshots/ (on 26.x under the game's own timestamped name). */
     public static void screenshot(Minecraft mc, String name) {
-        //? if >=26 {
+        //? if >=26.2 {
         /*Screenshot.grab(mc, false);
         *///?} else if >=1.21.11 {
         /*Screenshot.grab(mc.gameDirectory, name, mc.getMainRenderTarget(), 1, msg -> {});
