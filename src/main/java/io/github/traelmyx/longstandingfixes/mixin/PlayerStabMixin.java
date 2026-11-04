@@ -1,6 +1,6 @@
 package io.github.traelmyx.longstandingfixes.mixin;
 
-//? if >=26 {
+//? if >=26.2 {
 /*import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -66,7 +66,7 @@ public abstract class PlayerStabMixin {
 	}
 }
 *///?} else {
-/** Not applied before 26.1: 1.21.1 has no spears and 1.21.11 pushes once (left out of the mixin list for those versions). */
+/** Not applied before 26.2: 1.21.1 has no spears, and 1.21.11 and 26.1 push once (left out of the mixin list for those versions). */
 public final class PlayerStabMixin {
 	private PlayerStabMixin() {
 	}
