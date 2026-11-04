@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//? if >=26 {
+//? if >=26.2 {
 /*import net.minecraft.advancements.triggers.ItemUsedOnLocationTrigger;
 *///?} else if >=1.21.11 {
 /*import net.minecraft.advancements.criterion.ItemUsedOnLocationTrigger;
