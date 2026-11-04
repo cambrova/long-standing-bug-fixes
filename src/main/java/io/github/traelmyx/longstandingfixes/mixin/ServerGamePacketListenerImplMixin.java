@@ -24,7 +24,7 @@ public abstract class ServerGamePacketListenerImplMixin implements LongStandingF
 	@Shadow
 	public ServerPlayer player;
 
-	//? if >=26 {
+	//? if >=26.2 {
 	/*@Shadow
 	@Final
 	private TickThrottler chatSpamThrottler;
@@ -73,7 +73,7 @@ public abstract class ServerGamePacketListenerImplMixin implements LongStandingF
 		/*for (int i = 0; i < steps; i++) {
 			this.chatSpamThrottler.tick();
 			this.dropSpamThrottler.tick();
-			//? if >=26
+			//? if >=26.2
 			this.commandSpamThrottler.tick();
 		}
 		*///?} else {
